@@ -90,3 +90,4 @@ if ($null -ne $flyout -and $flyout.Hwnd -ne $dock.Hwnd) {
 }
 
 Stop-Process -Id $p.Id -Force -ErrorAction SilentlyContinue
+Remove-Item $outLog, $errLog -Force -ErrorAction SilentlyContinue

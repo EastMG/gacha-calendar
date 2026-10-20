@@ -6,6 +6,26 @@ on:
   pull_request:
 
 jobs:
+  identity:
+    # 只检查 push（PR 会带来 fork 作者的邮箱，不该拦）。
+    # 目的：防止把 GitHub 提交邮箱写错、导致提交被算到另一个账号头上。
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify commit author emails
+        run: |
+          bad="$(git log --no-merges --format='%ae' | sort -u | grep -vE '^(eastmg@users\.noreply\.github\.com|noreply@github\.com)$' || true)"
+          if [ -n "$bad" ]; then
+            echo "::error::Unexpected commit author email(s):"
+            echo "$bad"
+            echo "See AGENTS.md §6 for the identity checklist."
+            exit 1
+          fi
+          echo "commit identity OK"
+
   build-windows:
     runs-on: windows-latest
     steps:

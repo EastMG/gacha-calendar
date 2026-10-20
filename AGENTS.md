@@ -57,3 +57,32 @@ CI 跑 1 + 2；联网抓取不进 CI（受源站可用性影响）。
 
 `docs/06-数据契约.md` 是 core 的 Result JSON 与本仓库 `snapshot.json` 的冻结说明。
 **改快照结构必须同时改文档并升 `snapshot schemaVersion`。**
+
+## 6. 提交身份检查（2026-10-21 事故后新增，必须遵守）
+
+**事故**：首次创建本仓库时，把 git 提交邮箱写成了 `eastmorning@users.noreply.github.com`
+（用了 npm 账号名，而不是 GitHub 账号的 noreply 邮箱）。GitHub 按邮箱把 4 个提交归给了
+一个真实存在的用户 **EastMorning**。已重写历史修正，并保留 `.mailmap` 兜底。
+
+**规则**：新建仓库 / 换机器后，第一次提交前必须按下面做，禁止凭记忆拼邮箱：
+
+```powershell
+# 1) 从姊妹仓库读取权威身份（不要自己猜）
+git -C ..\dsh-gacha-calendar log -1 --format='%an <%ae>'
+#   → EastMG <eastmg@users.noreply.github.com>
+
+# 2) 写入当前仓库
+git config user.name  'EastMG'
+git config user.email 'eastmg@users.noreply.github.com'
+
+# 3) 提交后核对作者
+git log -1 --format='%h | %an <%ae>'
+
+# 4) push 后核对远端实际归属（Contributors 有缓存，以提交列表为准）
+gh api repos/EastMG/gacha-calendar/commits --jq '.[].commit.author.email'
+```
+
+- **GitHub 账号名、npm 账号名、提交邮箱是三样不同的东西**，不要混用。
+- GitHub noreply 邮箱必须从账号设置或既有提交里**原样复制**，不要套 `<username>@users.noreply.github.com`。
+- CI 的 `identity` job 会检查 push 到 main 的提交邮箱白名单；**不要为了过检查去改白名单**。
+

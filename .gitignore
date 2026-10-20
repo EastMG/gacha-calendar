@@ -23,3 +23,6 @@ artifacts/
 # --- 系统 ---
 Thumbs.db
 Desktop.ini
+
+docs/images/_*
+

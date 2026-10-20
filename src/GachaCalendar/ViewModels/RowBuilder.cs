@@ -87,11 +87,27 @@ public static class RowBuilder
 
 		var start = a.Value;
 		var end = b.Value;
-		// 跨年：结束早于开始 → 结束算下一年
+		// 跨年：结束早于开始 → 结束算下一年（如 "12-30 ~ 01-05"）
 		if (end < start) end = end.AddYears(1);
-		// 一月初看到"12-30 ~ 01-05"时，开始是去年的 12-30
-		if (start > now && end < now) start = start.AddYears(-1);
-		return (start, end);
+
+		// 展示文本不带年份。为了在 12 月/1 月附近也能选中"离现在最近"的那一期，
+		// 同时试 去年 / 今年 / 明年 三个候选，取窗口离 now 最近的一个。
+		var bestStart = start;
+		var bestEnd = end;
+		var bestDistance = long.MaxValue;
+		foreach (var shift in new[] { -1, 0, 1 })
+		{
+			var s = start.AddYears(shift);
+			var e = end.AddYears(shift);
+			var distance = now < s ? (s - now).Ticks : now > e ? (now - e).Ticks : 0;
+			if (distance < bestDistance)
+			{
+				bestDistance = distance;
+				bestStart = s;
+				bestEnd = e;
+			}
+		}
+		return (bestStart, bestEnd);
 	}
 
 	private static DateTime? ParsePoint(string text, DateTime now)

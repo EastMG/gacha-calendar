@@ -1,0 +1,25 @@
+# --- .NET ---
+bin/
+obj/
+.vs/
+*.user
+*.suo
+
+# --- Node（抓取工具） ---
+node_modules/
+tools/node_modules/
+npm-debug.log*
+
+# --- 运行期数据（真抓结果不入库） ---
+data/snapshot.json
+data/icons/
+*.log
+
+# --- 发布产物 ---
+publish/
+artifacts/
+*.zip
+
+# --- 系统 ---
+Thumbs.db
+Desktop.ini

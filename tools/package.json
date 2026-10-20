@@ -1,0 +1,17 @@
+{
+	"name": "gacha-calendar-tools",
+	"version": "0.1.0",
+	"private": true,
+	"type": "module",
+	"description": "开发期抓取工具：调用 gacha-calendar-core 生成 Windows 桌面端可读的快照",
+	"scripts": {
+		"refresh": "node refresh.mjs --out ../data/snapshot.json",
+		"sample": "node refresh.mjs --out ../data/sample-snapshot.json",
+		"selfcheck": "node refresh.mjs --selfcheck",
+		"check": "node --check refresh.mjs"
+	},
+	"dependencies": {
+		"gacha-calendar-core": "^0.12.5"
+	},
+	"license": "MIT"
+}

@@ -1,0 +1,64 @@
+<Window x:Class="GachaCalendar.Views.SettingsWindow"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		Title="设置 — 二游日历"
+		Width="480" Height="560"
+		WindowStartupLocation="CenterScreen"
+		ResizeMode="NoResize"
+		Background="{DynamicResource PanelBg}"
+		Foreground="{DynamicResource Fg}"
+		Topmost="True">
+	<Grid Margin="20">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+
+		<StackPanel Grid.Row="0">
+			<TextBlock Text="设置" FontSize="20" FontWeight="SemiBold" />
+			<TextBlock Text="任务栏常驻条的外观与行为" FontSize="12" Foreground="{DynamicResource FgDim}" Margin="0,4,0,0" />
+		</StackPanel>
+
+		<ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,16,0,0">
+			<StackPanel>
+				<TextBlock Text="任务栏常驻条" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource FgDim}" />
+				<CheckBox x:Name="DockEnabled" Content="在任务栏左侧常驻显示日历条" Margin="0,8,0,0" />
+				<CheckBox x:Name="HideFullscreen" Content="全屏应用（游戏 / 视频）前台时自动隐藏" Margin="0,6,0,0" />
+				<CheckBox x:Name="OpenOnClick" Content="点击常驻条时展开面板" Margin="0,6,0,0" />
+				<StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+					<TextBlock Text="常驻条显示条数" VerticalAlignment="Center" />
+					<ComboBox x:Name="ItemsCount" Width="70" Margin="10,0,0,0">
+						<ComboBoxItem Content="1" />
+						<ComboBoxItem Content="2" />
+						<ComboBoxItem Content="3" />
+						<ComboBoxItem Content="4" />
+						<ComboBoxItem Content="5" />
+						<ComboBoxItem Content="6" />
+					</ComboBox>
+				</StackPanel>
+
+				<Separator Margin="0,16,0,12" Background="{DynamicResource Divider}" />
+
+				<TextBlock Text="系统" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource FgDim}" />
+				<CheckBox x:Name="StartWithWindows" Content="开机自动启动" Margin="0,8,0,0" />
+
+				<Separator Margin="0,16,0,12" Background="{DynamicResource Divider}" />
+
+				<TextBlock Text="数据" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource FgDim}" />
+				<TextBlock x:Name="DataPathText" Text="—" FontSize="11" Margin="0,8,0,0" TextWrapping="Wrap" Foreground="{DynamicResource FgDim}" />
+				<TextBlock Text="v0.1 的数据由 tools/refresh.mjs 抓取生成；应用只读快照。内置抓取计划见路线图 v0.2。" FontSize="11"
+						   Margin="0,6,0,0" TextWrapping="Wrap" Foreground="{DynamicResource FgFaint}" />
+				<StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+					<Button Content="重新读取数据" Padding="12,6" Click="OnReload" />
+					<Button Content="打开数据目录" Padding="12,6" Margin="8,0,0,0" Click="OnOpenDataDir" />
+				</StackPanel>
+			</StackPanel>
+		</ScrollViewer>
+
+		<StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+			<Button Content="保存" Width="88" Padding="0,6" Click="OnSave" />
+			<Button Content="关闭" Width="88" Padding="0,6" Margin="8,0,0,0" Click="OnClose" />
+		</StackPanel>
+	</Grid>
+</Window>

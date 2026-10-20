@@ -1,0 +1,42 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+      - name: Build
+        run: dotnet build src/GachaCalendar/GachaCalendar.csproj -c Release
+      - name: Verify snapshot contract fields
+        shell: pwsh
+        run: |
+          $snap = Get-Content data/sample-snapshot.json -Raw -Encoding UTF8 | ConvertFrom-Json
+          if ($snap.schemaVersion -ne 1) { throw "snapshot schemaVersion != 1" }
+          if (-not $snap.games -or $snap.games.Count -lt 20) { throw "snapshot games missing" }
+          if (-not $snap.result.games) { throw "result.games missing" }
+          $g = $snap.result.games.PSObject.Properties | Select-Object -First 1
+          foreach ($f in @("banner","roles","bannerDates","event","eventDates","gachaFail","eventFail","okAt")) {
+            if (-not $g.Value.PSObject.Properties.Name.Contains($f)) { throw "record missing field $f" }
+          }
+          Write-Host "snapshot contract OK: $($snap.games.Count) games"
+
+  tools:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Syntax check refresh tool
+        working-directory: tools
+        run: |
+          npm ci --no-audit --no-fund
+          node --check refresh.mjs

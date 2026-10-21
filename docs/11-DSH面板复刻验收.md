@@ -41,6 +41,7 @@
 | 应用内刷新 | WPF 启动 `packages/engine/host.mjs`；`refreshIfDue` / `refresh` |
 | 自动刷新 | 每分钟检查 + Host 退避；启动/打开面板触发 |
 | 设置立即生效 | Host `rebuildSnapshot`（缓存 + 配置，不联网）+ 面板重载 |
+| 面板 ↔ 常驻条联动 | 共用一个 `MainViewModel`；点击常驻条 `ToggleFlyout`；刷新后两边同步 |
 | UI 层网络边界 | 图标也只走 Host `fetchBinary`；WPF 无 HttpClient |
 | Host 并发 | 请求写 stdin 串行化（修复 `stream in use`） |
 

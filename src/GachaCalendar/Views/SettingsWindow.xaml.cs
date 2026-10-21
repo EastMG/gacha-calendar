@@ -62,6 +62,7 @@ public partial class SettingsWindow : Window
 		}
 
 		_building = true;
+		LoadingText.Visibility = Visibility.Visible;
 		try
 		{
 			var cfgNode = await engine.GetConfigAsync();
@@ -97,6 +98,7 @@ public partial class SettingsWindow : Window
 		finally
 		{
 			_building = false;
+			LoadingText.Visibility = Visibility.Collapsed;
 		}
 	}
 

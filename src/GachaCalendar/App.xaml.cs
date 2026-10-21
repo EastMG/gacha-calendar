@@ -105,7 +105,7 @@ public partial class App : System.Windows.Application
 
 	private void ScheduleUiCapture(string outDir)
 	{
-		var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(8) };
+		var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(12) };
 		timer.Tick += (_, _) =>
 		{
 			timer.Stop();

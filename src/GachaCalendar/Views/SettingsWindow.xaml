@@ -146,9 +146,9 @@
 				<Setter.Value>
 					<ControlTemplate TargetType="CheckBox">
 						<StackPanel Orientation="Horizontal" Background="Transparent">
-							<Border x:Name="Box" Width="15" Height="15" CornerRadius="4"
+							<Border x:Name="Box" Width="17" Height="17" CornerRadius="4"
 									Background="{DynamicResource PanelBg}" BorderBrush="{DynamicResource PanelBorder}" BorderThickness="1">
-								<Path x:Name="Check" Data="M2,7 L5,10 L12,3" Stroke="White" StrokeThickness="1.7"
+								<Path x:Name="Check" Data="M2,7 L5,10 L12,3" Stroke="White" StrokeThickness="1.8"
 									  StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
 									  Visibility="Collapsed" Margin="2" />
 							</Border>
@@ -168,6 +168,62 @@
 				</Setter.Value>
 			</Setter>
 		</Style>
+
+		<Style x:Key="SettingsThinScrollBar" TargetType="ScrollBar">
+			<Setter Property="Width" Value="8" />
+			<Setter Property="Background" Value="Transparent" />
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="ScrollBar">
+						<Grid Width="8" Background="Transparent">
+							<Track x:Name="PART_Track" IsDirectionReversed="True" Orientation="Vertical">
+								<Track.DecreaseRepeatButton>
+									<RepeatButton Command="{x:Static ScrollBar.PageUpCommand}" Opacity="0" Focusable="False" />
+								</Track.DecreaseRepeatButton>
+								<Track.Thumb>
+									<Thumb Width="8">
+										<Thumb.Template>
+											<ControlTemplate TargetType="Thumb">
+												<Border Background="{DynamicResource FgFaint}" CornerRadius="4" Opacity="0.65" Margin="1,2" />
+											</ControlTemplate>
+										</Thumb.Template>
+									</Thumb>
+								</Track.Thumb>
+								<Track.IncreaseRepeatButton>
+									<RepeatButton Command="{x:Static ScrollBar.PageDownCommand}" Opacity="0" Focusable="False" />
+								</Track.IncreaseRepeatButton>
+							</Track>
+						</Grid>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		<Style x:Key="SettingsScrollViewer" TargetType="ScrollViewer">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="ScrollViewer">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="Auto" />
+							</Grid.ColumnDefinitions>
+							<ScrollContentPresenter x:Name="PART_ScrollContentPresenter" Grid.Column="0"
+													Margin="{TemplateBinding Padding}"
+													Content="{TemplateBinding Content}"
+													ContentTemplate="{TemplateBinding ContentTemplate}"
+													CanContentScroll="{TemplateBinding CanContentScroll}" />
+							<ScrollBar x:Name="PART_VerticalScrollBar" Grid.Column="1" Width="8"
+									   Orientation="Vertical" Cursor="Arrow"
+									   Style="{StaticResource SettingsThinScrollBar}"
+									   Value="{Binding VerticalOffset, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+									   Maximum="{TemplateBinding ScrollableHeight}"
+									   ViewportSize="{TemplateBinding ViewportHeight}"
+									   Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" />
+						</Grid>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
 	</Window.Resources>
 
 	<Grid Margin="20">
@@ -179,11 +235,13 @@
 		<StackPanel Grid.Row="0" Margin="0,0,0,12">
 			<TextBlock Text="二游日历" FontSize="18" FontWeight="SemiBold" />
 			<TextBlock Text="卡池日历插件设置" FontSize="11" Foreground="{DynamicResource FgFaint}" Margin="0,3,0,0" />
+			<TextBlock x:Name="LoadingText" Text="正在读取设置…" FontSize="12" Foreground="{DynamicResource FgDim}"
+					   Margin="0,6,0,0" Visibility="Collapsed" />
 			<TextBlock x:Name="SaveErrorText" FontSize="12" Foreground="{DynamicResource Danger}" Margin="0,6,0,0"
 					   TextWrapping="Wrap" Visibility="Collapsed" />
 		</StackPanel>
 
-		<ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+		<ScrollViewer Grid.Row="1" Style="{StaticResource SettingsScrollViewer}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
 			<StackPanel>
 				<!-- 自动刷新 -->
 				<Border Style="{StaticResource Card}">

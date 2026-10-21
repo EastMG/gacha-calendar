@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v0.1.21 · 2026-10-21
+
+- 设置页：17px 自定义 CheckBox、细滚动条；载入中显示「正在读取设置…」
+- 截图链路改为 12s 等待，避免 Host 启动/刷新期间截到空设置页
+- 新增深色设置页截图与 2×2 视觉回归图 `docs/images/visual-regression.png`
+- 版本 0.1.21
+
 ## v0.1.20 · 2026-10-21
 
 - newPanel 同格多档期：解析 `bannerHover` / `eventHover`，悬停表格单元格弹出「同格档期」卡片

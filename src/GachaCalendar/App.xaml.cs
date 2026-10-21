@@ -1,5 +1,8 @@
+using System.IO;
 using System.Windows;
 using System.Windows.Interop;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using GachaCalendar.Models;
 using GachaCalendar.Services;
@@ -91,6 +94,52 @@ public partial class App : System.Windows.Application
 		if (e.Args.Contains("--show-flyout")) ScheduleShow(900);
 		else if (!e.Args.Contains("--autostart") && !e.Args.Contains("--silent")) ScheduleShow(500);
 		if (e.Args.Contains("--show-settings")) ScheduleSettings(2500);
+		var captureIndex = Array.IndexOf(e.Args, "--capture-ui");
+		if (captureIndex >= 0 && captureIndex + 1 < e.Args.Length)
+			ScheduleUiCapture(e.Args[captureIndex + 1]);
+	}
+
+	private void ScheduleUiCapture(string outDir)
+	{
+		var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(8) };
+		timer.Tick += (_, _) =>
+		{
+			timer.Stop();
+			try
+			{
+				Directory.CreateDirectory(outDir);
+				if (_flyout != null) CaptureWindow(_flyout, outDir, "flyout");
+				if (_dock != null) CaptureWindow(_dock, outDir, "dock");
+			}
+			catch (Exception ex)
+			{
+				Log.Error("UI 截图失败", ex);
+			}
+			ExitApp();
+		};
+		timer.Start();
+	}
+
+	private static void CaptureWindow(Window window, string outDir, string prefix)
+	{
+		window.UpdateLayout();
+		var width = window.ActualWidth;
+		var height = window.ActualHeight;
+		if (width < 1 || height < 1) return;
+		foreach (var dpi in new[] { 96.0, 144.0 })
+		{
+			var scale = dpi / 96.0;
+			var bitmap = new RenderTargetBitmap(
+				(int)Math.Round(width * scale),
+				(int)Math.Round(height * scale),
+				dpi, dpi, PixelFormats.Pbgra32);
+			bitmap.Render(window);
+			var encoder = new PngBitmapEncoder();
+			encoder.Frames.Add(BitmapFrame.Create(bitmap));
+			var suffix = dpi == 96 ? "100" : "150";
+			using var stream = File.Create(Path.Combine(outDir, $"{prefix}-{suffix}.png"));
+			encoder.Save(stream);
+		}
 	}
 
 	private void ScheduleSettings(int delayMs)

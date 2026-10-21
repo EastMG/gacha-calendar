@@ -53,6 +53,8 @@ public sealed class EngineHostClient : IAsyncDisposable
 	{
 		var explicitNode = Environment.GetEnvironmentVariable("GACHA_CALENDAR_NODE");
 		if (!string.IsNullOrWhiteSpace(explicitNode)) return explicitNode;
+		var bundled = Path.Combine(AppContext.BaseDirectory, "engine", "node.exe");
+		if (File.Exists(bundled)) return bundled;
 		return "node";
 	}
 

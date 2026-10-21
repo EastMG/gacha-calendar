@@ -28,10 +28,10 @@
 | 设置页实验开关（默认关） | `NewPanelCheck` → `updateConfig({newPanel})` + 快照透传 | 代码；开关切换后 `rebuildSnapshot` |
 | 日期胶囊 + 24小时/7天总览 | `SchedulePanelVm.GlanceText` / `DatePill` | 代码 |
 | 近期紧迫列表（前 10 + 展开全部） | `Urgent` + `ToggleExpand` | 代码 |
-| 悬停详情卡 | `Focus` + `FocusOthers`（大图标/剩余天数/日期/其他项） | 代码 |
-| 14 天时间轴日程表 | 158px 游戏列 + 卡池/活动两栏 + 14 格条形 | 代码 |
-| 底栏状态/上次更新/刷新 | `ScrapeText` / `UpdatedAgo` / 刷新按钮 | 代码 |
-| 4 秒循环翻页 / 探头展开 / 失败横条 / 取色器 | 未实现 | 下一轮 |
+| 悬停详情卡 | `Focus` + `FocusOthers`（大图标/剩余天数/日期/其他项） | `docs/images/flyout-newpanel-100.png` |
+| 14 天时间轴日程表 | 158px 游戏列 + 卡池/活动两栏 + 14 格条形 | 同上 |
+| 底栏状态/上次更新/刷新 | `ScrapeText` / `UpdatedAgo` / 刷新按钮 | 同上 |
+| 4 秒循环翻页 / 探头展开 / 失败横条 | 未实现 | 下一轮 |
 
 ## 3. 设置页
 
@@ -58,7 +58,14 @@
 | UI 层网络边界 | 图标也只走 Host `fetchBinary`；WPF 无 HttpClient |
 | Host 并发 | 请求写 stdin 串行化（修复 `stream in use`） |
 
-## 5. 验收命令
+## 5. DPI / 深色标题栏
+
+- WPF 以 DIP 布局，`--capture-ui <dir>` 用 RenderTargetBitmap 同时输出 96 DPI（100%）与 144 DPI（150%）：
+  `docs/images/flyout-100.png` / `flyout-150.png`，newPanel 同名 `-newpanel-*`；
+- 设置窗口深色主题调用 DWM `DWMWA_USE_IMMERSIVE_DARK_MODE`，避免系统白色标题栏；
+- 自包含运行时发布尚未验证（框架依赖 zip 已验证可启动并使用包内 Node）。
+
+## 6. 验收命令
 
 ```powershell
 dotnet build src\GachaCalendar\GachaCalendar.csproj -c Release   # 0 警告 0 错误
@@ -69,9 +76,8 @@ npm run check
 - CI：`build-windows` / `identity` / `engine` / `tools` 全绿。
 - 截图：`docs/images/flyout.png`（浅色）、`flyout-dark.png`（深色）、`settings.png`。
 
-## 6. 未纳入 / 后续
+## 7. 未纳入 / 后续
 
-- newPanel：4 秒循环翻页、同格多档期探头展开、刷新失败横条 + 重试、主题色取色器；
-- 设置页颜色列 / 取色器（`gameColors`，将用于 newPanel 行色）；
-- 深色系统标题栏、100%/150% DPI 逐像素回归；
-- Host 运行时打包（当前开发期要求本机 Node；安装包阶段再解决）。
+- newPanel：4 秒循环翻页、同格多档期探头展开、刷新失败横条 + 重试；
+- 自包含（self-contained）运行时发布；当前 zip 需目标机装 .NET 10 Desktop Runtime；
+- 深色标题栏/100% 截图已做，但未覆盖所有 Windows 版本与第三方缩放工具。

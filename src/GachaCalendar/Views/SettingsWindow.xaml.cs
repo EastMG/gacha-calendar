@@ -47,6 +47,7 @@ public partial class SettingsWindow : Window
 	public SettingsWindow()
 	{
 		InitializeComponent();
+		SourceInitialized += (_, _) => DarkTitleBar.Apply(this);
 	}
 
 	public void LoadFromSettings() => _ = ReloadAsync();

@@ -18,6 +18,7 @@ data/icons/
 # --- 发布产物 ---
 publish/
 artifacts/
+dist/
 *.zip
 
 # --- 系统 ---

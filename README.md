@@ -49,6 +49,7 @@
 | 悬停跑马灯 / 刷新旋转 / Host 串行写 | ✅ v0.1.9 |
 | 深浅色 token / 视觉验收清单 | ✅ v0.1.10（[验收清单](docs/11-DSH面板复刻验收.md)） |
 | 实验性 newPanel（日程视图） | 🚧 v0.1.12 基础版（设置页可开启） |
+| 颜色取色器 / DPI 截图 / 内置 Node 打包 | ✅ v0.1.13–0.1.14（`tools/publish.ps1`） |
 | Fluent / DSH 交互细节与视觉回归 | 📋 待办（[#1](https://github.com/EastMG/gacha-calendar/issues/1) / [BACKLOG.md](BACKLOG.md)） |
 | 多显示器、轮播、安装包 | 🚧 v0.1.10+（见[路线图](docs/04-路线图.md)） |
 
@@ -80,6 +81,20 @@ dsh-gacha-calendar（上游仓库）
 来源包括各游戏**官方公告、官方 Wiki、第三方站**（bwiki / PRTS / wiki.gg / Game8 / GameKee /
 Canmoe / GachaTracker / ldshop / 小米游戏中心 等），采用克制的抓取策略。
 完整来源与解析器说明见 core 的 README；本仓库不复制、不修改解析逻辑。
+
+## 发布 / 打包
+
+```powershell
+# 框架依赖 zip（需要目标机安装 .NET 10 Desktop Runtime）
+powershell -ExecutionPolicy Bypass -File tools\publish.ps1
+
+# 可选：自包含运行时（体积更大）
+powershell -ExecutionPolicy Bypass -File tools\publish.ps1 -SelfContained
+```
+
+产物在 `dist\gacha-calendar-win-x64.zip`，内含 `engine\node.exe`、Host、core 与示例数据；
+应用启动时优先使用包内 Node。
+
 
 ## 快速开始（从源码运行）
 

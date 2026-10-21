@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v0.1.14 · 2026-10-21
+
+- 深色主题下设置窗口使用 DWM 深色标题栏
+- 分发雏形：新增 `tools/publish.ps1`，发布 WPF 应用并把
+  `engine/host.mjs`、`gacha-calendar-core`、`node.exe`、示例数据一起打包成 zip
+- `EngineHostClient` 优先使用包内 `engine/node.exe`；发布版实测用内置 Node 完成刷新
+- `--capture-ui <dir>`：同时渲染 96 DPI / 144 DPI（100%/150%）面板截图
+- 版本 0.1.14
+
 ## v0.1.13 · 2026-10-21
 
 - 设置页新增「颜色」列与主题色取色器：写入 `gameColors`，`newPanel` 行色/详情卡即时生效

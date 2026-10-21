@@ -18,6 +18,7 @@ import {
 	normalizeConfig,
 	mergeConfig,
 	validateConfig as validateConfigValue,
+	importLegacyConfig,
 	visibilityPatch,
 	writeFileAtomic,
 } from "./config.mjs";
@@ -216,6 +217,12 @@ export function createFileService(options) {
 				throw err;
 			}
 			const next = mergeConfig(config, value);
+			config = saveConfigFile(paths.config, next);
+			return normalizeConfig(config);
+		},
+		/** 导入旧格式配置（对象字段可能是 JSON 字符串），整体替换当前配置。 */
+		importConfig(input) {
+			const next = importLegacyConfig(typeof input === "string" ? JSON.parse(input) : input);
 			config = saveConfigFile(paths.config, next);
 			return normalizeConfig(config);
 		},

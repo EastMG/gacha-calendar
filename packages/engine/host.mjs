@@ -11,7 +11,7 @@
 //   响应  { "id": 1, "ok": true, "result": { ... } }
 //   错误  { "id": 1, "ok": false, "error": { "code": "...", "message": "..." } }
 //
-// 方法：hello / getConfig / updateConfig / listGames / listEntries /
+// 方法：hello / getConfig / updateConfig / importConfig / listGames / listEntries /
 //       setEntryVisibility / setOrder / removeEntry / restoreEntry /
 //       getCached / refresh / refreshIfDue / getStatus / getDiagnostics /
 //       validateConfig / validateSnapshot / getSnapshot / selfCheck / shutdown
@@ -39,6 +39,10 @@ export async function dispatch(service, method, params = {}) {
 		case "updateConfig": {
 			const patch = params && typeof params === "object" && "patch" in params ? params.patch : params;
 			return service.updateConfig(patch);
+		}
+		case "importConfig": {
+			const value = params && typeof params === "object" && "config" in params ? params.config : params;
+			return service.importConfig(value);
 		}
 		case "listGames":
 			return service.listGames();

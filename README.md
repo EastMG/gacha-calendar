@@ -102,7 +102,7 @@ cd tools; npm run selfcheck
 
 ```powershell
 npm install       # 根目录，安装 gacha-calendar-core（仅 packages/engine 与测试用）
-npm test          # 30 项 config / snapshot / entries / validate / service / 调度 / host / view-model 用例
+npm test          # 34 项 config / snapshot / entries / validate / service / 调度 / host / view-model 用例
 npm run check     # JS 入口语法检查
 
 # 壳无关 CLI（不用启动 UI）

@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v0.1.6 · 2026-10-21
+
+- 配置版本化：`config.schemaVersion`；缺省按 v1；未来版本拒绝加载（`unsupported-config-version`）
+- 新增 `importLegacyConfig()` / Service `importConfig` / Host `importConfig` / CLI `config import --file`，兼容旧扩展/DSH 的 JSON 字符串字段
+- 示例快照纳入测试（`sample-snapshot.test.mjs` 做契约校验）
+- 新增 view-model 跨语言 golden fixture（`packages/viewmodel/test/fixtures/basic.json`）
+- 测试 30 → 34 项
+
 ## v0.1.5 · 2026-10-21
 
 - 新增 `packages/viewmodel/`：壳无关的展示层纯函数（行文案/倒计时/失败三态/角色名精简/顶部状态/常驻条选择）

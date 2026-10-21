@@ -87,6 +87,18 @@ test("createFileService：配置持久化 + refresh 写出 snapshot", async () =
 		assert.equal(afterRemove.hidden.includes("a"), false);
 		const afterRestore = service.restoreEntry("a");
 		assert.deepEqual(afterRestore.removed, []);
+
+		// 旧格式导入：JSON 字符串字段 + 忽略缓存键
+		const imported = service.importConfig({
+			customUrls: JSON.stringify({ a: "https://example.com/a" }),
+			hidden: JSON.stringify(["b"]),
+			lastData: "{}",
+			lastRefresh: 123,
+		});
+		assert.deepEqual(imported.customUrls, { a: "https://example.com/a" });
+		assert.deepEqual(imported.hidden, ["b"]);
+		assert.equal(imported.lastData, undefined);
+		assert.equal(service.getConfig().hidden[0], "b");
 	} finally {
 		fs.rmSync(dir, { recursive: true, force: true });
 	}

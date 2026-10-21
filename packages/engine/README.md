@@ -14,6 +14,8 @@
 | `cli.mjs` | 壳无关 CLI（status/config/refresh/validate/diagnostics） |
 | `transport.mjs` | core transport 的 Node fetch 实现 |
 
+支持 `config import --file legacy.json` 导入旧扩展/DSH 配置（对象字段的 JSON 字符串会先解析）。
+
 ```bash
 npm install                  # 仓库根目录
 npm test                     # 15 项测试

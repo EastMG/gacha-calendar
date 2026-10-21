@@ -10,6 +10,7 @@ function makeService() {
 		paths: { config: path.join("tmp", "gc", "config.json") },
 		getConfig: () => ({ refreshMinutes: 1440 }),
 		updateConfig: (patch) => ({ merged: patch }),
+		importConfig: (input) => ({ imported: input }),
 		listGames: async () => [{ id: "a" }],
 		listEntries: async () => [{ id: "a", visible: true }],
 		setEntryVisibility: (id, visible) => ({ id, visible }),
@@ -38,6 +39,7 @@ test("dispatch：hello / getConfig / updateConfig / refresh / 未知方法", asy
 	assert.deepEqual(await dispatch(service, "getConfig"), { refreshMinutes: 1440 });
 	assert.deepEqual(await dispatch(service, "updateConfig", { patch: { hidden: ["a"] } }), { merged: { hidden: ["a"] } });
 	assert.deepEqual(await dispatch(service, "updateConfig", { hidden: ["b"] }), { merged: { hidden: ["b"] } });
+	assert.deepEqual(await dispatch(service, "importConfig", { config: { hidden: ["c"] } }), { imported: { hidden: ["c"] } });
 	assert.deepEqual(await dispatch(service, "listEntries"), [{ id: "a", visible: true }]);
 	assert.deepEqual(await dispatch(service, "setEntryVisibility", { id: "a", visible: false }), { id: "a", visible: false });
 	assert.deepEqual(await dispatch(service, "setOrder", { order: ["b", "a"] }), { order: ["b", "a"] });

@@ -14,6 +14,7 @@ export const CONFIG_SCHEMA_VERSION = 1;
 
 /** 用户可见的默认配置。refreshMinutes 默认 1440（1 天），与 core 的 DEFAULT_SETTINGS 一致。 */
 export const DEFAULT_CONFIG = Object.freeze({
+	schemaVersion: CONFIG_SCHEMA_VERSION,
 	autoRefresh: true,
 	refreshMinutes: 1440,
 	order: [],
@@ -57,11 +58,65 @@ function plainObject(value) {
 }
 
 /**
+ * 配置版本迁移。当前只有 v1：
+ *   - 没有 schemaVersion 的旧配置 / schemaVersion=1 → v1；
+ *   - 未来版本（>1）不猜结构，抛 `unsupported-config-version`，让上层提示"请升级应用"；
+ *   - 非法版本抛 `invalid-config`。
+ */
+export function migrateConfig(input = {}) {
+	if (!isPlainObject(input)) {
+		const err = new Error("配置必须是 JSON 对象");
+		err.code = "invalid-config";
+		throw err;
+	}
+	const raw = input.schemaVersion;
+	const version = raw == null || raw === "" ? 1 : Number(raw);
+	if (!Number.isInteger(version) || version < 1) {
+		const err = new Error("config.schemaVersion 非法：" + String(raw));
+		err.code = "invalid-config";
+		throw err;
+	}
+	if (version > CONFIG_SCHEMA_VERSION) {
+		const err = new Error(
+			`配置版本 ${version} 高于本程序支持的 ${CONFIG_SCHEMA_VERSION}，请升级应用`,
+		);
+		err.code = "unsupported-config-version";
+		throw err;
+	}
+	return { ...input, schemaVersion: CONFIG_SCHEMA_VERSION };
+}
+
+/**
+ * 导入旧格式配置（浏览器扩展 / DSH 插件 / 旧版 config）：
+ * 键名相同，但对象字段可能是 JSON 字符串；缓存键会被忽略。
+ */
+export function importLegacyConfig(input = {}) {
+	if (!isPlainObject(input)) {
+		const err = new Error("导入内容必须是 JSON 对象");
+		err.code = "invalid-config";
+		throw err;
+	}
+	const raw = { ...input };
+	const jsonKeys = ["order", "hidden", "shown", "removed", "customEntries", "customUrls", "customEventUrls", "gameColors"];
+	for (const key of jsonKeys) {
+		if (typeof raw[key] !== "string") continue;
+		try {
+			raw[key] = JSON.parse(raw[key]);
+		} catch {
+			// 解析不了就保持原样，让 normalize/validate 去兜底
+		}
+	}
+	for (const key of ["lastData", "lastRefresh", "lastSource", "lastVersion"]) delete raw[key];
+	raw.schemaVersion = CONFIG_SCHEMA_VERSION;
+	return normalizeConfig(raw);
+}
+
+/**
  * 归一化配置：补默认值、去重、裁剪刷新间隔、保留未知字段（向前兼容）。
  * 对损坏输入不抛错（除 refreshMinutes 外全部可恢复），保证"配置坏了应用还能起来"。
  */
 export function normalizeConfig(input = {}) {
-	const src = isPlainObject(input) ? input : {};
+	const src = isPlainObject(input) ? migrateConfig(input) : {};
 	const out = { ...src };
 	out.schemaVersion = CONFIG_SCHEMA_VERSION;
 
@@ -71,7 +126,12 @@ export function normalizeConfig(input = {}) {
 		? src.customEntries.filter(isPlainObject)
 		: [];
 
-	out.autoRefresh = src.autoRefresh !== false;
+	out.autoRefresh = !(
+		src.autoRefresh === false ||
+		src.autoRefresh === "false" ||
+		src.autoRefresh === 0 ||
+		src.autoRefresh === "0"
+	);
 	const minutes = Number(src.refreshMinutes);
 	out.refreshMinutes = Number.isFinite(minutes)
 		? Math.min(42 * 24 * 60, Math.max(60, Math.round(minutes)))
@@ -152,6 +212,13 @@ export function visibilityPatch(config, id, visible, defaultHidden = false) {
 export function validateConfig(input) {
 	const errors = [];
 	if (!isPlainObject(input)) return ["配置必须是 JSON 对象"];
+	if (input.schemaVersion != null) {
+		const version = Number(input.schemaVersion);
+		if (!Number.isInteger(version) || version < 1) errors.push("schemaVersion 必须是 >= 1 的整数");
+		else if (version > CONFIG_SCHEMA_VERSION) {
+			errors.push(`schemaVersion ${version} 高于本程序支持的 ${CONFIG_SCHEMA_VERSION}`);
+		}
+	}
 	if (input.order != null && !Array.isArray(input.order)) errors.push("order 必须是字符串数组");
 	if (input.refreshMinutes != null) {
 		const minutes = Number(input.refreshMinutes);
@@ -169,6 +236,7 @@ export function loadConfigFile(file) {
 		return normalizeConfig(JSON.parse(text));
 	} catch (err) {
 		if (err && err.code === "ENOENT") return normalizeConfig(DEFAULT_CONFIG);
+		if (err && (err.code === "unsupported-config-version" || err.code === "invalid-config")) throw err;
 		throw new Error(`读取配置失败（${file}）：${err.message}`);
 	}
 }

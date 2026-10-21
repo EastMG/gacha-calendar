@@ -5,6 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import {
 	DEFAULT_CONFIG,
+	CONFIG_SCHEMA_VERSION,
 	normalizeConfig,
 	mergeConfig,
 	toEngineSettings,
@@ -14,6 +15,8 @@ import {
 	validateConfig,
 	loadConfigFile,
 	saveConfigFile,
+	migrateConfig,
+	importLegacyConfig,
 } from "../config.mjs";
 
 test("normalizeConfig 补默认值并保留未知字段", () => {
@@ -97,4 +100,35 @@ test("save/load 往返，文件不存在返回默认", () => {
 	} finally {
 		fs.rmSync(dir, { recursive: true, force: true });
 	}
+});
+
+test("配置版本：缺省/字符串都按 v1，未来版本拒绝，非法版本报错", () => {
+	assert.equal(migrateConfig({}).schemaVersion, CONFIG_SCHEMA_VERSION);
+	assert.equal(migrateConfig({ schemaVersion: "1" }).schemaVersion, 1);
+	assert.throws(() => migrateConfig({ schemaVersion: 2 }), (err) => err.code === "unsupported-config-version");
+	assert.throws(() => migrateConfig({ schemaVersion: "x" }), (err) => err.code === "invalid-config");
+	assert.throws(() => normalizeConfig({ schemaVersion: 99 }), (err) => err.code === "unsupported-config-version");
+	const report = validateConfig({ schemaVersion: 2 });
+	assert.equal(report.length, 1);
+});
+
+test("importLegacyConfig：JSON 字符串字段、缓存键忽略、autoRefresh=false", () => {
+	const cfg = importLegacyConfig({
+		customUrls: JSON.stringify({ a: "https://example.com/a" }),
+		customEntries: JSON.stringify([{ id: "x", name: "X" }]),
+		order: JSON.stringify(["b", "a"]),
+		hidden: JSON.stringify(["a"]),
+		autoRefresh: "false",
+		refreshMinutes: "120",
+		lastData: "{}",
+		lastRefresh: 1,
+	});
+	assert.deepEqual(cfg.customUrls, { a: "https://example.com/a" });
+	assert.deepEqual(cfg.customEntries, [{ id: "x", name: "X" }]);
+	assert.deepEqual(cfg.order, ["b", "a"]);
+	assert.deepEqual(cfg.hidden, ["a"]);
+	assert.equal(cfg.autoRefresh, false);
+	assert.equal(cfg.refreshMinutes, 120);
+	assert.equal(cfg.lastData, undefined);
+	assert.equal(cfg.schemaVersion, 1);
 });

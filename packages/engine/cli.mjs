@@ -81,7 +81,7 @@ async function main() {
 				"  show <id> / hide <id>",
 				"  order <id1,id2,...>",
 				"  remove <id> / restore <id>",
-				"  config get | config set --json '<json>' [--file <path>]",
+				"  config get | config set --json '<json>' [--file <path>] | config import --file <path>",
 				"  refresh [--if-due]",
 				"  diagnostics",
 				"  validate",
@@ -132,7 +132,12 @@ async function main() {
 				print(service.updateConfig(readConfigInput(args)));
 				return;
 			}
-			throw new Error("config 支持 get / set");
+			if (sub === "import") {
+				if (!args.file) throw new Error("config import 需要 --file <path>");
+				print(service.importConfig(JSON.parse(fs.readFileSync(args.file, "utf8"))));
+				return;
+			}
+			throw new Error("config 支持 get / set / import");
 		}
 		case "refresh": {
 			if (args.ifDue) {

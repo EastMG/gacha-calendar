@@ -1,0 +1,85 @@
+{
+	"description": "跨语言 view-model golden fixture：JS 与 C# 都应产出同样的字段（时间按本地墙钟构造，不依赖时区）",
+	"nowIso": "2026-10-21T06:00:00",
+	"dockItems": 2,
+	"snapshot": {
+		"schemaVersion": 1,
+		"generatedAt": 0,
+		"coreVersion": "test",
+		"config": {},
+		"games": [
+			{ "id": "a", "name": "A", "hidden": false, "defaults": {} },
+			{ "id": "b", "name": "B", "hidden": false, "defaults": {} },
+			{ "id": "c", "name": "C", "hidden": true, "defaults": {} }
+		],
+		"result": {
+			"schemaVersion": 1,
+			"refreshedAt": 0,
+			"parserVersions": {},
+			"games": {
+				"a": {
+					"name": "A",
+					"banner": "A池",
+					"roles": "「霜星·凛冬」、爱可菲（冰）",
+					"bannerDates": "10-01 12:00 ~ 10-22 12:00",
+					"bannerDatesRaw": "RAW-A",
+					"bannerHover": "",
+					"event": "A活动",
+					"eventDates": "10-10 12:00 ~ 10-25 12:00",
+					"eventDatesRaw": "",
+					"eventHover": "",
+					"gachaFail": null,
+					"eventFail": null,
+					"gachaStale": false,
+					"eventStale": false,
+					"okAt": 0
+				},
+				"b": {
+					"name": "B",
+					"banner": "B池",
+					"roles": "",
+					"bannerDates": "12-30 10:00 ~ 01-05 10:00",
+					"bannerDatesRaw": "",
+					"bannerHover": "",
+					"event": "B活动",
+					"eventDates": "10-20 10:00 ~ 10-23 10:00",
+					"eventDatesRaw": "",
+					"eventHover": "",
+					"gachaFail": { "kind": "down", "reason": "HTTP 403" },
+					"eventFail": { "kind": "nomatch" },
+					"gachaStale": false,
+					"eventStale": false,
+					"okAt": 0
+				}
+			}
+		}
+	},
+	"expect": {
+		"header": {
+			"count": 2,
+			"countText": "2 款",
+			"statusText": "联网数据 · 成功 1/2",
+			"updatedText": "更新：10-21 06:00"
+		},
+		"rows": [
+			{
+				"id": "a",
+				"badge": null,
+				"gachaText": "凛冬、爱可菲",
+				"gachaDates": "还剩 1天6小时0分钟",
+				"eventText": "A活动",
+				"eventDates": "还剩 4天6小时0分钟"
+			},
+			{
+				"id": "b",
+				"badge": { "kind": "err", "text": "卡池失败：HTTP 403" },
+				"gachaText": "B池",
+				"eventText": "B活动"
+			}
+		],
+		"dock": [
+			{ "id": "a", "kind": "卡池", "remaining": "1天" },
+			{ "id": "b", "kind": "活动", "remaining": "2天" }
+		]
+	}
+}

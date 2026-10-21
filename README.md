@@ -37,7 +37,7 @@
 | 失败三态：报错 / 未公布 / 沿用旧数据 | ✅ |
 | 系统托盘、设置、单实例、开机自启 | ✅ |
 | 数据抓取 | ✅ 由 `tools/refresh.mjs` 调用 core（v0.2 将搬进应用内） |
-| 壳无关基础层（config / snapshot / Host 协议） | ✅ `packages/engine/`（外壳技术栈未定也能先做，见 [docs/07](docs/07-壳无关基础层.md)） |
+| 壳无关基础层（config / snapshot / Host 协议 / 视图模型） | ✅ `packages/engine/` + `packages/viewmodel/`（外壳技术栈未定也能先做） |
 | 应用内自动刷新 / 手动刷新 | 🚧 v0.2 |
 | 多显示器、轮播、图标、安装包 | 🚧 v0.3+（见[路线图](docs/04-路线图.md)） |
 
@@ -102,7 +102,7 @@ cd tools; npm run selfcheck
 
 ```powershell
 npm install       # 根目录，安装 gacha-calendar-core（仅 packages/engine 与测试用）
-npm test          # 24 项 config / snapshot / entries / validate / service / 调度 / host 用例
+npm test          # 30 项 config / snapshot / entries / validate / service / 调度 / host / view-model 用例
 npm run check     # JS 入口语法检查
 
 # 壳无关 CLI（不用启动 UI）
@@ -132,6 +132,7 @@ src/GachaCalendar/          WPF 应用（Shell）
   ViewModels/               RowBuilder（JSON→文案）、MainViewModel、RowVm、ChipVm
   Views/                    常驻条 / 面板 / 设置窗
 packages/engine/            壳无关基础层：config / snapshot / service / JSON-lines Host（Node 参考实现）
+packages/viewmodel/         跨语言视图模型：行文案/倒计时/失败三态/常驻条选择（纯 JS）
 tools/refresh.mjs           开发期抓取（core → snapshot.json）
 tools/capture-shot.ps1      窗口截图（PrintWindow，DPI 安全）
 data/config.example.json    默认配置样例

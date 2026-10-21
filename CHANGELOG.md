@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v0.1.5 · 2026-10-21
+
+- 新增 `packages/viewmodel/`：壳无关的展示层纯函数（行文案/倒计时/失败三态/角色名精简/顶部状态/常驻条选择）
+- 新增 `docs/08-视图模型契约.md` 与 `packages/viewmodel/cli.mjs`（无 UI 渲染 view-model）
+- 6 项 view-model 测试；测试总数 24 → 30
+- 与 WPF 的 C# 实现口径对齐（外壳选型前两边必须同步）
+
 ## v0.1.4 · 2026-10-21
 
 - 新增 `entries.mjs`：设置页条目视图（合并 `listGames` / `defaultHidden` / `hidden` / `shown` → `visible`）

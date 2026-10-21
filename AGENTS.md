@@ -16,6 +16,7 @@ Windows 11 任务栏常驻的**二游卡池 / 活动日历小组件**。它**不
 |---|---|---|
 | `src/GachaCalendar/` | WPF 应用（C#） | ✅ 唯一真源 |
 | `packages/engine/` | 壳无关基础层：配置 schema、快照构建、文件 service、JSON-lines Host（Node 参考实现） | ✅ |
+| `packages/viewmodel/` | 跨语言视图模型：行文案/倒计时/失败三态/常驻条选择（纯 JS，口径见 docs/08） | ✅ |
 | `tools/refresh.mjs` | 开发期抓取工具：调用 core，把 Result JSON 落成 `data/snapshot.json` | ✅ |
 | `data/sample-snapshot.json` | **示例快照**（真实抓取产物，供首次运行/无网络时展示） | ⚠️ 由 `npm run sample` 生成，别手改 |
 | `docs/` | 调研 / 架构 / 路线图 / 数据契约 / 壳无关层 | ✅ |

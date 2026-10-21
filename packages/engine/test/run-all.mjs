@@ -7,3 +7,4 @@ import "./validate.test.mjs";
 import "./service.test.mjs";
 import "./scheduler.test.mjs";
 import "./host.test.mjs";
+import "../../viewmodel/test/view-model.test.mjs";

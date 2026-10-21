@@ -9,5 +9,6 @@
 | [05-风险与合规](05-风险与合规.md) | 抓取合规、私有 API 风险、杀软误报、分发与签名、隐私 |
 | [06-数据契约](06-数据契约.md) | `gacha-calendar-core` 的 Result JSON 与本地 `snapshot.json` 冻结说明 |
 | [07-壳无关基础层](07-壳无关基础层.md) | `packages/engine`：配置 schema、快照构建、JSON-lines Host 协议（外壳未定也能先做） |
+| [08-视图模型契约](08-视图模型契约.md) | `packages/viewmodel`：行文案/倒计时/失败三态/常驻条选择的跨语言口径 |
 
 > 开发约定见仓库根目录 [`AGENTS.md`](../AGENTS.md)；改动前先读它。

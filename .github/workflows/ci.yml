@@ -26,6 +26,20 @@ jobs:
           fi
           echo "commit identity OK"
 
+  engine:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install
+        run: npm ci --no-audit --no-fund
+      - name: Test shell-agnostic engine layer
+        run: npm test
+      - name: Syntax check JS entries
+        run: npm run check
+
   build-windows:
     runs-on: windows-latest
     steps:

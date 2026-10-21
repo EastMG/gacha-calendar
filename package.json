@@ -1,0 +1,16 @@
+{
+	"name": "gacha-calendar-workspace",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"description": "gacha-calendar Windows 小组件：壳无关的引擎/配置/快照层（开发与测试用）",
+	"scripts": {
+		"test": "node packages/engine/test/run-all.mjs",
+		"check": "node --check packages/engine/config.mjs && node --check packages/engine/transport.mjs && node --check packages/engine/snapshot.mjs && node --check packages/engine/service.mjs && node --check packages/engine/host.mjs && node --check tools/refresh.mjs",
+		"host": "node packages/engine/host.mjs --data-dir data"
+	},
+	"dependencies": {
+		"gacha-calendar-core": "^0.12.5"
+	},
+	"license": "MIT"
+}

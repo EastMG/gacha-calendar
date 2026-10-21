@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## v0.1.1 · 2026-10-21
+
+外壳技术栈未定，先落地不依赖外壳的基础功能。
+
+- 新增 `packages/engine/`：壳无关的配置层（显隐三态 / 排序 / 删除 / 自定义条目与来源 / 刷新间隔）、
+  快照构建、文件 service、JSON-lines Host 协议。
+- 新增 `data/config.example.json` 与 `docs/07-壳无关基础层.md`；`tools/refresh.mjs` 改走同一套
+  config / snapshot / transport 层，快照新增可选的 `config` 字段（旧外壳可忽略）。
+- 新增 15 项单进程测试（config / snapshot / service / host），CI 增加 `engine` job。
+- 配置归一化包含安全裁剪与原子写；`customUrls` 等对象字段只在 `toEngineSettings()` 转 JSON 字符串，
+  避免各层重复写转换逻辑。
+
 ## v0.1.0 · 2026-10-21
 
 首个可运行骨架（预览版）。

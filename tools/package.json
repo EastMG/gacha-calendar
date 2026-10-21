@@ -6,7 +6,7 @@
 	"description": "开发期抓取工具：调用 gacha-calendar-core 生成 Windows 桌面端可读的快照",
 	"scripts": {
 		"refresh": "node refresh.mjs --out ../data/snapshot.json",
-		"sample": "node refresh.mjs --out ../data/sample-snapshot.json",
+		"sample": "node refresh.mjs --out ../data/sample-snapshot.json --config ../data/config.example.json",
 		"selfcheck": "node refresh.mjs --selfcheck",
 		"check": "node --check refresh.mjs"
 	},

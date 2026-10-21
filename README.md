@@ -37,6 +37,7 @@
 | 失败三态：报错 / 未公布 / 沿用旧数据 | ✅ |
 | 系统托盘、设置、单实例、开机自启 | ✅ |
 | 数据抓取 | ✅ 由 `tools/refresh.mjs` 调用 core（v0.2 将搬进应用内） |
+| 壳无关基础层（config / snapshot / Host 协议） | ✅ `packages/engine/`（外壳技术栈未定也能先做，见 [docs/07](docs/07-壳无关基础层.md)） |
 | 应用内自动刷新 / 手动刷新 | 🚧 v0.2 |
 | 多显示器、轮播、图标、安装包 | 🚧 v0.3+（见[路线图](docs/04-路线图.md)） |
 
@@ -97,6 +98,17 @@ powershell -NoProfile -File tools\capture-shot.ps1
 cd tools; npm run selfcheck
 ```
 
+开发/测试壳无关基础层：
+
+```powershell
+npm install       # 根目录，安装 gacha-calendar-core（仅 packages/engine 与测试用）
+npm test          # 15 项 config / snapshot / service / host 用例
+npm run check     # JS 入口语法检查
+
+# JSON-lines 引擎 Host（可用任何语言的外壳接入）
+node packages/engine/host.mjs --data-dir data
+```
+
 运行期文件都在 `%LOCALAPPDATA%\GachaCalendar\`：
 
 | 文件 | 用途 |
@@ -113,10 +125,12 @@ src/GachaCalendar/          WPF 应用（Shell）
   Services/                 任务栏几何、窗口定位、快照读取、托盘、自启、单实例、主题
   ViewModels/               RowBuilder（JSON→文案）、MainViewModel、RowVm、ChipVm
   Views/                    常驻条 / 面板 / 设置窗
+packages/engine/            壳无关基础层：config / snapshot / service / JSON-lines Host（Node 参考实现）
 tools/refresh.mjs           开发期抓取（core → snapshot.json）
 tools/capture-shot.ps1      窗口截图（PrintWindow，DPI 安全）
+data/config.example.json    默认配置样例
 data/sample-snapshot.json   真实抓取的示例快照（内置兜底）
-docs/                       产品 / 调研 / 架构 / 路线图 / 风险 / 数据契约
+docs/                       产品 / 调研 / 架构 / 路线图 / 风险 / 数据契约 / 壳无关层
 ```
 
 ## 技术选型（一句话版）

@@ -15,9 +15,10 @@ Windows 11 任务栏常驻的**二游卡池 / 活动日历小组件**。它**不
 | 目录 | 职责 | 允许手改 |
 |---|---|---|
 | `src/GachaCalendar/` | WPF 应用（C#） | ✅ 唯一真源 |
+| `packages/engine/` | 壳无关基础层：配置 schema、快照构建、文件 service、JSON-lines Host（Node 参考实现） | ✅ |
 | `tools/refresh.mjs` | 开发期抓取工具：调用 core，把 Result JSON 落成 `data/snapshot.json` | ✅ |
 | `data/sample-snapshot.json` | **示例快照**（真实抓取产物，供首次运行/无网络时展示） | ⚠️ 由 `npm run sample` 生成，别手改 |
-| `docs/` | 调研 / 架构 / 路线图 / 数据契约 | ✅ |
+| `docs/` | 调研 / 架构 / 路线图 / 数据契约 / 壳无关层 | ✅ |
 | `data/snapshot.json` | 本地运行期快照（`.gitignore`，不入库） | ❌ |
 
 ## 2. 构建与验证门禁（每次改动都要绿）
@@ -29,11 +30,16 @@ dotnet build src/GachaCalendar/GachaCalendar.csproj -c Release
 # 2) 抓取工具语法自检
 node --check tools/refresh.mjs
 
-# 3)（可选，需要联网）真抓一轮，验证数据链路
+# 3) 壳无关基础层测试 + JS 语法检查
+npm install
+npm test
+npm run check
+
+# 4)（可选，需要联网）真抓一轮，验证数据链路
 cd tools; npm run refresh
 ```
 
-CI 跑 1 + 2；联网抓取不进 CI（受源站可用性影响）。
+CI 跑 1 + 2 + 3；联网抓取不进 CI（受源站可用性影响）。
 
 ## 3. 版本号与发布纪律
 
@@ -57,6 +63,9 @@ CI 跑 1 + 2；联网抓取不进 CI（受源站可用性影响）。
 
 `docs/06-数据契约.md` 是 core 的 Result JSON 与本仓库 `snapshot.json` 的冻结说明。
 **改快照结构必须同时改文档并升 `snapshot schemaVersion`。**
+
+配置 schema 与 shell 集成协议见 `docs/07-壳无关基础层.md`。改 `packages/engine/` 的行为
+（可见性、排序、刷新间隔、host 方法）必须同时改文档和测试。
 
 ## 6. 提交身份检查（2026-10-21 事故后新增，必须遵守）
 

@@ -1,7 +1,20 @@
 {
 	"schemaVersion": 1,
-	"generatedAt": 1792535127092,
+	"generatedAt": 1792542023963,
 	"coreVersion": "0.12.5",
+	"config": {
+		"order": [],
+		"hidden": [],
+		"shown": [],
+		"removed": [],
+		"customEntries": [],
+		"customUrls": {},
+		"customEventUrls": {},
+		"gameColors": {},
+		"autoRefresh": true,
+		"refreshMinutes": 1440,
+		"schemaVersion": 1
+	},
 	"games": [
 		{
 			"id": "genshin",
@@ -342,7 +355,7 @@
 	],
 	"result": {
 		"schemaVersion": 1,
-		"refreshedAt": 1792535127091,
+		"refreshedAt": 1792542023961,
 		"parserVersions": {
 			"genshin": 1,
 			"hsr": 1,
@@ -367,12 +380,12 @@
 				"event": "「往冥府的安魂歌」",
 				"eventDates": "09-23 10:00 ~ 11-03 14:59",
 				"eventDatesRaw": "09-23 10:00 ~ 11-03 14:59",
-				"eventHover": "「虹旅藏金·耀星烁熠」   09-28 00:00 ~ 10-22 06:00\n「判测胜券本征」   10-12 10:00 ~ 10-23 09:59\n「砺行修远」   08-10 04:00 ~ 11-02 03:59\n「绮星盛会」   10-01 12:00 ~ 11-03 04:00\n「绮星盛会」   10-01 12:00 ~ 11-03 04:00\n「无神怜爱的冻土」   08-12 10:00 ~ 11-03 14:59\n「桌上剧团·冒险的前夜会」   09-23 10:00 ~ 11-03 14:59\n「往冥府的安魂歌」   09-23 10:00 ~ 11-03 14:59\n「巡历雪境，凝铸锋锐」   09-23 10:00 ~ 11-03 14:59\n「绮衣珍赏·晴暖」   09-23 10:00 ~ 11-04 05:59",
+				"eventHover": "「虹旅藏金·耀星烁熠」   09-28 00:00 ~ 10-22 06:00\n「判测胜券本征」   10-12 10:00 ~ 10-23 09:59\n「砺行修远」   08-10 04:00 ~ 11-02 03:59\n「绮星盛会」   10-01 12:00 ~ 11-03 04:00\n「绮星盛会」   10-01 12:00 ~ 11-03 04:00\n「无神怜爱的冻土」   08-12 10:00 ~ 11-03 14:59\n「往冥府的安魂歌」   09-23 10:00 ~ 11-03 14:59\n「巡历雪境，凝铸锋锐」   09-23 10:00 ~ 11-03 14:59\n「桌上剧团·冒险的前夜会」   09-23 10:00 ~ 11-03 14:59\n「绮衣珍赏·晴暖」   09-23 10:00 ~ 11-04 05:59",
 				"gachaFail": null,
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792535127091
+				"okAt": 1792542023961
 			},
 			"hsr": {
 				"name": "崩坏：星穹铁道",
@@ -389,11 +402,11 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792535127091
+				"okAt": 1792542023961
 			},
 			"zzz": {
 				"name": "绝区零",
-				"banner": "3.3版本限时频段（上期）",
+				"banner": "「倾掷浮生」频段",
 				"roles": "菲欧妮（异常·火）、维琳娜（异常·风）",
 				"bannerDates": "10-21 06:00 ~ 11-11 11:59",
 				"bannerDatesRaw": "3.3版本更新后 ~ 11-11 11:59",
@@ -406,7 +419,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792535127091
+				"okAt": 1792542023961
 			},
 			"bh3": {
 				"name": "崩坏3",
@@ -440,7 +453,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792535127092
+				"okAt": 1792542023961
 			},
 			"arknights": {
 				"name": "明日方舟",
@@ -457,7 +470,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792535127092
+				"okAt": 1792542023961
 			},
 			"endfield": {
 				"name": "明日方舟：终末地",
@@ -474,7 +487,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792535127092
+				"okAt": 1792542023961
 			},
 			"ba-cn": {
 				"name": "蔚蓝档案·国服",
@@ -491,7 +504,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792535127092
+				"okAt": 1792542023961
 			},
 			"ba-global": {
 				"name": "蔚蓝档案·国际服",
@@ -508,7 +521,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792535127092
+				"okAt": 1792542023961
 			},
 			"ba-jp": {
 				"name": "蔚蓝档案·日服",
@@ -525,7 +538,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792535127092
+				"okAt": 1792542023961
 			},
 			"bandori": {
 				"name": "BanG Dream！少女乐团派对·国服",
@@ -542,7 +555,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792535127092
+				"okAt": 1792542023961
 			},
 			"ournotes": {
 				"name": "BanG Dream！OurNotes·日服",
@@ -593,7 +606,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792535127092
+				"okAt": 1792542023961
 			},
 			"zspms": {
 				"name": "战双帕弥什",
@@ -610,7 +623,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792535127092
+				"okAt": 1792542023961
 			},
 			"czn": {
 				"name": "卡厄斯梦境",
@@ -680,7 +693,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792535127092
+				"okAt": 1792542023961
 			},
 			"uma-jp": {
 				"name": "赛马娘·日服",
@@ -697,7 +710,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792535127092
+				"okAt": 1792542023961
 			},
 			"uma-global": {
 				"name": "赛马娘·国际服",
@@ -714,7 +727,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792535127092
+				"okAt": 1792542023961
 			},
 			"p5x": {
 				"name": "女神异闻录：夜幕魅影",
@@ -731,7 +744,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792535127092
+				"okAt": 1792542023961
 			},
 			"nte": {
 				"name": "异环",
@@ -748,7 +761,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792535127092
+				"okAt": 1792542023961
 			},
 			"gf2": {
 				"name": "少女前线2：追放",
@@ -765,7 +778,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792535127092
+				"okAt": 1792542023961
 			},
 			"fgo": {
 				"name": "Fate/Grand Order",
@@ -782,7 +795,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792535127092
+				"okAt": 1792542023961
 			},
 			"pjsk": {
 				"name": "初音未来：缤纷舞台·国服",
@@ -818,7 +831,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792535127092
+				"okAt": 1792542023961
 			},
 			"r1999": {
 				"name": "重返未来：1999",
@@ -835,7 +848,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792535127092
+				"okAt": 1792542023961
 			}
 		}
 	}

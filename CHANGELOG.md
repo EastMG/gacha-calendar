@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v0.1.19 · 2026-10-21
+
+- 设置页下拉框改为自绘圆角控件：白底、细边框、自绘箭头、圆角下拉面板；
+  选中项显示 Label，下拉项自定义 hover/选中态
+- `SourceOption` / `RefreshOption` 覆写 `ToString()`，UIAutomation 名称可读
+- 更新设置页截图；版本 0.1.19
+
 ## v0.1.18 · 2026-10-21
 
 - 字体渲染精修：主面板/newPanel/设置/常驻条统一 Segoe UI Variable + 雅黑回退，

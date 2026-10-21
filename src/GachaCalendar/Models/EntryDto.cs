@@ -21,10 +21,12 @@ public sealed class SourceOption
 {
 	public string Label { get; set; } = "";
 	public string Value { get; set; } = "";
+	public override string ToString() => Label;
 }
 
 public sealed class RefreshOption
 {
 	public string Label { get; set; } = "";
 	public int Minutes { get; set; }
+	public override string ToString() => Label;
 }

@@ -20,6 +20,16 @@ public partial class ScheduleView : UserControl
 			vm.SetFocus(item);
 	}
 
+	private void OnUrgentAreaEnter(object sender, MouseEventArgs e)
+	{
+		if (DataContext is SchedulePanelVm vm) vm.SetHovered(true);
+	}
+
+	private void OnUrgentAreaLeave(object sender, MouseEventArgs e)
+	{
+		if (DataContext is SchedulePanelVm vm) vm.SetHovered(false);
+	}
+
 	private void OnExpand(object sender, RoutedEventArgs e)
 	{
 		if (DataContext is SchedulePanelVm vm) vm.ToggleExpand();

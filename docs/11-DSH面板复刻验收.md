@@ -27,11 +27,12 @@
 |---|---|---|
 | 设置页实验开关（默认关） | `NewPanelCheck` → `updateConfig({newPanel})` + 快照透传 | 代码；开关切换后 `rebuildSnapshot` |
 | 日期胶囊 + 24小时/7天总览 | `SchedulePanelVm.GlanceText` / `DatePill` | 代码 |
-| 近期紧迫列表（前 10 + 展开全部） | `Urgent` + `ToggleExpand` | 代码 |
-| 悬停详情卡 | `Focus` + `FocusOthers`（大图标/剩余天数/日期/其他项） | `docs/images/flyout-newpanel-100.png` |
+| 近期紧迫列表（前 10 + 展开分页） | `Urgent` + `ToggleExpand`；>10 条每 4 秒循环、悬停暂停 | `flyout-newpanel-100.png` |
+| 悬停详情卡 | `Focus` + `FocusOthers`（大图标/剩余天数/日期/其他项） | 同上 |
 | 14 天时间轴日程表 | 158px 游戏列 + 卡池/活动两栏 + 14 格条形 | 同上 |
+| 刷新失败横条 + 重试 | `FailureText` / `FailureTip` + 重试按钮 | 代码 |
 | 底栏状态/上次更新/刷新 | `ScrapeText` / `UpdatedAgo` / 刷新按钮 | 同上 |
-| 4 秒循环翻页 / 探头展开 / 失败横条 | 未实现 | 下一轮 |
+| 同格多档期探头展开 | 未实现 | 下一轮 |
 
 ## 3. 设置页
 
@@ -61,7 +62,8 @@
 ## 5. DPI / 深色标题栏
 
 - WPF 以 DIP 布局，`--capture-ui <dir>` 用 RenderTargetBitmap 同时输出 96 DPI（100%）与 144 DPI（150%）：
-  `docs/images/flyout-100.png` / `flyout-150.png`，newPanel 同名 `-newpanel-*`；
+  `docs/images/flyout-100.png` / `flyout-150.png`，newPanel 同名 `flyout-newpanel-*`；
+  深色 newPanel 另有 `flyout-newpanel-dark-100.png` / `-150.png`；
 - 设置窗口深色主题调用 DWM `DWMWA_USE_IMMERSIVE_DARK_MODE`，避免系统白色标题栏；
 - 自包含运行时发布尚未验证（框架依赖 zip 已验证可启动并使用包内 Node）。
 

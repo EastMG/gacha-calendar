@@ -63,7 +63,7 @@
 						<ColumnDefinition Width="64*" />
 						<ColumnDefinition Width="36*" />
 					</Grid.ColumnDefinitions>
-					<StackPanel Grid.Column="0" Margin="0,0,10,0">
+					<StackPanel Grid.Column="0" Margin="0,0,10,0" MouseEnter="OnUrgentAreaEnter" MouseLeave="OnUrgentAreaLeave">
 						<ItemsControl ItemsSource="{Binding Urgent}">
 							<ItemsControl.ItemTemplate>
 								<DataTemplate>
@@ -440,6 +440,32 @@
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>
+
+				<!-- 刷新失败横条：来源级失败（沿用上次成功数据） -->
+				<Border Margin="0,6,0,2" Padding="8,4" CornerRadius="6" Background="#14D9484D" ToolTip="{Binding FailureTip}">
+					<Border.Style>
+						<Style TargetType="Border">
+							<Setter Property="Visibility" Value="Collapsed" />
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding HasFailure}" Value="True">
+									<Setter Property="Visibility" Value="Visible" />
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</Border.Style>
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="Auto" />
+						</Grid.ColumnDefinitions>
+						<TextBlock Text="!" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource Danger}" Margin="0,0,6,0" />
+						<TextBlock Grid.Column="1" Text="{Binding FailureText}" FontSize="11" Foreground="{DynamicResource Danger}"
+								   TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+						<Button Grid.Column="2" Content="重试" Style="{StaticResource SchedLinkButton}" Click="OnRefresh"
+								Foreground="{DynamicResource Danger}" />
+					</Grid>
+				</Border>
 			</StackPanel>
 		</ScrollViewer>
 

@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows.Media;
+using System.Windows.Threading;
 using GachaCalendar.Models;
 using GachaCalendar.Services;
 using Brush = System.Windows.Media.Brush;
@@ -27,6 +28,17 @@ public sealed class SchedulePanelVm : INotifyPropertyChanged
 	private bool _expanded;
 	private ScheduleItemVm? _focus;
 	private string _scrapeText = "";
+	private string _failureText = "";
+	private string _failureTip = "";
+	private readonly DispatcherTimer _cycleTimer;
+	private int _page;
+	private bool _hovered;
+
+	public SchedulePanelVm()
+	{
+		_cycleTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(4) };
+		_cycleTimer.Tick += (_, _) => NextPage();
+	}
 
 	public ObservableCollection<ScheduleItemVm> Urgent { get; } = new();
 	public ObservableCollection<ScheduleItemVm> FocusOthers { get; } = new();
@@ -37,6 +49,9 @@ public sealed class SchedulePanelVm : INotifyPropertyChanged
 	public string DatePill { get; private set; } = "";
 	public string UpdatedAgo { get; private set; } = "上次更新 尚未更新";
 	public string ScrapeText { get => _scrapeText; private set => Set(ref _scrapeText, value); }
+	public string FailureText { get => _failureText; private set => Set(ref _failureText, value); }
+	public string FailureTip { get => _failureTip; private set => Set(ref _failureTip, value); }
+	public bool HasFailure => FailureText.Length > 0;
 	public ScheduleItemVm? Focus { get => _focus; private set => Set(ref _focus, value); }
 	public string FocusGameName => Focus?.GameName ?? "";
 	public string FocusTitle => Focus?.Show ?? "";
@@ -50,8 +65,10 @@ public sealed class SchedulePanelVm : INotifyPropertyChanged
 	public int UrgentTotal { get; private set; }
 	public bool CanExpand => UrgentTotal > 10;
 	public bool HasExpand => CanExpand;
-	public string ExpandText => _expanded ? "收起" : $"展开全部 {UrgentTotal} 条";
-	public string ExpandPage => _expanded ? "" : "1 / 1";
+	public int PageCount => Math.Max(1, (UrgentTotal + 9) / 10);
+	public string ExpandText => _expanded
+		? "收起"
+		: $"展开全部 {UrgentTotal} 条   {_page + 1} / {PageCount}";
 
 	public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -78,6 +95,21 @@ public sealed class SchedulePanelVm : INotifyPropertyChanged
 	public void ToggleExpand()
 	{
 		_expanded = !_expanded;
+		_page = 0;
+		FillUrgent();
+		Raise(nameof(ExpandText));
+		UpdateTimer();
+	}
+
+	public void SetHovered(bool hovered)
+	{
+		_hovered = hovered;
+	}
+
+	private void NextPage()
+	{
+		if (_expanded || _hovered || !CanExpand) return;
+		_page = (_page + 1) % PageCount;
 		FillUrgent();
 		Raise(nameof(ExpandText));
 	}
@@ -118,6 +150,7 @@ public sealed class SchedulePanelVm : INotifyPropertyChanged
 			((x.Start > nowMs && x.Start <= nowMs.AddHours(24)) || (x.End > nowMs && x.End <= nowMs.AddHours(24))));
 		var recent = all.Where(IsNear).OrderBy(Rank).ThenBy(x => x.State == "live" ? x.End : x.Start).ThenBy(x => x.GameName).ToList();
 		UrgentTotal = recent.Count;
+		_page = Math.Min(_page, PageCount - 1);
 		GlanceText = $"24 小时内 {soon24} 条 · 7 天内 {recent.Count} 条";
 		DatePill = $"{_now.Month} 月 {_now.Day} 日 · {Weekdays[(int)_now.DayOfWeek]}";
 		FocusOthers.Clear();
@@ -129,6 +162,7 @@ public sealed class SchedulePanelVm : INotifyPropertyChanged
 		}
 		_urgentCache = recent;
 		FillUrgent();
+		BuildFailure(all);
 		var refreshed = _snapshot.Result.RefreshedAt > 0 ? _snapshot.Result.RefreshedAt : _snapshot.GeneratedAt;
 		UpdatedAgo = refreshed > 0
 			? "上次更新 " + Ago(refreshed, _now)
@@ -140,7 +174,34 @@ public sealed class SchedulePanelVm : INotifyPropertyChanged
 		Raise(nameof(CanExpand));
 		Raise(nameof(HasExpand));
 		Raise(nameof(ExpandText));
-		Raise(nameof(ExpandPage));
+		UpdateTimer();
+	}
+
+	private void UpdateTimer()
+	{
+		if (CanExpand && !_expanded)
+		{
+			if (!_cycleTimer.IsEnabled) _cycleTimer.Start();
+		}
+		else
+		{
+			_cycleTimer.Stop();
+		}
+	}
+
+	private void BuildFailure(List<ScheduleItemVm> all)
+	{
+		var rows = new List<string>();
+		foreach (var item in all)
+		{
+			if (item.Fail?.Kind == "down")
+				rows.Add($"{item.GameName} · {(string.IsNullOrWhiteSpace(item.Fail.Reason) ? "抓取异常" : item.Fail.Reason)} —— 该条沿用上次成功数据");
+			else if (item.Stale)
+				rows.Add($"{item.GameName} · 本次刷新失败，沿用上次成功数据");
+		}
+		FailureTip = string.Join("\n", rows);
+		FailureText = rows.FirstOrDefault() ?? "";
+		Raise(nameof(HasFailure));
 	}
 
 	private List<ScheduleItemVm> _urgentCache = new();
@@ -148,11 +209,18 @@ public sealed class SchedulePanelVm : INotifyPropertyChanged
 	private void FillUrgent()
 	{
 		Urgent.Clear();
-		foreach (var item in (_expanded ? _urgentCache : _urgentCache.Take(10)))
-			Urgent.Add(item);
+		if (_urgentCache.Count == 0) return;
+		if (_expanded || _urgentCache.Count <= 10)
+		{
+			foreach (var item in _urgentCache) Urgent.Add(item);
+		}
+		else
+		{
+			for (var i = 0; i < 10; i++)
+				Urgent.Add(_urgentCache[(_page * 10 + i) % _urgentCache.Count]);
+		}
 		SetFocus(Urgent.FirstOrDefault());
 		Raise(nameof(ExpandText));
-		Raise(nameof(ExpandPage));
 	}
 
 	private ScheduleItemVm? BuildItem(GameMeta game, GameRecord rec, bool isGacha)

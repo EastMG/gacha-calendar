@@ -272,8 +272,59 @@ public sealed class SchedulePanelVm : INotifyPropertyChanged
 			BarColor = isGacha ? gameColor : Lighten(gameColor),
 			Tip = BuildTip(game, rec, isGacha),
 		};
+		foreach (var extra in ParseExtras(isGacha ? rec.BannerHover : rec.EventHover, show ?? title ?? "", _now))
+			item.Extras.Add(extra);
 		item.BuildBars(_now);
 		return item;
+	}
+
+	private static IEnumerable<ScheduleExtraVm> ParseExtras(string? hover, string mainTitle, DateTime now)
+	{
+		if (string.IsNullOrWhiteSpace(hover)) yield break;
+		var windowPattern = new System.Text.RegularExpressions.Regex(
+			@"(?<win>\d{1,2}-\d{1,2}\s+\d{1,2}:\d{2}\s*~\s*\d{1,2}-\d{1,2}\s+\d{1,2}:\d{2})");
+		var pending = new List<string>();
+		var rows = new List<(string Title, string Window)>();
+		foreach (var raw in hover.Split('\n').Select(x => x.Trim()).Where(x => x.Length > 0))
+		{
+			if (raw.StartsWith("以及常驻活动", StringComparison.Ordinal)) continue;
+			var m = windowPattern.Match(raw);
+			if (!m.Success)
+			{
+				pending.Add(raw);
+				continue;
+			}
+			var prefix = raw[..m.Index].Trim().TrimEnd(':', '：').Trim();
+			if (prefix.Length > 0)
+			{
+				rows.Add((prefix, m.Groups["win"].Value));
+				pending.Clear();
+			}
+			else if (pending.Count > 0)
+			{
+				foreach (var p in pending) rows.Add((p, m.Groups["win"].Value));
+				pending.Clear();
+			}
+			else if (rows.Count > 0)
+			{
+				rows[^1] = (rows[^1].Title, m.Groups["win"].Value);
+			}
+		}
+
+		var norm = (string s) => System.Text.RegularExpressions.Regex.Replace(s, @"[（(][^）)]*[）)]", "").Replace(" ", "");
+		var seen = new HashSet<string>(StringComparer.Ordinal);
+		var main = norm(mainTitle);
+		var count = 0;
+		foreach (var (title, window) in rows)
+		{
+			if (count >= 5) break;
+			var key = norm(title);
+			if (key.Length == 0 || key == main || !seen.Add(key)) continue;
+			var range = RowBuilder.ParseRange(window, now);
+			var when = range == null ? window : RowBuilder.DisplayTimeCell(window, now);
+			yield return new ScheduleExtraVm { Title = title, WindowText = window, WhenText = when };
+			count++;
+		}
 	}
 
 	private static string BuildTip(GameMeta game, GameRecord rec, bool isGacha)
@@ -392,6 +443,19 @@ public sealed class ScheduleItemVm : INotifyPropertyChanged
 	public Brush GameColor { get; init; } = Brushes.SlateGray;
 	public Brush BarColor { get; init; } = Brushes.SlateGray;
 	public string Tip { get; init; } = "";
+	public ObservableCollection<ScheduleExtraVm> Extras { get; } = new();
+	public bool HasExtras => Extras.Count > 0;
+	private bool _probeOpen;
+	public bool IsProbeOpen
+	{
+		get => _probeOpen;
+		set
+		{
+			if (_probeOpen == value) return;
+			_probeOpen = value;
+			Raise(nameof(IsProbeOpen));
+		}
+	}
 	public ObservableCollection<BarCellVm> Bars { get; } = new();
 
 	public DateTime Now => _now;
@@ -511,6 +575,13 @@ public sealed class DayCellVm
 {
 	public int Day { get; init; }
 	public bool Today { get; init; }
+}
+
+public sealed class ScheduleExtraVm
+{
+	public string Title { get; init; } = "";
+	public string WindowText { get; init; } = "";
+	public string WhenText { get; init; } = "";
 }
 
 public sealed class ScheduleRowVm : INotifyPropertyChanged

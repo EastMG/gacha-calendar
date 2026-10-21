@@ -448,7 +448,8 @@
 												   Margin="10,0,0,0" TextTrimming="CharacterEllipsis" MaxWidth="96" />
 									</StackPanel>
 
-									<StackPanel Grid.Column="1" Margin="12,0,8,0">
+									<StackPanel x:Name="GachaCell" Grid.Column="1" Margin="12,0,8,0"
+												Tag="{Binding Gacha}" MouseEnter="OnProbeEnter" MouseLeave="OnProbeLeave">
 										<TextBlock Text="{Binding Gacha.Show, TargetNullValue=—}" Style="{StaticResource SchedCellTitle}"
 												   ToolTip="{Binding Gacha.Tip}" />
 										<TextBlock Text="{Binding Gacha.MetaText, TargetNullValue=该来源无数据}" Style="{StaticResource SchedCellMeta}"
@@ -477,9 +478,32 @@
 												</DataTemplate>
 											</ItemsControl.ItemTemplate>
 										</ItemsControl>
+										<Popup PlacementTarget="{Binding ElementName=GachaCell}" Placement="Bottom"
+											   IsOpen="{Binding IsProbeOpen}" AllowsTransparency="True" StaysOpen="False"
+											   PopupAnimation="Fade" DataContext="{Binding Gacha}">
+											<Border Background="{DynamicResource PanelBg}" BorderBrush="{DynamicResource PanelBorder}"
+													BorderThickness="1" CornerRadius="8" Padding="10" MaxWidth="320">
+												<StackPanel>
+													<TextBlock Text="同格档期" FontSize="10" Foreground="{DynamicResource FgFaint}" Margin="0,0,0,4" />
+													<ItemsControl ItemsSource="{Binding Extras}">
+														<ItemsControl.ItemTemplate>
+															<DataTemplate>
+																<StackPanel Margin="0,3">
+																	<TextBlock Text="{Binding Title}" FontSize="12" FontWeight="SemiBold"
+																			   TextTrimming="CharacterEllipsis" />
+																	<TextBlock Text="{Binding WhenText}" FontSize="11" Foreground="{DynamicResource FgDim}" />
+																	<TextBlock Text="{Binding WindowText}" FontSize="10" Foreground="{DynamicResource FgFaint}" />
+																</StackPanel>
+															</DataTemplate>
+														</ItemsControl.ItemTemplate>
+													</ItemsControl>
+												</StackPanel>
+											</Border>
+										</Popup>
 									</StackPanel>
 
-									<StackPanel Grid.Column="2" Margin="12,0,8,0">
+									<StackPanel x:Name="EventCell" Grid.Column="2" Margin="12,0,8,0"
+												Tag="{Binding Event}" MouseEnter="OnProbeEnter" MouseLeave="OnProbeLeave">
 										<TextBlock Text="{Binding Event.Show, TargetNullValue=—}" Style="{StaticResource SchedCellTitle}"
 												   ToolTip="{Binding Event.Tip}" />
 										<TextBlock Text="{Binding Event.MetaText, TargetNullValue=该来源无数据}" Style="{StaticResource SchedCellMeta}"
@@ -508,6 +532,28 @@
 												</DataTemplate>
 											</ItemsControl.ItemTemplate>
 										</ItemsControl>
+										<Popup PlacementTarget="{Binding ElementName=EventCell}" Placement="Bottom"
+											   IsOpen="{Binding IsProbeOpen}" AllowsTransparency="True" StaysOpen="False"
+											   PopupAnimation="Fade" DataContext="{Binding Event}">
+											<Border Background="{DynamicResource PanelBg}" BorderBrush="{DynamicResource PanelBorder}"
+													BorderThickness="1" CornerRadius="8" Padding="10" MaxWidth="320">
+												<StackPanel>
+													<TextBlock Text="同格档期" FontSize="10" Foreground="{DynamicResource FgFaint}" Margin="0,0,0,4" />
+													<ItemsControl ItemsSource="{Binding Extras}">
+														<ItemsControl.ItemTemplate>
+															<DataTemplate>
+																<StackPanel Margin="0,3">
+																	<TextBlock Text="{Binding Title}" FontSize="12" FontWeight="SemiBold"
+																			   TextTrimming="CharacterEllipsis" />
+																	<TextBlock Text="{Binding WhenText}" FontSize="11" Foreground="{DynamicResource FgDim}" />
+																	<TextBlock Text="{Binding WindowText}" FontSize="10" Foreground="{DynamicResource FgFaint}" />
+																</StackPanel>
+															</DataTemplate>
+														</ItemsControl.ItemTemplate>
+													</ItemsControl>
+												</StackPanel>
+											</Border>
+										</Popup>
 									</StackPanel>
 								</Grid>
 							</Border>

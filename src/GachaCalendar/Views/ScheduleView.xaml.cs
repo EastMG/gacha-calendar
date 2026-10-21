@@ -30,6 +30,16 @@ public partial class ScheduleView : UserControl
 		if (DataContext is SchedulePanelVm vm) vm.SetHovered(false);
 	}
 
+	private void OnProbeEnter(object sender, MouseEventArgs e)
+	{
+		if (sender is FrameworkElement { Tag: ScheduleItemVm item }) item.IsProbeOpen = item.HasExtras;
+	}
+
+	private void OnProbeLeave(object sender, MouseEventArgs e)
+	{
+		if (sender is FrameworkElement { Tag: ScheduleItemVm item }) item.IsProbeOpen = false;
+	}
+
 	private void OnExpand(object sender, RoutedEventArgs e)
 	{
 		if (DataContext is SchedulePanelVm vm) vm.ToggleExpand();

@@ -1,16 +1,23 @@
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using GachaCalendar.Services;
+using GachaCalendar.ViewModels;
 
 namespace GachaCalendar.Views;
 
 public partial class FlyoutWindow : Window
 {
+	private MainViewModel? _vm;
+
 	public FlyoutWindow()
 	{
 		InitializeComponent();
+		DataContextChanged += (_, _) => HookViewModel();
 		SourceInitialized += (_, _) =>
 		{
 			var hwnd = new WindowInteropHelper(this).Handle;
@@ -28,6 +35,37 @@ public partial class FlyoutWindow : Window
 				e.Handled = true;
 			}
 		};
+	}
+
+	private void HookViewModel()
+	{
+		if (_vm != null) _vm.PropertyChanged -= OnViewModelPropertyChanged;
+		_vm = DataContext as MainViewModel;
+		if (_vm != null) _vm.PropertyChanged += OnViewModelPropertyChanged;
+		UpdateRefreshSpin();
+	}
+
+	private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
+	{
+		if (e.PropertyName == nameof(MainViewModel.IsRefreshing)) UpdateRefreshSpin();
+	}
+
+	private void UpdateRefreshSpin()
+	{
+		if (RefreshIcon.RenderTransform is not RotateTransform transform) return;
+		if (_vm?.IsRefreshing == true)
+		{
+			var spin = new DoubleAnimation(0, 360, TimeSpan.FromSeconds(0.8))
+			{
+				RepeatBehavior = RepeatBehavior.Forever,
+			};
+			transform.BeginAnimation(RotateTransform.AngleProperty, spin);
+		}
+		else
+		{
+			transform.BeginAnimation(RotateTransform.AngleProperty, null);
+			transform.Angle = 0;
+		}
 	}
 
 	public void ShowNearDock(Window dock)

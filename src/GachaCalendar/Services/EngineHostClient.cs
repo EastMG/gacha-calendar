@@ -16,6 +16,7 @@ namespace GachaCalendar.Services;
 public sealed class EngineHostClient : IAsyncDisposable
 {
 	private readonly object _gate = new();
+	private readonly SemaphoreSlim _writeGate = new(1, 1);
 	private readonly Dictionary<long, TaskCompletionSource<JsonNode?>> _pending = new();
 	private Process? _process;
 	private StreamWriter? _stdin;
@@ -203,7 +204,16 @@ public sealed class EngineHostClient : IAsyncDisposable
 
 		try
 		{
-			await _stdin.WriteLineAsync(request.ToJsonString());
+			// StreamWriter 不允许并发写；图标 fetchBinary 与刷新调度会同时进来，必须串行化。
+			await _writeGate.WaitAsync();
+			try
+			{
+				await _stdin.WriteLineAsync(request.ToJsonString());
+			}
+			finally
+			{
+				_writeGate.Release();
+			}
 			var effectiveTimeout = timeout ?? TimeSpan.FromSeconds(90);
 			return await tcs.Task.WaitAsync(effectiveTimeout);
 		}

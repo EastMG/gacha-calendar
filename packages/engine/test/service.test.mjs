@@ -12,7 +12,7 @@ function makeFakeEngine({ games, result, sources = [] }) {
 			return games;
 		},
 		async getCached() {
-			return { schemaVersion: 1, refreshedAt: 0, parserVersions: {}, games: {} };
+			return result;
 		},
 		async refresh() {
 			return result;
@@ -57,6 +57,12 @@ test("createFileService：配置持久化 + refresh 写出 snapshot", async () =
 		assert.equal(snap.games.find((g) => g.id === "a").hidden, true);
 		assert.equal(snap.games.find((g) => g.id === "b").hidden, true); // defaultHidden 且未 shown
 		assert.equal(snap.result.refreshedAt, 111);
+
+		// 不联网重建：缓存结果 + 当前显隐/顺序立即生效
+		const rebuilt = await service.rebuildSnapshot();
+		assert.equal(rebuilt.result.refreshedAt, 111);
+		assert.equal(rebuilt.games.find((g) => g.id === "a").hidden, true);
+		assert.equal(rebuilt.games.find((g) => g.id === "b").hidden, true);
 
 		const onDisk = JSON.parse(fs.readFileSync(service.paths.snapshot, "utf8"));
 		assert.deepEqual(onDisk.config.hidden, ["a"]);

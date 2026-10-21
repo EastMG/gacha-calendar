@@ -163,8 +163,8 @@ public partial class App : System.Windows.Application
 				return;
 			}
 
-			// 受限环境里 .NET TLS 可能不可用；图标改由 Node Host 取，再重载一次让失败图标重试
-			IconLoader.SetFallback(_engine.FetchBinaryAsync);
+			// 图标也走 Host 取（UI 层不发网络请求），再重载一次让失败图标重试
+			IconLoader.SetFetcher(_engine.FetchBinaryAsync);
 			LoadSnapshot();
 
 			Vm.SetRefreshing(true);

@@ -1,40 +1,24 @@
 using System.Collections.Concurrent;
 using System.IO;
-using System.Net.Http;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace GachaCalendar.Services;
 
 /// <summary>
-/// 游戏图标加载：外链图标 + 内存缓存 + 失败降级（交给 RowVm 显示首字方块）。
-/// 图标版权归原权利方，本项目只做展示、不打包进仓库。
+/// 游戏图标加载：**不在 UI 层发网络请求**（仓库硬边界），
+/// 统一由 Host 的 fetchBinary 取二进制，再在这里解码成 BitmapImage。
+/// Host 不可用 / 取图失败时返回 null，RowVm 退化为首字方块。
 /// </summary>
 public static class IconLoader
 {
-	private static readonly HttpClient Http = CreateClient();
 	private static readonly ConcurrentDictionary<string, Task<ImageSource?>> Cache = new();
-	private static readonly SemaphoreSlim Gate = new(6, 6);
-	private static Func<string, Task<byte[]?>>? _fallback;
+	private static Func<string, Task<byte[]?>>? _fetcher;
 
-	/// <summary>
-	/// 受限环境（DSH 沙箱等）里 .NET 的 TLS 可能不可用；这时改走 Node Host 取二进制。
-	/// 设置 fallback 会清空缓存，让已失败过的图标重试一次。
-	/// </summary>
-	public static void SetFallback(Func<string, Task<byte[]?>>? fallback)
+	public static void SetFetcher(Func<string, Task<byte[]?>>? fetcher)
 	{
-		_fallback = fallback;
+		_fetcher = fetcher;
 		Cache.Clear();
-	}
-
-	private static HttpClient CreateClient()
-	{
-		var client = new HttpClient { Timeout = TimeSpan.FromSeconds(12) };
-		client.DefaultRequestHeaders.TryAddWithoutValidation(
-			"User-Agent",
-			"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36");
-		client.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "image/avif,image/webp,image/png,image/*,*/*;q=0.8");
-		return client;
 	}
 
 	public static Task<ImageSource?> GetAsync(string? url)
@@ -47,31 +31,13 @@ public static class IconLoader
 
 	private static async Task<ImageSource?> LoadAsync(Uri uri)
 	{
-		await Gate.WaitAsync().ConfigureAwait(false);
+		var fetcher = _fetcher;
+		if (fetcher == null) return null;
 		try
 		{
-			byte[]? bytes = null;
-			try
-			{
-				using var response = await Http.GetAsync(uri).ConfigureAwait(false);
-				if (response.IsSuccessStatusCode)
-					bytes = await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
-				else
-					Log.Warn($"图标 HTTP {(int)response.StatusCode}：{uri}");
-			}
-			catch (Exception ex)
-			{
-				Log.Warn($"图标直连失败，尝试 Host 回退：{uri} {ex.Message}");
-			}
-
-			if ((bytes == null || bytes.Length == 0) && _fallback != null)
-			{
-				try { bytes = await _fallback(uri.ToString()).ConfigureAwait(false); }
-				catch (Exception ex) { Log.Warn($"图标 Host 回退失败：{uri} {ex.Message}"); }
-			}
+			var bytes = await fetcher(uri.ToString());
 			if (bytes == null || bytes.Length == 0) return null;
 
-			// BitmapImage 可在线程池创建并 Freeze，之后绑定到 UI 是安全的
 			using var stream = new MemoryStream(bytes);
 			var bitmap = new BitmapImage();
 			bitmap.BeginInit();
@@ -85,10 +51,6 @@ public static class IconLoader
 		{
 			Log.Warn($"图标加载失败：{uri} {ex.Message}");
 			return null;
-		}
-		finally
-		{
-			Gate.Release();
 		}
 	}
 }

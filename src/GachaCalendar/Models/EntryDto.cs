@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace GachaCalendar.Models;
 
 public sealed class EntryDto

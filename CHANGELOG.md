@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v0.1.9 · 2026-10-21
+
+- 主面板交互贴近 DSH：单元格悬停跑马灯（仅文字超宽时滚动）、刷新按钮旋转、单元格裁剪/marquee 状态恢复
+- 修复 Node Host 并发写 stdin 崩溃（图标 fetchBinary 与 refreshIfDue 同时写入触发
+  “stream in use”）；所有 Host 请求写串行化
+- 图标加载完全改走 Host `fetchBinary`，移除 WPF 层 HttpClient，遵守“UI 层不发网络请求”硬边界；
+  Host 不可用时图标降级首字方块
+- Service/Host 补 `rebuildSnapshot` 测试；版本 0.1.9
+
 ## v0.1.8 · 2026-10-21
 
 - 设置页按 DSH 插件设置页重做：自动刷新/频率、条目管理表（展示、卡池来源、活动来源、↑↓、删除）、

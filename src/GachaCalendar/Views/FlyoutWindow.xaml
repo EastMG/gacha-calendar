@@ -130,8 +130,8 @@
 		</Border.Effect>
 
 		<Grid>
-			<ScrollViewer x:Name="TableScroll" Style="{StaticResource DshScrollViewer}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="10,10,10,8">
-			<StackPanel>
+			<ScrollViewer x:Name="TableScroll" Style="{StaticResource DshScrollViewer}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0">
+				<StackPanel Margin="10,10,10,8">
 				<!-- 标题 + 操作（DSH 面板：13px semibold，右侧小按钮） -->
 				<Grid Margin="0,0,0,4">
 					<Grid.ColumnDefinitions>

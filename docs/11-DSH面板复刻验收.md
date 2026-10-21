@@ -78,6 +78,7 @@ npm run check
 - CI：`build-windows` / `identity` / `engine` / `tools` 全绿。
 - `docs/images/flyout.png`、`flyout-dark.png`、`settings.png`（100% 渲染）/`settings-150.png`；
 - 深色设置页：`settings-dark-100.png` / `settings-dark-150.png`；
+- 深色标题栏真窗口：`settings-dark-titlebar.png`（PrintWindow）；
 - 2×2 视觉回归：`visual-regression.png`（newPanel/设置 × 浅/深）。
 
 ## 7. 未纳入 / 后续

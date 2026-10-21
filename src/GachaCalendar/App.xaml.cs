@@ -1,4 +1,5 @@
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -114,8 +115,11 @@ public partial class App : System.Windows.Application
 				Directory.CreateDirectory(outDir);
 				if (_flyout != null) CaptureWindow(_flyout, outDir, "flyout");
 				if (_dock != null) CaptureWindow(_dock, outDir, "dock");
-				if (_settingsWindow is { IsVisible: true }) CaptureWindow(_settingsWindow, outDir, "settings");
-			}
+				if (_settingsWindow is { IsVisible: true })
+				{
+					CaptureWindow(_settingsWindow, outDir, "settings");
+					CapturePrint(_settingsWindow, outDir, "settings-print");
+				}			}
 			catch (Exception ex)
 			{
 				Log.Error("UI 截图失败", ex);
@@ -149,6 +153,45 @@ public partial class App : System.Windows.Application
 			var suffix = dpi == 96 ? "100" : "150";
 			using var stream = File.Create(Path.Combine(outDir, $"{prefix}-{suffix}.png"));
 			encoder.Save(stream);
+		}
+	}
+
+	[DllImport("user32.dll")]
+	private static extern bool PrintWindow(IntPtr hwnd, IntPtr hdc, uint flags);
+
+	[DllImport("user32.dll")]
+	private static extern bool GetWindowRect(IntPtr hwnd, out Rect rect);
+
+	[DllImport("user32.dll")]
+	private static extern uint GetDpiForWindow(IntPtr hwnd);
+
+	[StructLayout(LayoutKind.Sequential)]
+	private struct Rect
+	{
+		public int Left, Top, Right, Bottom;
+	}
+
+	/// <summary>带非客户区的真实窗口截图（用于验证深色标题栏）。</summary>
+	private static void CapturePrint(Window window, string outDir, string prefix)
+	{
+		try
+		{
+			var hwnd = new WindowInteropHelper(window).Handle;
+			if (hwnd == IntPtr.Zero || !GetWindowRect(hwnd, out var rect)) return;
+			var dpi = GetDpiForWindow(hwnd) / 96.0;
+			var width = (int)Math.Round((rect.Right - rect.Left) * dpi);
+			var height = (int)Math.Round((rect.Bottom - rect.Top) * dpi);
+			if (width < 1 || height < 1) return;
+			using var bitmap = new System.Drawing.Bitmap(width, height);
+			using var graphics = System.Drawing.Graphics.FromImage(bitmap);
+			var hdc = graphics.GetHdc();
+			try { PrintWindow(hwnd, hdc, 2); }
+			finally { graphics.ReleaseHdc(hdc); }
+			bitmap.Save(Path.Combine(outDir, $"{prefix}.png"), System.Drawing.Imaging.ImageFormat.Png);
+		}
+		catch (Exception ex)
+		{
+			Log.Warn("PrintWindow 截图失败：" + ex.Message);
 		}
 	}
 

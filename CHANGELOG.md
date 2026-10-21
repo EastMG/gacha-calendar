@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v0.1.22 · 2026-10-21
+
+- 主面板内容改为显式 10/10/10/8 内边距，避免自定义 ScrollViewer 模板吃掉 Padding
+- `--capture-ui` 新增 PrintWindow 真窗口截图，验证深色系统标题栏
+- 新增 `settings-dark-titlebar.png`；更新主面板/设置深色截图
+- 版本 0.1.22
+
 ## v0.1.21 · 2026-10-21
 
 - 设置页：17px 自定义 CheckBox、细滚动条；载入中显示「正在读取设置…」

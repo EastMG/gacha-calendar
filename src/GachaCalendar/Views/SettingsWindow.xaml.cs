@@ -141,7 +141,8 @@ public partial class SettingsWindow : Window
 			var stack = new StackPanel();
 
 			var grid = new Grid();
-			grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.9, GridUnitType.Star) });
+			grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.8, GridUnitType.Star) });
+			grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(42) });
 			grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(44) });
 			grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 			grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
@@ -180,6 +181,10 @@ public partial class SettingsWindow : Window
 			grid.Children.Add(gamePanel);
 			_ = LoadIconAsync(entry.Icon, image, fallback);
 
+			var color = MakeColorButton(entry);
+			Grid.SetColumn(color, 1);
+			grid.Children.Add(color);
+
 			var check = new CheckBox
 			{
 				IsChecked = entry.Visible,
@@ -189,15 +194,15 @@ public partial class SettingsWindow : Window
 			};
 			check.Checked += async (_, _) => await OnEntryVisibilityChangedAsync(entry, check);
 			check.Unchecked += async (_, _) => await OnEntryVisibilityChangedAsync(entry, check);
-			Grid.SetColumn(check, 1);
+			Grid.SetColumn(check, 2);
 			grid.Children.Add(check);
 
 			var gachaCombo = BuildSourceCombo(entry, false);
-			Grid.SetColumn(gachaCombo, 2);
+			Grid.SetColumn(gachaCombo, 3);
 			grid.Children.Add(gachaCombo);
 
 			var eventCombo = BuildSourceCombo(entry, true);
-			Grid.SetColumn(eventCombo, 3);
+			Grid.SetColumn(eventCombo, 4);
 			grid.Children.Add(eventCombo);
 
 			var actions = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Center };
@@ -222,7 +227,7 @@ public partial class SettingsWindow : Window
 			actions.Children.Add(up);
 			actions.Children.Add(down);
 			actions.Children.Add(delete);
-			Grid.SetColumn(actions, 4);
+			Grid.SetColumn(actions, 5);
 			grid.Children.Add(actions);
 
 			stack.Children.Add(grid);
@@ -657,8 +662,71 @@ public partial class SettingsWindow : Window
 		catch { /* 图标失败保留首字 */ }
 	}
 
-	private Button SmallButton(string content, string tooltip)
+	private Border MakeColorButton(EntryDto entry)
 	{
+		var swatch = new Border
+		{
+			Width = 22,
+			Height = 20,
+			CornerRadius = new CornerRadius(5),
+			Background = ColorFor(entry),
+			BorderBrush = (Brush)FindResource("PanelBorder"),
+			BorderThickness = new Thickness(1),
+			Cursor = System.Windows.Input.Cursors.Hand,
+			ToolTip = "主题色（用于日程视图）",
+			HorizontalAlignment = HorizontalAlignment.Center,
+			VerticalAlignment = VerticalAlignment.Center,
+		};
+		swatch.MouseLeftButtonUp += async (_, _) => await PickColorAsync(entry);
+		return swatch;
+	}
+
+	private async Task PickColorAsync(EntryDto entry)
+	{
+		var current = ColorFor(entry);
+		var color = current is SolidColorBrush solid ? solid.Color : Colors.SlateGray;
+		using var dialog = new System.Windows.Forms.ColorDialog
+		{
+			FullOpen = true,
+			Color = System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B),
+		};
+		if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
+		var c = dialog.Color;
+		var hex = $"#{c.R:X2}{c.G:X2}{c.B:X2}";
+		await RunWriteAsync(async () =>
+		{
+			var map = new JsonObject();
+			if (_config?["gameColors"] is JsonObject existing)
+				foreach (var pair in existing) map[pair.Key] = pair.Value?.DeepClone();
+			map[entry.Id] = hex;
+			if (_config != null) _config["gameColors"] = map.DeepClone();
+			await Engine!.UpdateConfigAsync(new JsonObject { ["gameColors"] = map.DeepClone() });
+			await Engine!.RebuildSnapshotAsync();
+			App.Instance?.ReloadSnapshot();
+			await ReloadAsync();
+		});
+	}
+
+	private Brush ColorFor(EntryDto entry)
+	{
+		if (_config?["gameColors"] is JsonObject map &&
+			map[entry.Id]?.GetValue<string>() is { Length: 7 } hex && hex[0] == '#' &&
+			hex.Skip(1).All(Uri.IsHexDigit))
+		{
+			try { return (Brush)new BrushConverter().ConvertFromString(hex)!; }
+			catch { /* 回落 */ }
+		}
+		var hash = 0;
+		foreach (var ch in entry.Name) hash = (hash * 31 + ch) & 0x7fffffff;
+		var palette = new[]
+		{
+			"#7C5CFC", "#3B82F6", "#10B981", "#F59E0B", "#EC4899",
+			"#8B5CF6", "#06B6D4", "#EF4444", "#84CC16", "#6366F1",
+		};
+		return (Brush)new BrushConverter().ConvertFromString(palette[hash % palette.Length])!;
+	}
+
+	private Button SmallButton(string content, string tooltip)	{
 		var button = new Button
 		{
 			Content = content,

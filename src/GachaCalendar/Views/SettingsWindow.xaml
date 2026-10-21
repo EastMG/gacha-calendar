@@ -115,17 +115,19 @@
 
 						<Grid Margin="0,0,0,4">
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="0.9*" />
+								<ColumnDefinition Width="0.8*" />
+								<ColumnDefinition Width="42" />
 								<ColumnDefinition Width="44" />
 								<ColumnDefinition Width="*" />
 								<ColumnDefinition Width="*" />
 								<ColumnDefinition Width="88" />
 							</Grid.ColumnDefinitions>
 							<TextBlock Grid.Column="0" Text="游戏" Style="{StaticResource Hint}" HorizontalAlignment="Center" />
-							<TextBlock Grid.Column="1" Text="展示" Style="{StaticResource Hint}" HorizontalAlignment="Center" />
-							<TextBlock Grid.Column="2" Text="卡池来源" Style="{StaticResource Hint}" HorizontalAlignment="Center" />
-							<TextBlock Grid.Column="3" Text="活动来源" Style="{StaticResource Hint}" HorizontalAlignment="Center" />
-							<TextBlock Grid.Column="4" Text="操作" Style="{StaticResource Hint}" HorizontalAlignment="Center" />
+							<TextBlock Grid.Column="1" Text="颜色" Style="{StaticResource Hint}" HorizontalAlignment="Center" />
+							<TextBlock Grid.Column="2" Text="展示" Style="{StaticResource Hint}" HorizontalAlignment="Center" />
+							<TextBlock Grid.Column="3" Text="卡池来源" Style="{StaticResource Hint}" HorizontalAlignment="Center" />
+							<TextBlock Grid.Column="4" Text="活动来源" Style="{StaticResource Hint}" HorizontalAlignment="Center" />
+							<TextBlock Grid.Column="5" Text="操作" Style="{StaticResource Hint}" HorizontalAlignment="Center" />
 						</Grid>
 
 						<StackPanel x:Name="EntriesPanel" />

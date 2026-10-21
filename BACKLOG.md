@@ -41,7 +41,7 @@
 - [x] 解析器自检
 - [x] 自定义条目 / 自定义来源
 - [x] 写回 Host `updateConfig`，失败可见
-- [ ] 颜色列 / 取色器（gameColors）
+- [x] 颜色列 / 取色器（gameColors）
 - [ ] 设置页滚动位置保持
 
 ### Fluent / 通用观感

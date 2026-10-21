@@ -42,6 +42,7 @@
 | 条目表：展示 / 卡池来源 / 活动来源 / ↑↓ / 删除 | 动态行 + Host 写回 | 截图；UIAutomation `hidden:["genshin"]` |
 | 恢复默认顺序 / 恢复条目 | `setOrder([])` / `updateConfig({removed:[],customEntries:[]})` | 代码 |
 | 卡池/活动来源切换 + 自定义 URL | 默认/备选/自定义 ComboBox + 自定义输入行 | 截图 |
+| 颜色列 / 取色器 | 系统 ColorDialog → `gameColors`；newPanel 即时生效 | v0.1.13 |
 | 自定义条目 | 名称/图标/卡池 URL/活动 URL 表单 → `customEntries` | 代码 |
 | 解析器自检 | `selfCheck` + summary/problems 展示 | UIAutomation 实测 10s 完成 |
 | 写失败可见 | `SaveErrorText` | 代码 |

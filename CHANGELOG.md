@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.1.13 · 2026-10-21
+
+- 设置页新增「颜色」列与主题色取色器：写入 `gameColors`，`newPanel` 行色/详情卡即时生效
+- 颜色选择使用系统 ColorDialog；写回后 `rebuildSnapshot` + 面板重载
+- 版本 0.1.13
+
 ## v0.1.12 · 2026-10-21
 
 - 实验性 newPanel 基础版：设置页新增「实验性新版 UI（日程视图）」开关（`newPanel` 配置）

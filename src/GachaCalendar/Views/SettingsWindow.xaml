@@ -66,6 +66,11 @@
 			<Setter Property="BorderThickness" Value="1" />
 			<Setter Property="VerticalContentAlignment" Value="Center" />
 		</Style>
+		<Style TargetType="ComboBoxItem">
+			<Setter Property="Padding" Value="8,4" />
+			<Setter Property="FontSize" Value="12" />
+			<Setter Property="Foreground" Value="{DynamicResource Fg}" />
+		</Style>
 		<Style TargetType="TextBox">
 			<Setter Property="Height" Value="26" />
 			<Setter Property="Padding" Value="6,2" />

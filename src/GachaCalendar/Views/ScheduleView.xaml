@@ -200,6 +200,7 @@
 							BorderThickness="1" CornerRadius="12" Padding="10" VerticalAlignment="Stretch">
 						<StackPanel>
 							<Grid Width="64" Height="64" HorizontalAlignment="Center" Margin="0,2,0,0">
+								<Ellipse Stroke="{Binding Focus.GameColor}" StrokeThickness="2" Opacity="0.45" Margin="-5" />
 								<Border CornerRadius="32" Background="{Binding Focus.GameColor}">
 									<Border.Style>
 										<Style TargetType="Border">

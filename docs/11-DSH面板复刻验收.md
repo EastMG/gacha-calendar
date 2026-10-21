@@ -18,6 +18,7 @@
 | 悬停 tooltip（卡池全名/时间/失败说明） | `GachaTip` / `GachaDateTip` / `EventTip` / `EventDateTip`；`RowBuilder.WithFailNote` | 代码 |
 | 失败三态：down / nomatch / stale | 头部抓取提示 + 单元格 tooltip；`RowBuilder` 口径 | `docs/08`；引擎测试 |
 | 点击面板外 / Esc 关闭 | `Deactivated` + `PreviewKeyDown` | 代码 |
+| 滚动 / 细滚动条 | 自定义 `DshScrollViewer` + 8px 滑块；滚轮实测 0→34% | 深色截图；v0.1.11 |
 | 深浅色 | `ThemeManager` token；`GACHA_CALENDAR_THEME=light/dark` 可强制 | `docs/images/flyout.png`、`flyout-dark.png` |
 
 ## 2. 设置页
@@ -58,5 +59,5 @@ npm run check
 
 - 插件实验性 `newPanel`（`settings.newPanel === true` 的日期胶囊/时间轴/悬停卡片）——默认关闭，未计入本次验收；
 - 设置页颜色列 / 取色器（`gameColors`）；
-- 滚动条像素级样式、深色系统标题栏、100%/150% DPI 逐像素回归；
+- 深色系统标题栏、100%/150% DPI 逐像素回归；
 - Host 运行时打包（当前开发期要求本机 Node；安装包阶段再解决）。

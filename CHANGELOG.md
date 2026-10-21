@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.1.23 · 2026-10-21
+
+- 主面板/newPanel 倒计时与日期列启用 tabular numerals，数字不再跳动
+- 面板打开增加 180ms 淡入 + 上移动效（DSH 面板 shell-in 的轻量版）
+- 版本 0.1.23
+
 ## v0.1.22 · 2026-10-21
 
 - 主面板内容改为显式 10/10/10/8 内边距，避免自定义 ScrollViewer 模板吃掉 Padding

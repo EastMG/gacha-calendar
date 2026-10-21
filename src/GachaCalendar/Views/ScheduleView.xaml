@@ -220,7 +220,7 @@
 													   VerticalAlignment="Center" Margin="3,0" TextTrimming="CharacterEllipsis"
 													   ToolTip="{Binding Tip}" />
 											<TextBlock Grid.Column="4" Text="{Binding WhenText}" FontSize="12.5" FontWeight="SemiBold"
-													   VerticalAlignment="Center" Margin="6,0,0,0">
+													   VerticalAlignment="Center" Margin="6,0,0,0" Typography.NumeralAlignment="Tabular">
 												<TextBlock.Style>
 													<Style TargetType="TextBlock">
 														<Setter Property="Foreground" Value="{DynamicResource FgDim}" />
@@ -294,14 +294,14 @@
 							<TextBlock Text="{Binding FocusGameName}" FontSize="13.5" FontWeight="SemiBold" HorizontalAlignment="Center"
 									   Margin="0,7,0,0" TextTrimming="CharacterEllipsis" />
 							<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,2,0,0">
-								<TextBlock Text="{Binding Focus.FocusNumber}" FontSize="30" FontWeight="SemiBold" />
+								<TextBlock Text="{Binding Focus.FocusNumber}" FontSize="30" FontWeight="SemiBold" Typography.NumeralAlignment="Tabular" />
 								<TextBlock Text="{Binding Focus.FocusUnit}" FontSize="11" Foreground="{DynamicResource FgDim}"
 										   VerticalAlignment="Bottom" Margin="4,0,0,5" />
 							</StackPanel>
 							<TextBlock Text="{Binding FocusTitle}" FontSize="12.5" TextAlignment="Center" TextWrapping="Wrap"
 									   Margin="0,5,0,0" MaxHeight="36" />
 							<TextBlock Text="{Binding FocusDates}" FontSize="10.5" Foreground="{DynamicResource FgFaint}"
-									   TextAlignment="Center" TextWrapping="Wrap" Margin="0,4,0,0" />
+									   TextAlignment="Center" TextWrapping="Wrap" Margin="0,4,0,0" Typography.NumeralAlignment="Tabular" />
 							<Separator Margin="0,8,0,6" Background="{DynamicResource Divider}" />
 							<ItemsControl ItemsSource="{Binding FocusOthers}">
 								<ItemsControl.ItemTemplate>
@@ -453,7 +453,7 @@
 										<TextBlock Text="{Binding Gacha.Show, TargetNullValue=—}" Style="{StaticResource SchedCellTitle}"
 												   ToolTip="{Binding Gacha.Tip}" />
 										<TextBlock Text="{Binding Gacha.MetaText, TargetNullValue=该来源无数据}" Style="{StaticResource SchedCellMeta}"
-												   FontSize="10" />
+												   FontSize="10" Typography.NumeralAlignment="Tabular" />
 										<ItemsControl ItemsSource="{Binding Gacha.Bars}" Margin="0,3,0,0">
 											<ItemsControl.ItemsPanel><ItemsPanelTemplate><UniformGrid Columns="14" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
 											<ItemsControl.ItemTemplate>
@@ -507,7 +507,7 @@
 										<TextBlock Text="{Binding Event.Show, TargetNullValue=—}" Style="{StaticResource SchedCellTitle}"
 												   ToolTip="{Binding Event.Tip}" />
 										<TextBlock Text="{Binding Event.MetaText, TargetNullValue=该来源无数据}" Style="{StaticResource SchedCellMeta}"
-												   FontSize="10" />
+												   FontSize="10" Typography.NumeralAlignment="Tabular" />
 										<ItemsControl ItemsSource="{Binding Event.Bars}" Margin="0,3,0,0">
 											<ItemsControl.ItemsPanel><ItemsPanelTemplate><UniformGrid Columns="14" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
 											<ItemsControl.ItemTemplate>

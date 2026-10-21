@@ -166,7 +166,7 @@
 					</Grid.ColumnDefinitions>
 					<TextBlock Text="{Binding DataStatusText}" FontSize="11" Foreground="{DynamicResource FgDim}" VerticalAlignment="Center" />
 					<TextBlock Grid.Column="1" Text="{Binding UpdatedText}" FontSize="11" Foreground="{DynamicResource FgDim}"
-							   Margin="12,0,0,0" VerticalAlignment="Center" />
+							   Margin="12,0,0,0" VerticalAlignment="Center" Typography.NumeralAlignment="Tabular" />
 					<TextBlock Grid.Column="2" Text="{Binding ScrapeText}" FontSize="11" Foreground="{DynamicResource FgFaint}"
 							   Margin="12,0,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
 							   ToolTip="{Binding StatusTip}" />
@@ -259,6 +259,7 @@
 									<Border Grid.Column="3" Margin="3,0" ClipToBounds="True">
 										<TextBlock Text="{Binding GachaDateText}" Style="{StaticResource DshCellText}"
 												   Foreground="{DynamicResource Accent}" FontWeight="SemiBold"
+												   Typography.NumeralAlignment="Tabular"
 												   ToolTip="{Binding GachaDateTip}" controls:Marquee.Enabled="True" />
 									</Border>
 
@@ -270,6 +271,7 @@
 									<Border Grid.Column="5" Margin="3,0" ClipToBounds="True">
 										<TextBlock Text="{Binding EventDateText}" Style="{StaticResource DshCellText}"
 												   Foreground="{DynamicResource FgDim}" ToolTip="{Binding EventDateTip}"
+												   Typography.NumeralAlignment="Tabular"
 												   controls:Marquee.Enabled="True" />
 									</Border>
 								</Grid>

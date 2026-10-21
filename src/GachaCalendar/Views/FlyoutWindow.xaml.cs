@@ -82,8 +82,14 @@ public partial class FlyoutWindow : Window
 	public void ShowNearDock(Window dock)
 	{
 		Height = Math.Min(660, Math.Max(360, SystemParameters.WorkArea.Height * 0.72));
+		Opacity = 0;
+		var slide = new TranslateTransform(0, 8);
+		RenderTransform = slide;
 		Show();
 		Activate();
+		var ease = new QuadraticEase { EasingMode = EasingMode.EaseOut };
+		BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(180)) { EasingFunction = ease });
+		slide.BeginAnimation(TranslateTransform.YProperty, new DoubleAnimation(8, 0, TimeSpan.FromMilliseconds(180)) { EasingFunction = ease });
 		Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
 		{
 			UpdateLayout();

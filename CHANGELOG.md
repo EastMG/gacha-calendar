@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## v0.1.7 · 2026-10-21
+
+- 应用内刷新：WPF 启动 `packages/engine/host.mjs`（Node JSON-lines Host），复用 `gacha-calendar-core`，
+  不再依赖手动跑 `npm run refresh`；启动/打开面板时 `refreshIfDue`，每分钟自动检查，手动刷新按钮强制刷新
+- 面板按 DSH 插件风格重做：六列表格（图标/游戏/当前卡池/卡池起止/当前活动/活动起止）、
+  标题行、数据状态/刷新时间/抓取提示、刷新按钮与设置入口；窗口 690×660
+- 游戏图标：快照新增 `icon` 字段；WPF 加载外链图标，失败退化为首字方块；受限环境可经 Host `fetchBinary` 取图
+- Host 新增 `fetchBinary`（仅 http/https、≤4MB）
+- 示例快照重新生成（含图标 URL）；README 截图更新
+- 测试 34 项保持全绿；版本 0.1.7
+
 ## v0.1.6 · 2026-10-21
 
 - 配置版本化：`config.schemaVersion`；缺省按 v1；未来版本拒绝加载（`unsupported-config-version`）

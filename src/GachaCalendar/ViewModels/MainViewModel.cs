@@ -26,13 +26,20 @@ public sealed class RowVm : INotifyPropertyChanged
 	private string _eventTip = "";
 	private string _eventDateText = "";
 	private string _eventDateTip = "";
+	private ImageSource? _iconSource;
+	private bool _hasIcon;
+	private string _iconGlyph = "?";
+	private Brush _iconBrush = Brushes.SlateGray;
 
 	public RowVm(GameMeta game, GameRecord? rec)
 	{
 		_game = game;
 		_rec = rec;
 		Name = game.Name;
+		IconGlyph = FirstGlyph(game.Name);
+		IconBrush = FallbackBrush(game.Name);
 		Refresh(DateTime.Now);
+		_ = LoadIconAsync(game.Icon);
 	}
 
 	public string Name { get; }
@@ -50,6 +57,51 @@ public sealed class RowVm : INotifyPropertyChanged
 	public string EventTip { get => _eventTip; private set => Set(ref _eventTip, value); }
 	public string EventDateText { get => _eventDateText; private set => Set(ref _eventDateText, value); }
 	public string EventDateTip { get => _eventDateTip; private set => Set(ref _eventDateTip, value); }
+
+	public ImageSource? IconSource { get => _iconSource; private set => Set(ref _iconSource, value); }
+	public bool HasIcon { get => _hasIcon; private set => Set(ref _hasIcon, value); }
+	public string IconGlyph { get => _iconGlyph; private set => Set(ref _iconGlyph, value); }
+	public Brush IconBrush { get => _iconBrush; private set => Set(ref _iconBrush, value); }
+
+	private async Task LoadIconAsync(string? url)
+	{
+		if (string.IsNullOrWhiteSpace(url)) return;
+		try
+		{
+			var icon = await IconLoader.GetAsync(url);
+			if (icon == null) return;
+			IconSource = icon;
+			HasIcon = true;
+		}
+		catch { /* 图标失败不影响行 */ }
+	}
+
+	private static readonly Brush[] IconPalette =
+	{
+		new SolidColorBrush(Color.FromRgb(0x9A, 0x6B, 0xD6)),
+		new SolidColorBrush(Color.FromRgb(0x4C, 0x8D, 0xD9)),
+		new SolidColorBrush(Color.FromRgb(0x4F, 0xA8, 0x7A)),
+		new SolidColorBrush(Color.FromRgb(0xC9, 0x8A, 0x4B)),
+		new SolidColorBrush(Color.FromRgb(0xB8, 0x6A, 0x8C)),
+	};
+
+	private static Brush FallbackBrush(string name)
+	{
+		var hash = 0;
+		foreach (var ch in name) hash = (hash * 31 + ch) & 0x7fffffff;
+		return IconPalette[hash % IconPalette.Length];
+	}
+
+	private static string FirstGlyph(string name)
+	{
+		foreach (var ch in name)
+		{
+			if (char.IsWhiteSpace(ch)) continue;
+			if ("·：:！!?？、，,（）()【】".Contains(ch)) continue;
+			return ch.ToString();
+		}
+		return "?";
+	}
 
 	public void Refresh(DateTime now)
 	{
@@ -105,8 +157,14 @@ public sealed class MainViewModel : INotifyPropertyChanged
 	private string _statusTip = "";
 	private string _updatedText = "—";
 	private string _headerCount = "";
+	private string _dataStatusText = "数据：—";
+	private string _scrapeText = "";
 	private string _dataPath = "";
 	private bool _isSample;
+	private bool _isRefreshing;
+	private bool _canRefresh;
+	private bool _engineAvailable;
+	private string _refreshTip = "应用内刷新不可用";
 
 	public ObservableCollection<RowVm> Rows { get; } = new();
 	public ObservableCollection<ChipVm> Chips { get; } = new();
@@ -115,8 +173,13 @@ public sealed class MainViewModel : INotifyPropertyChanged
 	public string StatusTip { get => _statusTip; private set => Set(ref _statusTip, value); }
 	public string UpdatedText { get => _updatedText; private set => Set(ref _updatedText, value); }
 	public string HeaderCount { get => _headerCount; private set => Set(ref _headerCount, value); }
+	public string DataStatusText { get => _dataStatusText; private set => Set(ref _dataStatusText, value); }
+	public string ScrapeText { get => _scrapeText; private set => Set(ref _scrapeText, value); }
 	public string DataPath { get => _dataPath; private set => Set(ref _dataPath, value); }
 	public bool IsSample { get => _isSample; private set => Set(ref _isSample, value); }
+	public bool IsRefreshing { get => _isRefreshing; private set => Set(ref _isRefreshing, value); }
+	public bool CanRefresh { get => _canRefresh; private set => Set(ref _canRefresh, value); }
+	public string RefreshTip { get => _refreshTip; private set => Set(ref _refreshTip, value); }
 	public bool HasChips => Chips.Count > 0;
 	public bool HasNoChips => Chips.Count == 0;
 	public bool HasError { get; private set; }
@@ -143,6 +206,24 @@ public sealed class MainViewModel : INotifyPropertyChanged
 		Tick(DateTime.Now, force: true);
 	}
 
+	/// <summary>引擎 Host 可用性变化（启动失败/退出时清空 CanRefresh）。</summary>
+	public void SetEngineState(bool available, string? error)
+	{
+		_engineAvailable = available;
+		CanRefresh = available && !IsRefreshing;
+		RefreshTip = available ? "刷新" : "应用内刷新不可用：" + (error ?? "未知原因");
+		if (!available && !string.IsNullOrWhiteSpace(error)) StatusTip = error;
+	}
+
+	public void SetRefreshing(bool value)
+	{
+		IsRefreshing = value;
+		CanRefresh = _engineAvailable && !value;
+		RefreshTip = value ? "刷新中…" : (_engineAvailable ? "刷新" : "应用内刷新不可用");
+	}
+
+	public void SetRefreshError(string message) => StatusTip = message;
+
 	public void ShowError(string message)
 	{
 		_snapshot = null;
@@ -151,8 +232,10 @@ public sealed class MainViewModel : INotifyPropertyChanged
 		HasError = true;
 		ErrorText = message;
 		StatusText = "载入失败";
+		DataStatusText = "数据：载入失败";
+		ScrapeText = message;
 		StatusTip = message;
-		UpdatedText = "—";
+		UpdatedText = "刷新：—";
 		HeaderCount = "";
 		Raise(nameof(HasError));
 		Raise(nameof(ErrorText));
@@ -243,6 +326,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
 		var prefix = IsSample ? "示例数据" : (ok > 0 ? "联网数据" : "尚未联网");
 		StatusText = $"{prefix} · 成功 {ok}/{visible.Count}";
+		DataStatusText = "数据：" + prefix;
 
 		var lines = new List<string>();
 		void Add(string label, List<string> names)
@@ -254,11 +338,13 @@ public sealed class MainViewModel : INotifyPropertyChanged
 		Add("新卡池未公布", gachaNomatch);
 		Add("新活动未公布", eventNomatch);
 		StatusTip = lines.Count == 0 ? "所有可见条目都抓到了当期内容" : string.Join("\n", lines);
+		ScrapeText = $"成功 {ok}/{visible.Count}";
+		if (lines.Count > 0) ScrapeText += "  " + string.Join("  ", lines);
 
 		var ts = _snapshot.Result.RefreshedAt > 0 ? _snapshot.Result.RefreshedAt : _snapshot.GeneratedAt;
 		UpdatedText = ts > 0
-			? (IsSample ? "示例快照 · " : "更新：") + DateTimeOffset.FromUnixTimeMilliseconds(ts).ToLocalTime().ToString("MM-dd HH:mm")
-			: "更新：—";
+			? "刷新：" + DateTimeOffset.FromUnixTimeMilliseconds(ts).ToLocalTime().ToString("yyyy/M/d HH:mm:ss")
+			: "刷新：—";
 	}
 
 	private static string ShortName(string name)

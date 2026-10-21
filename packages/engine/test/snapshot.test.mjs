@@ -39,6 +39,7 @@ test("buildSnapshot：排序、隐藏三态、config 原样带出", () => {
 	assert.equal(snap.games.find((g) => g.id === "b").hidden, false);
 	assert.equal(snap.games.find((g) => g.id === "c").hidden, false);
 	assert.equal(snap.games.find((g) => g.id === "a").defaults.banner, "A池");
+	assert.equal(snap.games.find((g) => g.id === "a").icon, "");
 	assert.equal(snap.result.refreshedAt, 111);
 	assert.deepEqual(snap.config.order, ["c", "a"]);
 });

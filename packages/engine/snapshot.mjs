@@ -30,6 +30,7 @@ export function buildSnapshot({ games, result, config, sources = [], coreVersion
 		games: ordered.map((game) => ({
 			id: game.id,
 			name: game.name,
+			icon: game.icon || "",
 			hidden: isHidden(game.id),
 			defaults: game.defaults || {
 				banner: "",

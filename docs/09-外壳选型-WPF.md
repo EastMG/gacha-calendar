@@ -10,6 +10,7 @@
 
 数据、配置、调度、校验、CLI、Host 协议、视图模型契约都已抽成壳无关层；
 继续用 WPF 意味着这些资产全部保留，任务栏/托盘/单实例/自启也可以沿用现有实现。
+v0.1.7 已把 Node Host 接入 WPF 外壳（应用内刷新），主面板已按 DSH 插件风格重做首版。
 
 ## 2. 为什么选 WPF
 
@@ -28,10 +29,10 @@
 
 ## 4. 下一步（按顺序）
 
-1. **WPF 接入 Host**：启动 `packages/engine/host.mjs` 子进程（或 C# 实现同协议），
-   用 `refreshIfDue` / `getStatus` / `updateConfig`；
+1. **WPF 接入 Host**：已完成（v0.1.7 启动 `packages/engine/host.mjs` 子进程，
+   用 `refreshIfDue` / `getStatus` / `updateConfig`）；
 2. **设置页接入**：`entries` + `setEntryVisibility` / `setOrder` / `removeEntry` / `restoreEntry`；
-3. **Fluent 风格外观**：按 `BACKLOG.md` 的清单做（不承诺版本，属于 0.1.x 待排期）；
+3. **DSH 面板完整复刻**：主面板首版已在 v0.1.7 完成，设置页/交互细节按 `BACKLOG.md` 继续；
 4. 托盘、自启、多显示器、安装包按路线图推进。
 
 ## 5. 什么情况下重新评估 Tauri

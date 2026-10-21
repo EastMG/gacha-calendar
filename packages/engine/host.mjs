@@ -11,7 +11,7 @@
 //   响应  { "id": 1, "ok": true, "result": { ... } }
 //   错误  { "id": 1, "ok": false, "error": { "code": "...", "message": "..." } }
 //
-// 方法：hello / getConfig / updateConfig / importConfig / listGames / listEntries /
+// 方法：hello / fetchBinary / getConfig / updateConfig / importConfig / listGames / listEntries /
 //       setEntryVisibility / setOrder / removeEntry / restoreEntry /
 //       getCached / refresh / refreshIfDue / getStatus / getDiagnostics /
 //       validateConfig / validateSnapshot / getSnapshot / selfCheck / shutdown
@@ -34,6 +34,8 @@ export async function dispatch(service, method, params = {}) {
 				coreVersion: service.coreVersion,
 				dataDir: service.paths?.config ? path.dirname(service.paths.config) : undefined,
 			};
+		case "fetchBinary":
+			return fetchBinary(params?.url);
 		case "getConfig":
 			return service.getConfig();
 		case "updateConfig": {
@@ -91,6 +93,35 @@ export async function dispatch(service, method, params = {}) {
 			throw err;
 		}
 	}
+}
+
+/**
+ * 抓取二进制（用于 WPF 端加载游戏图标）。
+ * .NET 在受限环境里可能拿不到 TLS，而 Node 的网络通常是通的；
+ * 这里只做 http(s)、限制大小，不把任意 URL 变成 SSRF 跳板。
+ */
+async function fetchBinary(url) {
+	let uri;
+	try { uri = new URL(String(url || "")); } catch { throw new Error("无效 URL"); }
+	if (uri.protocol !== "http:" && uri.protocol !== "https:") throw new Error("只支持 http/https");
+	const res = await fetch(uri, {
+		headers: {
+			"User-Agent":
+				"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+			Referer: uri.origin + "/",
+			Accept: "image/avif,image/webp,image/png,image/*,*/*;q=0.8",
+		},
+		redirect: "follow",
+		signal: AbortSignal.timeout(15000),
+	});
+	if (!res.ok) return { error: "HTTP " + res.status };
+	const buf = Buffer.from(await res.arrayBuffer());
+	if (buf.length > 4 * 1024 * 1024) return { error: "图片超过 4MB" };
+	return {
+		contentType: res.headers.get("content-type") || "image/png",
+		base64: buf.toString("base64"),
+		size: buf.length,
+	};
 }
 
 /**

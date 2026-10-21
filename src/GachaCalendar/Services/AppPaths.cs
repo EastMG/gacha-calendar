@@ -6,8 +6,15 @@ namespace GachaCalendar.Services;
 /// <summary>运行期路径约定：所有可变数据都在 %LOCALAPPDATA%\GachaCalendar，卸载不碰安装目录。</summary>
 public static class AppPaths
 {
-	public static string LocalDataDir { get; } = Path.Combine(
-		Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GachaCalendar");
+	public static string LocalDataDir
+	{
+		get
+		{
+			var overrideDir = Environment.GetEnvironmentVariable("GACHA_CALENDAR_DATA_DIR");
+			if (!string.IsNullOrWhiteSpace(overrideDir)) return Path.GetFullPath(overrideDir);
+			return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GachaCalendar");
+		}
+	}
 
 	public static string SettingsFile => Path.Combine(LocalDataDir, "settings.json");
 	public static string DefaultSnapshotFile => Path.Combine(LocalDataDir, "snapshot.json");

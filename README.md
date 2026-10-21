@@ -27,8 +27,8 @@
 
 ## 当前状态
 
-**v0.1.6 预览版（可运行骨架）**：任务栏常驻条 + 完整面板 + 托盘 + 设置 + 单实例 + 开机自启，
-数据来自真实抓取的快照。外壳技术已拍板：**WPF**。
+**v0.1.7 预览版**：任务栏常驻条 + DSH 风格六列面板 + 托盘 + 设置 + 单实例 + 开机自启，
+应用内刷新已接通。外壳技术已拍板：**WPF**。
 
 | 能力 | 状态 |
 |---|---|
@@ -37,11 +37,12 @@
 | 完整面板（28 款，默认显示 23 款，倒计时 + 悬停明细） | ✅ |
 | 失败三态：报错 / 未公布 / 沿用旧数据 | ✅ |
 | 系统托盘、设置、单实例、开机自启 | ✅ |
-| 数据抓取 | ✅ 由 `tools/refresh.mjs` 调用 core（v0.1.7 将搬进应用内） |
+| 数据抓取 | ✅ 应用内 Node Host 调用 core（v0.1.7）；开发期仍可用 `tools/refresh.mjs` |
 | 壳无关基础层（config / snapshot / Host 协议 / 视图模型） | ✅ `packages/engine/` + `packages/viewmodel/` |
-| 应用内自动刷新 / 手动刷新 | 🚧 v0.1.7 |
-| Fluent 风格外观 | 📋 待办（[#1](https://github.com/EastMG/gacha-calendar/issues/1) / [BACKLOG.md](BACKLOG.md)） |
-| 多显示器、轮播、图标、安装包 | 🚧 v0.1.8+（见[路线图](docs/04-路线图.md)） |
+| 应用内自动刷新 / 手动刷新 | ✅ v0.1.7（启动/打开面板时按 due 刷新；每分钟检查） |
+| DSH 面板风格（六列表格/状态栏/图标/刷新） | ✅ v0.1.7 首版（设置页复刻 v0.1.8） |
+| Fluent / DSH 设置页与交互细节 | 📋 待办（[#1](https://github.com/EastMG/gacha-calendar/issues/1) / [BACKLOG.md](BACKLOG.md)） |
+| 多显示器、轮播、安装包 | 🚧 v0.1.10+（见[路线图](docs/04-路线图.md)） |
 
 > 数据不会过期到"骗人"：某列抓取失败时，界面会显示「卡池失败：原因」或「沿用旧数据」，
 > 不会把上一次的结果伪装成最新。
@@ -74,21 +75,18 @@ Canmoe / GachaTracker / ldshop / 小米游戏中心 等），采用克制的抓�
 
 ## 快速开始（从源码运行）
 
-环境：Windows 11 x64、[.NET 10 SDK](https://dotnet.microsoft.com/download)、Node.js 22+（仅抓取工具需要）。
+环境：Windows 11 x64、[.NET 10 SDK](https://dotnet.microsoft.com/download)、Node.js 22+（应用内刷新/图标兜底需要）。
 
 ```powershell
-# 1) 抓一轮真实数据（可选；不抓则使用内置示例快照）
-cd tools
-npm install
-npm run refresh          # → ..\data\snapshot.json
-
-# 2) 构建
-cd ..
+# 1) 构建
 dotnet build src\GachaCalendar\GachaCalendar.csproj -c Release
 
-# 3) 运行（手动启动会展开面板；加 --silent 只留常驻条）
+# 2) 运行（启动时会自动通过 Node Host 刷一轮；--silent 只留常驻条）
 .\src\GachaCalendar\bin\Release\net10.0-windows\GachaCalendar.exe
 ```
+
+> 应用内刷新由 `packages/engine/host.mjs`（Node）负责；开发期也可手动运行
+> `cd tools; npm run refresh` 生成快照。v0.1.7 起无需手动清空数据。
 
 开发者小工具：
 

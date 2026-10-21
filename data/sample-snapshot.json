@@ -1,6 +1,6 @@
 {
 	"schemaVersion": 1,
-	"generatedAt": 1792542023963,
+	"generatedAt": 1792543918660,
 	"coreVersion": "0.12.5",
 	"config": {
 		"order": [],
@@ -19,6 +19,7 @@
 		{
 			"id": "genshin",
 			"name": "原神",
+			"icon": "https://storage.moegirl.org.cn/moegirl/commons/b/b0/%E5%8E%9F%E7%A5%9E%E5%9B%BE%E6%A0%87.png!/fw/512",
 			"hidden": false,
 			"defaults": {
 				"banner": "",
@@ -31,6 +32,7 @@
 		{
 			"id": "hsr",
 			"name": "崩坏：星穹铁道",
+			"icon": "https://storage.moegirl.org.cn/moegirl/commons/3/38/HonkaiStarRailIcon_StartingVer3.6_CHN.png!/fw/512",
 			"hidden": false,
 			"defaults": {
 				"banner": "",
@@ -43,6 +45,7 @@
 		{
 			"id": "zzz",
 			"name": "绝区零",
+			"icon": "https://storage.moegirl.org.cn/moegirl/commons/3/3e/ZZZ_miYoYo_logo.jpg!/fw/512",
 			"hidden": false,
 			"defaults": {
 				"banner": "",
@@ -55,6 +58,7 @@
 		{
 			"id": "bh3",
 			"name": "崩坏3",
+			"icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/b0/03/81/b003811c-f82a-428c-aa49-195f22c311bd/AppIcon-1x_U007emarketing-0-10-0-85-220-0.png/512x512bb.jpg",
 			"hidden": true,
 			"defaults": {
 				"banner": "",
@@ -67,6 +71,7 @@
 		{
 			"id": "wuwa",
 			"name": "鸣潮",
+			"icon": "https://storage.moegirl.org.cn/moegirl/commons/2/29/WutheringWavesIcon.png!/fw/512",
 			"hidden": false,
 			"defaults": {
 				"banner": "",
@@ -79,6 +84,7 @@
 		{
 			"id": "arknights",
 			"name": "明日方舟",
+			"icon": "https://storage.moegirl.org.cn/moegirl/commons/4/41/ArknightsAppIcon.png!/fw/512",
 			"hidden": false,
 			"defaults": {
 				"banner": "",
@@ -91,6 +97,7 @@
 		{
 			"id": "endfield",
 			"name": "明日方舟：终末地",
+			"icon": "https://storage.moegirl.org.cn/moegirl/commons/f/f1/ArknightsEndfieldAppIcon.png!/fw/512",
 			"hidden": false,
 			"defaults": {
 				"banner": "",
@@ -103,6 +110,7 @@
 		{
 			"id": "ba-cn",
 			"name": "蔚蓝档案·国服",
+			"icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/7c/4f/1a/7c4f1a51-59e5-977c-42e2-6c980485044a/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg",
 			"hidden": false,
 			"defaults": {
 				"banner": "",
@@ -115,6 +123,7 @@
 		{
 			"id": "ba-global",
 			"name": "蔚蓝档案·国际服",
+			"icon": "https://storage.moegirl.org.cn/moegirl/commons/2/25/AppIcon_Arona.png!/fw/512",
 			"hidden": false,
 			"defaults": {
 				"banner": "",
@@ -127,6 +136,7 @@
 		{
 			"id": "ba-jp",
 			"name": "蔚蓝档案·日服",
+			"icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/b2/83/84/b28384e9-b106-b48e-fc66-04679cd44d76/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg",
 			"hidden": false,
 			"defaults": {
 				"banner": "",
@@ -139,6 +149,7 @@
 		{
 			"id": "bandori",
 			"name": "BanG Dream！少女乐团派对·国服",
+			"icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/cb/ae/11/cbae1132-58ee-8b5c-3016-dfd2f5e91e51/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg",
 			"hidden": false,
 			"defaults": {
 				"banner": "",
@@ -151,6 +162,7 @@
 		{
 			"id": "ournotes",
 			"name": "BanG Dream！OurNotes·日服",
+			"icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/bf/53/0f/bf530fd7-65e8-e875-0a46-720344af6134/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg",
 			"hidden": true,
 			"defaults": {
 				"banner": "",
@@ -163,6 +175,7 @@
 		{
 			"id": "ournotes-global",
 			"name": "BanG Dream！OurNotes·国际服",
+			"icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/ca/da/3a/cada3a9a-491a-fbe5-5494-9be7390e3a9b/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg",
 			"hidden": true,
 			"defaults": {
 				"banner": "",
@@ -175,6 +188,7 @@
 		{
 			"id": "wuhuamixin",
 			"name": "物华弥新",
+			"icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/13/7f/87/137f873a-f458-678d-347e-068830a74a69/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg",
 			"hidden": false,
 			"defaults": {
 				"banner": "",
@@ -187,6 +201,7 @@
 		{
 			"id": "zspms",
 			"name": "战双帕弥什",
+			"icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/b2/99/ed/b299ed39-90ea-03df-c7ee-bd09548991e5/AppIcon-1x_U007emarketing-0-8-0-85-220-0.png/512x512bb.jpg",
 			"hidden": false,
 			"defaults": {
 				"banner": "",
@@ -199,6 +214,7 @@
 		{
 			"id": "czn",
 			"name": "卡厄斯梦境",
+			"icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/e2/c9/48/e2c94812-11cd-2a52-445a-d67d6ae9e169/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/512x512bb.jpg",
 			"hidden": true,
 			"defaults": {
 				"banner": "",
@@ -211,6 +227,7 @@
 		{
 			"id": "kedr",
 			"name": "雪松",
+			"icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/b5/8c/b6/b58cb6b2-4be3-0be0-852a-af761afaab06/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg",
 			"hidden": false,
 			"defaults": {
 				"banner": "",
@@ -223,6 +240,7 @@
 		{
 			"id": "ddlezj",
 			"name": "嘟嘟脸恶作剧",
+			"icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/64/f0/21/64f02145-182e-857a-133c-8de0151425d9/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg",
 			"hidden": true,
 			"defaults": {
 				"banner": "",
@@ -235,6 +253,7 @@
 		{
 			"id": "uma-cn",
 			"name": "闪耀！优俊少女",
+			"icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/ca/23/bc/ca23bc1f-5dff-c21a-1881-66c48d02f5b2/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg",
 			"hidden": false,
 			"defaults": {
 				"banner": "",
@@ -247,6 +266,7 @@
 		{
 			"id": "uma-jp",
 			"name": "赛马娘·日服",
+			"icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/73/7c/0b/737c0b9b-6e90-8838-f0d3-fc7c576fbbad/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg",
 			"hidden": false,
 			"defaults": {
 				"banner": "",
@@ -259,6 +279,7 @@
 		{
 			"id": "uma-global",
 			"name": "赛马娘·国际服",
+			"icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/8f/35/f4/8f35f477-05cb-0058-944a-0b796ee42583/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg",
 			"hidden": false,
 			"defaults": {
 				"banner": "",
@@ -271,6 +292,7 @@
 		{
 			"id": "p5x",
 			"name": "女神异闻录：夜幕魅影",
+			"icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/03/1e/f4/031ef49f-b3d0-5bdd-077b-67d213f99c86/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg",
 			"hidden": false,
 			"defaults": {
 				"banner": "",
@@ -283,6 +305,7 @@
 		{
 			"id": "nte",
 			"name": "异环",
+			"icon": "https://storage.moegirl.org.cn/moegirl/commons/8/8c/YH_APP.png!/fw/512",
 			"hidden": false,
 			"defaults": {
 				"banner": "",
@@ -295,6 +318,7 @@
 		{
 			"id": "gf2",
 			"name": "少女前线2：追放",
+			"icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/6e/24/ac/6e24aca1-ce07-8fb9-41cd-181220b6cff2/AppIcon-1x_U007emarketing-0-8-0-85-220-0.png/512x512bb.jpg",
 			"hidden": false,
 			"defaults": {
 				"banner": "",
@@ -307,6 +331,7 @@
 		{
 			"id": "fgo",
 			"name": "Fate/Grand Order",
+			"icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/db/d4/19/dbd4196a-68cb-8a74-ca0b-045d0795e10c/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg",
 			"hidden": false,
 			"defaults": {
 				"banner": "",
@@ -319,6 +344,7 @@
 		{
 			"id": "pjsk",
 			"name": "初音未来：缤纷舞台·国服",
+			"icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/00/5c/7c/005c7c99-d162-1dc9-2c38-f5e5a50619e1/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg",
 			"hidden": false,
 			"defaults": {
 				"banner": "",
@@ -331,6 +357,7 @@
 		{
 			"id": "stellasora",
 			"name": "星塔旅人",
+			"icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/54/82/12/548212d8-790c-241d-b11e-f588000cbaef/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg",
 			"hidden": false,
 			"defaults": {
 				"banner": "",
@@ -343,6 +370,7 @@
 		{
 			"id": "r1999",
 			"name": "重返未来：1999",
+			"icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/20/b1/e4/20b1e434-8c20-0346-a3aa-9051bf75a400/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg",
 			"hidden": false,
 			"defaults": {
 				"banner": "",
@@ -355,7 +383,7 @@
 	],
 	"result": {
 		"schemaVersion": 1,
-		"refreshedAt": 1792542023961,
+		"refreshedAt": 1792543918656,
 		"parserVersions": {
 			"genshin": 1,
 			"hsr": 1,
@@ -380,12 +408,12 @@
 				"event": "「往冥府的安魂歌」",
 				"eventDates": "09-23 10:00 ~ 11-03 14:59",
 				"eventDatesRaw": "09-23 10:00 ~ 11-03 14:59",
-				"eventHover": "「虹旅藏金·耀星烁熠」   09-28 00:00 ~ 10-22 06:00\n「判测胜券本征」   10-12 10:00 ~ 10-23 09:59\n「砺行修远」   08-10 04:00 ~ 11-02 03:59\n「绮星盛会」   10-01 12:00 ~ 11-03 04:00\n「绮星盛会」   10-01 12:00 ~ 11-03 04:00\n「无神怜爱的冻土」   08-12 10:00 ~ 11-03 14:59\n「往冥府的安魂歌」   09-23 10:00 ~ 11-03 14:59\n「巡历雪境，凝铸锋锐」   09-23 10:00 ~ 11-03 14:59\n「桌上剧团·冒险的前夜会」   09-23 10:00 ~ 11-03 14:59\n「绮衣珍赏·晴暖」   09-23 10:00 ~ 11-04 05:59",
+				"eventHover": "「虹旅藏金·耀星烁熠」   09-28 00:00 ~ 10-22 06:00\n「判测胜券本征」   10-12 10:00 ~ 10-23 09:59\n「砺行修远」   08-10 04:00 ~ 11-02 03:59\n「绮星盛会」   10-01 12:00 ~ 11-03 04:00\n「绮星盛会」   10-01 12:00 ~ 11-03 04:00\n「无神怜爱的冻土」   08-12 10:00 ~ 11-03 14:59\n「巡历雪境，凝铸锋锐」   09-23 10:00 ~ 11-03 14:59\n「桌上剧团·冒险的前夜会」   09-23 10:00 ~ 11-03 14:59\n「往冥府的安魂歌」   09-23 10:00 ~ 11-03 14:59\n「绮衣珍赏·晴暖」   09-23 10:00 ~ 11-04 05:59",
 				"gachaFail": null,
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792542023961
+				"okAt": 1792543918656
 			},
 			"hsr": {
 				"name": "崩坏：星穹铁道",
@@ -402,7 +430,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792542023961
+				"okAt": 1792543918656
 			},
 			"zzz": {
 				"name": "绝区零",
@@ -419,7 +447,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792542023961
+				"okAt": 1792543918656
 			},
 			"bh3": {
 				"name": "崩坏3",
@@ -453,7 +481,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792542023961
+				"okAt": 1792543918656
 			},
 			"arknights": {
 				"name": "明日方舟",
@@ -470,7 +498,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792542023961
+				"okAt": 1792543918656
 			},
 			"endfield": {
 				"name": "明日方舟：终末地",
@@ -487,7 +515,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792542023961
+				"okAt": 1792543918656
 			},
 			"ba-cn": {
 				"name": "蔚蓝档案·国服",
@@ -504,7 +532,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792542023961
+				"okAt": 1792543918656
 			},
 			"ba-global": {
 				"name": "蔚蓝档案·国际服",
@@ -521,7 +549,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792542023961
+				"okAt": 1792543918656
 			},
 			"ba-jp": {
 				"name": "蔚蓝档案·日服",
@@ -538,7 +566,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792542023961
+				"okAt": 1792543918656
 			},
 			"bandori": {
 				"name": "BanG Dream！少女乐团派对·国服",
@@ -555,7 +583,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792542023961
+				"okAt": 1792543918656
 			},
 			"ournotes": {
 				"name": "BanG Dream！OurNotes·日服",
@@ -606,7 +634,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792542023961
+				"okAt": 1792543918656
 			},
 			"zspms": {
 				"name": "战双帕弥什",
@@ -623,7 +651,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792542023961
+				"okAt": 1792543918656
 			},
 			"czn": {
 				"name": "卡厄斯梦境",
@@ -693,7 +721,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792542023961
+				"okAt": 1792543918656
 			},
 			"uma-jp": {
 				"name": "赛马娘·日服",
@@ -710,7 +738,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792542023961
+				"okAt": 1792543918656
 			},
 			"uma-global": {
 				"name": "赛马娘·国际服",
@@ -727,7 +755,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792542023961
+				"okAt": 1792543918656
 			},
 			"p5x": {
 				"name": "女神异闻录：夜幕魅影",
@@ -744,7 +772,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792542023961
+				"okAt": 1792543918656
 			},
 			"nte": {
 				"name": "异环",
@@ -761,7 +789,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792542023961
+				"okAt": 1792543918656
 			},
 			"gf2": {
 				"name": "少女前线2：追放",
@@ -778,7 +806,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792542023961
+				"okAt": 1792543918656
 			},
 			"fgo": {
 				"name": "Fate/Grand Order",
@@ -795,7 +823,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792542023961
+				"okAt": 1792543918656
 			},
 			"pjsk": {
 				"name": "初音未来：缤纷舞台·国服",
@@ -831,7 +859,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792542023961
+				"okAt": 1792543918656
 			},
 			"r1999": {
 				"name": "重返未来：1999",
@@ -848,7 +876,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792542023961
+				"okAt": 1792543918656
 			}
 		}
 	}

@@ -35,11 +35,13 @@ $imgDir = Join-Path $repo "docs\images"
 New-Item -ItemType Directory -Path $imgDir -Force | Out-Null
 
 Get-Process GachaCalendar -ErrorAction SilentlyContinue | Stop-Process -Force
-$env:GACHA_CALENDAR_DATA = Join-Path $repo "data\sample-snapshot.json"
+$nodesBefore = @(Get-Process node -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Id)
+$env:GACHA_CALENDAR_DATA_DIR = Join-Path $repo "data"
+Remove-Item Env:GACHA_CALENDAR_DATA -ErrorAction SilentlyContinue
 $outLog = Join-Path $imgDir "_o.txt"
 $errLog = Join-Path $imgDir "_e.txt"
 $p = Start-Process -FilePath $Exe -ArgumentList "--show-flyout" -PassThru -RedirectStandardOutput $outLog -RedirectStandardError $errLog
-Start-Sleep -Seconds 4
+Start-Sleep -Seconds 20
 
 $targetPid = $p.Id
 $wins = New-Object System.Collections.ArrayList
@@ -90,4 +92,5 @@ if ($null -ne $flyout -and $flyout.Hwnd -ne $dock.Hwnd) {
 }
 
 Stop-Process -Id $p.Id -Force -ErrorAction SilentlyContinue
+Get-Process node -ErrorAction SilentlyContinue | Where-Object { $nodesBefore -notcontains $_.Id } | Stop-Process -Force -ErrorAction SilentlyContinue
 Remove-Item $outLog, $errLog -Force -ErrorAction SilentlyContinue

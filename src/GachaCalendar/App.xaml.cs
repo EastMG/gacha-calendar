@@ -24,6 +24,9 @@ public partial class App : System.Windows.Application
 	private FlyoutWindow? _flyout;
 	private SettingsWindow? _settingsWindow;
 	private DispatcherTimer? _tick;
+	private EngineHostClient? _engine;
+	private bool _autoRefreshing;
+	private DateTime _lastAutoCheck = DateTime.MinValue;
 
 	protected override void OnStartup(StartupEventArgs e)
 	{
@@ -76,6 +79,7 @@ public partial class App : System.Windows.Application
 		_tray.SetDockVisible(Settings.DockEnabled);
 
 		LoadSnapshot();
+		_ = InitEngineAsync();
 
 		_tick = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
 		_tick.Tick += (_, _) => OnTick();
@@ -102,6 +106,96 @@ public partial class App : System.Windows.Application
 	{
 		Vm.Tick(DateTime.Now);
 		RepositionDock();
+
+		// 自动刷新：Host 内部已经做了 due/backoff 判断，这里只需低频触发。
+		if (_engine?.IsAvailable == true && !_autoRefreshing &&
+			(DateTime.Now - _lastAutoCheck).TotalSeconds >= 60)
+		{
+			_lastAutoCheck = DateTime.Now;
+			_ = AutoRefreshAsync();
+		}
+	}
+
+	private async Task AutoRefreshAsync()
+	{
+		if (_autoRefreshing || _engine?.IsAvailable != true) return;
+		_autoRefreshing = true;
+		try
+		{
+			var decision = await _engine.RefreshIfDueAsync();
+			if (decision.Refreshed) LoadSnapshot();
+			else if (!string.IsNullOrWhiteSpace(decision.Error)) Vm.SetRefreshError(decision.Error!);
+		}
+		catch (Exception ex)
+		{
+			Log.Warn("自动刷新失败：" + ex.Message);
+			Vm.SetRefreshError("自动刷新失败：" + ex.Message);
+		}
+		finally
+		{
+			_autoRefreshing = false;
+		}
+	}
+
+	private async Task InitEngineAsync()
+	{
+		try
+		{
+			_engine = new EngineHostClient();
+			var ok = await _engine.StartAsync(AppPaths.LocalDataDir);
+			Vm.SetEngineState(ok, _engine.LastError);
+			if (!ok)
+			{
+				Log.Warn("应用内引擎不可用：" + _engine.LastError);
+				return;
+			}
+
+			// 受限环境里 .NET TLS 可能不可用；图标改由 Node Host 取，再重载一次让失败图标重试
+			IconLoader.SetFallback(_engine.FetchBinaryAsync);
+			LoadSnapshot();
+
+			Vm.SetRefreshing(true);
+			try
+			{
+				var decision = await _engine.RefreshIfDueAsync();
+				if (decision.Refreshed) LoadSnapshot();
+				else if (!string.IsNullOrWhiteSpace(decision.Error)) Vm.SetRefreshError(decision.Error!);
+			}
+			finally
+			{
+				Vm.SetRefreshing(false);
+			}
+		}
+		catch (Exception ex)
+		{
+			Log.Error("初始化应用内引擎失败", ex);
+			Vm.SetEngineState(false, ex.Message);
+		}
+	}
+
+	/// <summary>面板刷新按钮：强制刷新一轮（无视调度/退避）。</summary>
+	public async Task RefreshAsync()
+	{
+		if (_engine is not { IsAvailable: true })
+		{
+			Vm.SetRefreshError("应用内刷新不可用：" + (_engine?.LastError ?? "请检查 Node 与 Host 脚本"));
+			return;
+		}
+		Vm.SetRefreshing(true);
+		try
+		{
+			await _engine.RefreshAsync();
+			LoadSnapshot();
+		}
+		catch (Exception ex)
+		{
+			Log.Warn("手动刷新失败：" + ex.Message);
+			Vm.SetRefreshError("刷新失败：" + ex.Message);
+		}
+		finally
+		{
+			Vm.SetRefreshing(false);
+		}
 	}
 
 	public void RepositionDock()
@@ -145,6 +239,7 @@ public partial class App : System.Windows.Application
 			return;
 		}
 		_flyout.ShowNearDock(_dock);
+		_ = AutoRefreshAsync();
 	}
 
 	public void ToggleFlyout()
@@ -192,6 +287,7 @@ public partial class App : System.Windows.Application
 	{
 		IsShuttingDown = true;
 		_tick?.Stop();
+		_engine?.Kill();
 		_tray?.Dispose();
 		_tray = null;
 		_settingsWindow?.Close();
@@ -219,6 +315,7 @@ public partial class App : System.Windows.Application
 
 	protected override void OnExit(ExitEventArgs e)
 	{
+		_engine?.Kill();
 		_snapshots?.Dispose();
 		_tray?.Dispose();
 		base.OnExit(e);

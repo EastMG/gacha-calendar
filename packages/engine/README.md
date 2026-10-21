@@ -20,7 +20,8 @@ Host 协议示例：
 
 ```json
 {"id":1,"method":"hello"}
-{"id":2,"method":"refresh"}
+{"id":2,"method":"getStatus"}
+{"id":2,"method":"refreshIfDue"}
 {"id":3,"method":"getConfig"}
 {"id":4,"method":"shutdown"}
 ```

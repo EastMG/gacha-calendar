@@ -12,7 +12,7 @@
 //   错误  { "id": 1, "ok": false, "error": { "code": "...", "message": "..." } }
 //
 // 方法：hello / getConfig / updateConfig / listGames / getCached /
-//       refresh / getSnapshot / selfCheck / shutdown
+//       refresh / refreshIfDue / getStatus / getSnapshot / selfCheck / shutdown
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -44,6 +44,10 @@ export async function dispatch(service, method, params = {}) {
 			return service.getCached();
 		case "refresh":
 			return service.refresh();
+		case "refreshIfDue":
+			return service.refreshIfDue();
+		case "getStatus":
+			return service.getStatus();
 		case "getSnapshot":
 			return service.getSnapshot();
 		case "selfCheck":

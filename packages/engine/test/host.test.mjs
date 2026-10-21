@@ -13,6 +13,8 @@ function makeService() {
 		listGames: async () => [{ id: "a" }],
 		getCached: async () => ({ games: {} }),
 		refresh: async () => ({ refreshed: true }),
+		refreshIfDue: async () => ({ refreshed: false, reason: "not-due", status: { due: false } }),
+		getStatus: () => ({ due: false, failures: 0 }),
 		getSnapshot: () => ({ snapshot: true }),
 		selfCheck: async () => ({ summary: {} }),
 	};
@@ -29,6 +31,8 @@ test("dispatch：hello / getConfig / updateConfig / refresh / 未知方法", asy
 	assert.deepEqual(await dispatch(service, "updateConfig", { patch: { hidden: ["a"] } }), { merged: { hidden: ["a"] } });
 	assert.deepEqual(await dispatch(service, "updateConfig", { hidden: ["b"] }), { merged: { hidden: ["b"] } });
 	assert.deepEqual(await dispatch(service, "refresh"), { refreshed: true });
+	assert.deepEqual(await dispatch(service, "refreshIfDue"), { refreshed: false, reason: "not-due", status: { due: false } });
+	assert.deepEqual(await dispatch(service, "getStatus"), { due: false, failures: 0 });
 	assert.deepEqual(await dispatch(service, "shutdown"), { bye: true });
 
 	await assert.rejects(() => dispatch(service, "nope"), (err) => err.code === "unknown-method");

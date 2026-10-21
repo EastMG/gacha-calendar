@@ -84,7 +84,31 @@ export function createFileService(options) {
 	let cache = readJson(paths.cache, {});
 	if (!cache || typeof cache !== "object" || Array.isArray(cache)) cache = {};
 
+	// 调度状态：与 core 的 lastRefresh 分开存。core 的 lastRefresh 只表示"抓过一轮"，
+	// 不一定代表成功；退避与"下次该不该刷"需要自己的失败计数。
+	const DEFAULT_REFRESH_STATE = {
+		lastAttemptAt: 0,
+		lastSuccessAt: 0,
+		failures: 0,
+		nextAllowedAt: 0,
+		lastError: null,
+	};
+	let refreshState = {
+		...DEFAULT_REFRESH_STATE,
+		...(cache.refreshState && typeof cache.refreshState === "object" ? cache.refreshState : {}),
+	};
+	if (!refreshState.lastSuccessAt && Number(cache.lastRefresh) > 0) {
+		// 迁移：老 cache 里只有 core 的 lastRefresh，先当作上次成功时间
+		refreshState.lastSuccessAt = Number(cache.lastRefresh);
+	}
+
+	const BACKOFF_BASE_MS = 5 * 60 * 1000;
+	const BACKOFF_MAX_MS = 6 * 60 * 60 * 1000;
+	const backoffMs = (failures) =>
+		Math.min(BACKOFF_MAX_MS, BACKOFF_BASE_MS * Math.pow(3, Math.max(0, failures - 1)));
+
 	const writeCache = () => {
+		cache.refreshState = refreshState;
 		writeFileAtomic(paths.cache, JSON.stringify(cache, null, "\t") + "\n");
 	};
 
@@ -110,6 +134,67 @@ export function createFileService(options) {
 	const writeSnapshot = (snapshot) => {
 		writeFileAtomic(paths.snapshot, JSON.stringify(snapshot, null, "\t") + "\n");
 	};
+
+	let refreshInFlight = null;
+
+	/** 实际执行一轮刷新（会写 cache / snapshot / 调度状态）。手动和自动共用。 */
+	function runRefresh() {
+		if (refreshInFlight) return refreshInFlight;
+		refreshInFlight = (async () => {
+			refreshState.lastAttemptAt = now();
+			refreshState.lastError = null;
+			try {
+				const result = await engine.refresh();
+				const games = await engine.listGames();
+				const sources = engine.__test?.SOURCES || [];
+				const snapshot = buildSnapshot({ games, result, config, sources, coreVersion, now: now() });
+				writeSnapshot(snapshot);
+				refreshState.failures = 0;
+				refreshState.lastSuccessAt = now();
+				refreshState.nextAllowedAt = 0;
+				writeCache();
+				return snapshot;
+			} catch (err) {
+				refreshState.failures += 1;
+				refreshState.lastError = err?.message || String(err);
+				refreshState.nextAllowedAt = now() + backoffMs(refreshState.failures);
+				writeCache();
+				throw err;
+			} finally {
+				refreshInFlight = null;
+			}
+		})();
+		return refreshInFlight;
+	}
+
+	/** 调度状态（外壳只读它来决定"现在要不要触发刷新"）。 */
+	function getStatus() {
+		const at = now();
+		const intervalMs = config.refreshMinutes * 60 * 1000;
+		const lastSuccessAt = Number(refreshState.lastSuccessAt) || 0;
+		const nextDueAt = lastSuccessAt ? lastSuccessAt + intervalMs : 0;
+		const backoffActive = refreshState.nextAllowedAt > at;
+		const due =
+			!!config.autoRefresh &&
+			!refreshInFlight &&
+			!backoffActive &&
+			(nextDueAt === 0 || at >= nextDueAt);
+		return {
+			now: at,
+			autoRefresh: config.autoRefresh,
+			refreshMinutes: config.refreshMinutes,
+			lastRefresh: Number(cache.lastRefresh) || 0,
+			lastSuccessAt,
+			lastAttemptAt: Number(refreshState.lastAttemptAt) || 0,
+			nextDueAt,
+			nextAllowedAt: Number(refreshState.nextAllowedAt) || 0,
+			failures: Number(refreshState.failures) || 0,
+			lastError: refreshState.lastError || null,
+			backoffActive,
+			due,
+			refreshInFlight: !!refreshInFlight,
+		};
+	}
 
 	const service = {
 		paths,
@@ -139,13 +224,39 @@ export function createFileService(options) {
 		async selfCheck() {
 			return engine.selfCheck();
 		},
+		/** 手动刷新：无视调度与退避，失败会抛错（并记录退避状态）。 */
 		async refresh() {
-			const result = await engine.refresh();
-			const games = await engine.listGames();
-			const sources = engine.__test?.SOURCES || [];
-			const snapshot = buildSnapshot({ games, result, config, sources, coreVersion, now: now() });
-			writeSnapshot(snapshot);
-			return snapshot;
+			return runRefresh();
+		},
+		/**
+		 * 按配置判断是否该刷；不满足条件时返回 skipped 结果，不联网。
+		 * 外壳在启动时/定时器里调用即可，无需自己算 due/backoff。
+		 */
+		async refreshIfDue() {
+			if (refreshInFlight) {
+				return { refreshed: false, reason: "in-flight", status: getStatus() };
+			}
+			const status = getStatus();
+			if (!status.autoRefresh) {
+				return { refreshed: false, reason: "manual-only", status };
+			}
+			if (!status.due) {
+				return { refreshed: false, reason: status.backoffActive ? "backoff" : "not-due", status };
+			}
+			try {
+				const snapshot = await runRefresh();
+				return { refreshed: true, snapshot, status: getStatus() };
+			} catch (err) {
+				return {
+					refreshed: false,
+					reason: "error",
+					error: { code: err?.code || "refresh-failed", message: err?.message || String(err) },
+					status: getStatus(),
+				};
+			}
+		},
+		getStatus() {
+			return getStatus();
 		},
 		/** 最近一次写入的 snapshot；没有则返回 null。 */
 		getSnapshot() {

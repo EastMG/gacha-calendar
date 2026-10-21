@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v0.1.2 · 2026-10-21
+
+- 新增刷新调度：`service.refreshIfDue()` 按配置与上次成功时间判断是否该刷，外壳不再自己算 due
+- 新增失败指数退避（5m / 15m / 45m … 上限 6h），成功后清零；状态持久化在 `cache.json` 的 `refreshState`
+- 新增并发保护：同一时刻只允许一轮刷新；手动 `refresh()` 绕过退避
+- Host 新增 `refreshIfDue` / `getStatus`；调度状态含 `lastSuccessAt` / `nextDueAt` / `nextAllowedAt` / `failures` / `lastError`
+- 测试从 15 项增加到 18 项（新增调度用例）
+
 ## v0.1.1 · 2026-10-21
 
 外壳技术栈未定，先落地不依赖外壳的基础功能。

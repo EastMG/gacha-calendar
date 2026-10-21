@@ -3,4 +3,5 @@
 import "./config.test.mjs";
 import "./snapshot.test.mjs";
 import "./service.test.mjs";
+import "./scheduler.test.mjs";
 import "./host.test.mjs";

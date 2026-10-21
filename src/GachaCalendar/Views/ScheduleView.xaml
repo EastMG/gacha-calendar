@@ -449,7 +449,7 @@
 									</StackPanel>
 
 									<StackPanel x:Name="GachaCell" Grid.Column="1" Margin="12,0,8,0"
-												Tag="{Binding Gacha}" MouseEnter="OnProbeEnter" MouseLeave="OnProbeLeave">
+												Tag="{Binding Gacha}" MouseEnter="OnProbeEnter">
 										<TextBlock Text="{Binding Gacha.Show, TargetNullValue=—}" Style="{StaticResource SchedCellTitle}"
 												   ToolTip="{Binding Gacha.Tip}" />
 										<TextBlock Text="{Binding Gacha.MetaText, TargetNullValue=该来源无数据}" Style="{StaticResource SchedCellMeta}"
@@ -480,7 +480,7 @@
 										</ItemsControl>
 										<Popup PlacementTarget="{Binding ElementName=GachaCell}" Placement="Bottom"
 											   IsOpen="{Binding IsProbeOpen}" AllowsTransparency="True" StaysOpen="False"
-											   PopupAnimation="Fade" DataContext="{Binding Gacha}">
+											   PopupAnimation="Fade" DataContext="{Binding Gacha}" Closed="OnProbeClosed">
 											<Border Background="{DynamicResource PanelBg}" BorderBrush="{DynamicResource PanelBorder}"
 													BorderThickness="1" CornerRadius="8" Padding="10" MaxWidth="320">
 												<StackPanel>
@@ -503,7 +503,7 @@
 									</StackPanel>
 
 									<StackPanel x:Name="EventCell" Grid.Column="2" Margin="12,0,8,0"
-												Tag="{Binding Event}" MouseEnter="OnProbeEnter" MouseLeave="OnProbeLeave">
+												Tag="{Binding Event}" MouseEnter="OnProbeEnter">
 										<TextBlock Text="{Binding Event.Show, TargetNullValue=—}" Style="{StaticResource SchedCellTitle}"
 												   ToolTip="{Binding Event.Tip}" />
 										<TextBlock Text="{Binding Event.MetaText, TargetNullValue=该来源无数据}" Style="{StaticResource SchedCellMeta}"
@@ -534,7 +534,7 @@
 										</ItemsControl>
 										<Popup PlacementTarget="{Binding ElementName=EventCell}" Placement="Bottom"
 											   IsOpen="{Binding IsProbeOpen}" AllowsTransparency="True" StaysOpen="False"
-											   PopupAnimation="Fade" DataContext="{Binding Event}">
+											   PopupAnimation="Fade" DataContext="{Binding Event}" Closed="OnProbeClosed">
 											<Border Background="{DynamicResource PanelBg}" BorderBrush="{DynamicResource PanelBorder}"
 													BorderThickness="1" CornerRadius="8" Padding="10" MaxWidth="320">
 												<StackPanel>

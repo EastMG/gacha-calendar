@@ -141,11 +141,16 @@ public partial class SettingsWindow : Window
 				BorderThickness = new Thickness(0, 0, 0, 1),
 				Padding = new Thickness(0, 7, 0, 7),
 			};
+			var rowStyle = new Style(typeof(Border));
+			var hover = new Trigger { Property = UIElement.IsMouseOverProperty, Value = true };
+			hover.Setters.Add(new Setter(Border.BackgroundProperty, (Brush)FindResource("HoverBg")));
+			rowStyle.Triggers.Add(hover);
+			card.Style = rowStyle;
 			var stack = new StackPanel();
 
 			var grid = new Grid();
 			grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.8, GridUnitType.Star) });
-			grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(42) });
+			grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(38) });
 			grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(44) });
 			grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 			grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
@@ -669,8 +674,8 @@ public partial class SettingsWindow : Window
 	{
 		var swatch = new Border
 		{
-			Width = 22,
-			Height = 20,
+			Width = 20,
+			Height = 18,
 			CornerRadius = new CornerRadius(5),
 			Background = ColorFor(entry),
 			BorderBrush = (Brush)FindResource("PanelBorder"),

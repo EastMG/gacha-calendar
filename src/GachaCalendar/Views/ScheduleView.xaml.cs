@@ -30,14 +30,21 @@ public partial class ScheduleView : UserControl
 		if (DataContext is SchedulePanelVm vm) vm.SetHovered(false);
 	}
 
+	private ScheduleItemVm? _openProbe;
+
 	private void OnProbeEnter(object sender, MouseEventArgs e)
 	{
-		if (sender is FrameworkElement { Tag: ScheduleItemVm item }) item.IsProbeOpen = item.HasExtras;
+		if (sender is not FrameworkElement { Tag: ScheduleItemVm item } || !item.HasExtras) return;
+		if (ReferenceEquals(_openProbe, item) && item.IsProbeOpen) return;
+		if (_openProbe != null) _openProbe.IsProbeOpen = false;
+		_openProbe = item;
+		item.IsProbeOpen = true;
 	}
 
-	private void OnProbeLeave(object sender, MouseEventArgs e)
+	private void OnProbeClosed(object? sender, EventArgs e)
 	{
-		if (sender is FrameworkElement { Tag: ScheduleItemVm item }) item.IsProbeOpen = false;
+		if (sender is System.Windows.Controls.Primitives.Popup { DataContext: ScheduleItemVm item })
+			item.IsProbeOpen = false;
 	}
 
 	private void OnExpand(object sender, RoutedEventArgs e)

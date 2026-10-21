@@ -288,7 +288,7 @@
 						<Grid Margin="0,0,0,4">
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="0.8*" />
-								<ColumnDefinition Width="42" />
+								<ColumnDefinition Width="38" />
 								<ColumnDefinition Width="44" />
 								<ColumnDefinition Width="*" />
 								<ColumnDefinition Width="*" />

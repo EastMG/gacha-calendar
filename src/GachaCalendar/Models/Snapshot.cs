@@ -13,8 +13,15 @@ public sealed class Snapshot
 	public int SchemaVersion { get; set; }
 	public long GeneratedAt { get; set; }
 	public string? CoreVersion { get; set; }
+	public ConfigJson Config { get; set; } = new();
 	public List<GameMeta> Games { get; set; } = new();
 	public ResultJson Result { get; set; } = new();
+}
+
+public sealed class ConfigJson
+{
+	public bool NewPanel { get; set; }
+	public Dictionary<string, string> GameColors { get; set; } = new();
 }
 
 public sealed class GameMeta
@@ -56,6 +63,7 @@ public sealed class GameRecord
 	public string BannerDates { get; set; } = "";
 	public string BannerDatesRaw { get; set; } = "";
 	public string BannerHover { get; set; } = "";
+	public string Tz { get; set; } = "";
 	public string Event { get; set; } = "";
 	public string EventDates { get; set; } = "";
 	public string EventDatesRaw { get; set; } = "";

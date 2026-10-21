@@ -17,6 +17,7 @@ export const DEFAULT_CONFIG = Object.freeze({
 	schemaVersion: CONFIG_SCHEMA_VERSION,
 	autoRefresh: true,
 	refreshMinutes: 1440,
+	newPanel: false,
 	order: [],
 	hidden: [],
 	shown: [],
@@ -132,6 +133,11 @@ export function normalizeConfig(input = {}) {
 		src.autoRefresh === 0 ||
 		src.autoRefresh === "0"
 	);
+	out.newPanel =
+		src.newPanel === true ||
+		src.newPanel === "true" ||
+		src.newPanel === 1 ||
+		src.newPanel === "1";
 	const minutes = Number(src.refreshMinutes);
 	out.refreshMinutes = Number.isFinite(minutes)
 		? Math.min(42 * 24 * 60, Math.max(60, Math.round(minutes)))

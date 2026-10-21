@@ -86,6 +86,16 @@
 					</StackPanel>
 				</Border>
 
+				<!-- 实验特性 -->
+				<Border Style="{StaticResource Card}" BorderBrush="{DynamicResource Accent}" BorderThickness="1">
+					<StackPanel>
+						<CheckBox x:Name="NewPanelCheck" Content="实验性新版 UI（日程视图）" FontSize="12"
+								  Checked="OnNewPanelChanged" Unchecked="OnNewPanelChanged" />
+						<TextBlock Style="{StaticResource Hint}" Margin="0,6,0,0"
+								   Text="启用 DSH 实验版：日期胶囊、近期紧迫列表、时间轴日程表。默认关闭。" />
+					</StackPanel>
+				</Border>
+
 				<!-- 条目管理 -->
 				<Border Style="{StaticResource Card}">
 					<StackPanel>

@@ -8,5 +8,6 @@
 	"customEventUrls": {},
 	"gameColors": {},
 	"autoRefresh": true,
-	"refreshMinutes": 1440
+	"refreshMinutes": 1440,
+	"newPanel": false
 }

@@ -161,6 +161,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
 	private string _scrapeText = "";
 	private string _dataPath = "";
 	private bool _isSample;
+	private bool _isNewPanel;
 	private bool _isRefreshing;
 	private bool _canRefresh;
 	private bool _engineAvailable;
@@ -168,6 +169,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
 	public ObservableCollection<RowVm> Rows { get; } = new();
 	public ObservableCollection<ChipVm> Chips { get; } = new();
+	public SchedulePanelVm Schedule { get; } = new();
 
 	public string StatusText { get => _statusText; private set => Set(ref _statusText, value); }
 	public string StatusTip { get => _statusTip; private set => Set(ref _statusTip, value); }
@@ -177,6 +179,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
 	public string ScrapeText { get => _scrapeText; private set => Set(ref _scrapeText, value); }
 	public string DataPath { get => _dataPath; private set => Set(ref _dataPath, value); }
 	public bool IsSample { get => _isSample; private set => Set(ref _isSample, value); }
+	public bool IsNewPanel { get => _isNewPanel; private set => Set(ref _isNewPanel, value); }
 	public bool IsRefreshing { get => _isRefreshing; private set => Set(ref _isRefreshing, value); }
 	public bool CanRefresh { get => _canRefresh; private set => Set(ref _canRefresh, value); }
 	public string RefreshTip { get => _refreshTip; private set => Set(ref _refreshTip, value); }
@@ -203,6 +206,8 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
 		HeaderCount = $"{Rows.Count} 款";
 		RefreshStatus();
+		IsNewPanel = snapshot.Config.NewPanel;
+		Schedule.Build(snapshot, DateTime.Now, ScrapeText);
 		Tick(DateTime.Now, force: true);
 	}
 
@@ -256,6 +261,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
 		_lastMinute = now.Minute;
 		foreach (var row in Rows) row.Refresh(now);
 		RebuildChips(now);
+		Schedule.UpdateNow(now);
 	}
 
 	private void RebuildChips(DateTime now)

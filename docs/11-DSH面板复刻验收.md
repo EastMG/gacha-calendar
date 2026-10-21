@@ -21,7 +21,19 @@
 | 滚动 / 细滚动条 | 自定义 `DshScrollViewer` + 8px 滑块；滚轮实测 0→34% | 深色截图；v0.1.11 |
 | 深浅色 | `ThemeManager` token；`GACHA_CALENDAR_THEME=light/dark` 可强制 | `docs/images/flyout.png`、`flyout-dark.png` |
 
-## 2. 设置页
+## 2. 实验性 newPanel（基础版 v0.1.12）
+
+| DSH 行为 | WPF 实现 | 证据 |
+|---|---|---|
+| 设置页实验开关（默认关） | `NewPanelCheck` → `updateConfig({newPanel})` + 快照透传 | 代码；开关切换后 `rebuildSnapshot` |
+| 日期胶囊 + 24小时/7天总览 | `SchedulePanelVm.GlanceText` / `DatePill` | 代码 |
+| 近期紧迫列表（前 10 + 展开全部） | `Urgent` + `ToggleExpand` | 代码 |
+| 悬停详情卡 | `Focus` + `FocusOthers`（大图标/剩余天数/日期/其他项） | 代码 |
+| 14 天时间轴日程表 | 158px 游戏列 + 卡池/活动两栏 + 14 格条形 | 代码 |
+| 底栏状态/上次更新/刷新 | `ScrapeText` / `UpdatedAgo` / 刷新按钮 | 代码 |
+| 4 秒循环翻页 / 探头展开 / 失败横条 / 取色器 | 未实现 | 下一轮 |
+
+## 3. 设置页
 
 | DSH 行为 | WPF 实现 | 证据 |
 |---|---|---|
@@ -34,7 +46,7 @@
 | 解析器自检 | `selfCheck` + summary/problems 展示 | UIAutomation 实测 10s 完成 |
 | 写失败可见 | `SaveErrorText` | 代码 |
 
-## 3. 数据链路
+## 4. 数据链路
 
 | 链路 | 实现 |
 |---|---|
@@ -45,7 +57,7 @@
 | UI 层网络边界 | 图标也只走 Host `fetchBinary`；WPF 无 HttpClient |
 | Host 并发 | 请求写 stdin 串行化（修复 `stream in use`） |
 
-## 4. 验收命令
+## 5. 验收命令
 
 ```powershell
 dotnet build src\GachaCalendar\GachaCalendar.csproj -c Release   # 0 警告 0 错误
@@ -56,9 +68,9 @@ npm run check
 - CI：`build-windows` / `identity` / `engine` / `tools` 全绿。
 - 截图：`docs/images/flyout.png`（浅色）、`flyout-dark.png`（深色）、`settings.png`。
 
-## 5. 未纳入 / 后续
+## 6. 未纳入 / 后续
 
-- 插件实验性 `newPanel`（`settings.newPanel === true` 的日期胶囊/时间轴/悬停卡片）——默认关闭，未计入本次验收；
-- 设置页颜色列 / 取色器（`gameColors`）；
+- newPanel：4 秒循环翻页、同格多档期探头展开、刷新失败横条 + 重试、主题色取色器；
+- 设置页颜色列 / 取色器（`gameColors`，将用于 newPanel 行色）；
 - 深色系统标题栏、100%/150% DPI 逐像素回归；
 - Host 运行时打包（当前开发期要求本机 Node；安装包阶段再解决）。

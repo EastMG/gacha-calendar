@@ -43,11 +43,21 @@ public partial class FlyoutWindow : Window
 		_vm = DataContext as MainViewModel;
 		if (_vm != null) _vm.PropertyChanged += OnViewModelPropertyChanged;
 		UpdateRefreshSpin();
+		UpdatePanelMode();
 	}
 
 	private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
 	{
 		if (e.PropertyName == nameof(MainViewModel.IsRefreshing)) UpdateRefreshSpin();
+		if (e.PropertyName == nameof(MainViewModel.IsNewPanel)) UpdatePanelMode();
+	}
+
+	private void UpdatePanelMode()
+	{
+		if (TableScroll == null || SchedulePanel == null) return;
+		var newPanel = _vm?.IsNewPanel == true;
+		TableScroll.Visibility = newPanel ? Visibility.Collapsed : Visibility.Visible;
+		SchedulePanel.Visibility = newPanel ? Visibility.Visible : Visibility.Collapsed;
 	}
 
 	private void UpdateRefreshSpin()

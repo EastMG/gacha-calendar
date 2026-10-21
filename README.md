@@ -48,6 +48,7 @@
 | DSH 设置页（自动刷新/条目/来源/自检/自定义） | ✅ v0.1.8 |
 | 悬停跑马灯 / 刷新旋转 / Host 串行写 | ✅ v0.1.9 |
 | 深浅色 token / 视觉验收清单 | ✅ v0.1.10（[验收清单](docs/11-DSH面板复刻验收.md)） |
+| 实验性 newPanel（日程视图） | 🚧 v0.1.12 基础版（设置页可开启） |
 | Fluent / DSH 交互细节与视觉回归 | 📋 待办（[#1](https://github.com/EastMG/gacha-calendar/issues/1) / [BACKLOG.md](BACKLOG.md)） |
 | 多显示器、轮播、安装包 | 🚧 v0.1.10+（见[路线图](docs/04-路线图.md)） |
 

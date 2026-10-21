@@ -26,6 +26,10 @@ test("normalizeConfig 补默认值并保留未知字段", () => {
 	assert.deepEqual(cfg.order, ["x"]);
 	assert.equal(cfg.autoRefresh, true);
 	assert.equal(cfg.refreshMinutes, DEFAULT_CONFIG.refreshMinutes);
+	assert.equal(cfg.newPanel, false);
+	assert.equal(normalizeConfig({ newPanel: true }).newPanel, true);
+	assert.equal(normalizeConfig({ newPanel: "true" }).newPanel, true);
+	assert.equal(normalizeConfig({ newPanel: 1 }).newPanel, true);
 	assert.equal(cfg.foo, "bar");
 });
 

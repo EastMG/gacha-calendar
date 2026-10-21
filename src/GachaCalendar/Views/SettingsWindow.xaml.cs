@@ -83,6 +83,7 @@ public partial class SettingsWindow : Window
 			_entries = ApplyOrder(_entries, order);
 
 			AutoRefreshCheck.IsChecked = _config["autoRefresh"]?.GetValue<bool>() ?? true;
+			NewPanelCheck.IsChecked = _config["newPanel"]?.GetValue<bool>() ?? false;
 			BuildRefreshOptions();
 			BuildEntries();
 			ShowError(null);
@@ -533,6 +534,18 @@ public partial class SettingsWindow : Window
 		{
 			var patch = new JsonObject { ["refreshMinutes"] = minutes };
 			await Engine.UpdateConfigAsync(patch);
+		});
+	}
+
+	private async void OnNewPanelChanged(object sender, RoutedEventArgs e)
+	{
+		if (_building || Engine is not { IsAvailable: true }) return;
+		await RunWriteAsync(async () =>
+		{
+			var patch = new JsonObject { ["newPanel"] = NewPanelCheck.IsChecked == true };
+			await Engine.UpdateConfigAsync(patch);
+			await Engine.RebuildSnapshotAsync();
+			App.Instance?.ReloadSnapshot();
 		});
 	}
 

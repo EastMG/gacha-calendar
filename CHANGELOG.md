@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v0.1.12 · 2026-10-21
+
+- 实验性 newPanel 基础版：设置页新增「实验性新版 UI（日程视图）」开关（`newPanel` 配置）
+- 新增 `ScheduleView` / `SchedulePanelVm`：日期胶囊、24小时/7天总览、近期紧迫列表、
+  悬停详情卡（大图标/剩余天数/日期/其他近期项）、14 天时间轴日程表与底部更新/刷新
+- 快照 `config.newPanel` 透传到 WPF；设置切换后 `rebuildSnapshot` 立即切换视图
+- 配置 schema / 示例配置 / 测试补 `newPanel`；版本 0.1.12
+
 ## v0.1.11 · 2026-10-21
 
 - 主面板改用 DSH 风格 8px 细滚动条，深色主题不再出现系统浅色滚动条；

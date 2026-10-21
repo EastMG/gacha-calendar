@@ -1,6 +1,6 @@
 {
 	"schemaVersion": 1,
-	"generatedAt": 1792543918660,
+	"generatedAt": 1792580436049,
 	"coreVersion": "0.12.5",
 	"config": {
 		"order": [],
@@ -13,6 +13,7 @@
 		"gameColors": {},
 		"autoRefresh": true,
 		"refreshMinutes": 1440,
+		"newPanel": false,
 		"schemaVersion": 1
 	},
 	"games": [
@@ -383,7 +384,7 @@
 	],
 	"result": {
 		"schemaVersion": 1,
-		"refreshedAt": 1792543918656,
+		"refreshedAt": 1792580436047,
 		"parserVersions": {
 			"genshin": 1,
 			"hsr": 1,
@@ -408,29 +409,29 @@
 				"event": "「往冥府的安魂歌」",
 				"eventDates": "09-23 10:00 ~ 11-03 14:59",
 				"eventDatesRaw": "09-23 10:00 ~ 11-03 14:59",
-				"eventHover": "「虹旅藏金·耀星烁熠」   09-28 00:00 ~ 10-22 06:00\n「判测胜券本征」   10-12 10:00 ~ 10-23 09:59\n「砺行修远」   08-10 04:00 ~ 11-02 03:59\n「绮星盛会」   10-01 12:00 ~ 11-03 04:00\n「绮星盛会」   10-01 12:00 ~ 11-03 04:00\n「无神怜爱的冻土」   08-12 10:00 ~ 11-03 14:59\n「巡历雪境，凝铸锋锐」   09-23 10:00 ~ 11-03 14:59\n「桌上剧团·冒险的前夜会」   09-23 10:00 ~ 11-03 14:59\n「往冥府的安魂歌」   09-23 10:00 ~ 11-03 14:59\n「绮衣珍赏·晴暖」   09-23 10:00 ~ 11-04 05:59",
+				"eventHover": "「虹旅藏金·耀星烁熠」   09-28 00:00 ~ 10-22 06:00\n「判测胜券本征」   10-12 10:00 ~ 10-23 09:59\n「砺行修远」   08-10 04:00 ~ 11-02 03:59\n「无忧无虑大雪仗」   10-21 10:00 ~ 11-02 03:59\n「绮星盛会」   10-01 12:00 ~ 11-03 04:00\n「绮星盛会」   10-01 12:00 ~ 11-03 04:00\n「无神怜爱的冻土」   08-12 10:00 ~ 11-03 14:59\n「巡历雪境，凝铸锋锐」   09-23 10:00 ~ 11-03 14:59\n「桌上剧团·冒险的前夜会」   09-23 10:00 ~ 11-03 14:59\n「往冥府的安魂歌」   09-23 10:00 ~ 11-03 14:59\n「绮衣珍赏·晴暖」   09-23 10:00 ~ 11-04 05:59",
 				"gachaFail": null,
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792543918656
+				"okAt": 1792580436047
 			},
 			"hsr": {
 				"name": "崩坏：星穹铁道",
-				"banner": "「韶艾裁英」角色活动跃迁",
-				"roles": "真珠（欢愉•冰）、绯英（欢愉•物理）",
-				"bannerDates": "09-28 03:59 ~ 10-21 11:59",
-				"bannerDatesRaw": "4.6版本更新后 ~ 10-21 11:59",
-				"bannerHover": "「韶艾裁英」角色活动跃迁：绯英（欢愉•物理）\n4.6版本更新后 ~ 10-21 11:59\n「沧海萃珠」角色活动跃迁：真珠（欢愉•冰）\n4.6版本更新后 ~ 11-11 06:00",
+				"banner": "「我身即刃」角色活动跃迁",
+				"roles": "千冶•刃（虚无•火）、真珠（欢愉•冰）",
+				"bannerDates": "10-21 12:00 ~ 11-11 06:00",
+				"bannerDatesRaw": "10-21 12:00 ~ 11-11 06:00",
+				"bannerHover": "「我身即刃」角色活动跃迁：千冶•刃（虚无•火）\n10-21 12:00 ~ 11-11 06:00\n「沧海萃珠」角色活动跃迁：真珠（欢愉•冰）\n4.6版本更新后 ~ 11-11 06:00",
 				"event": "「位面分裂」第二十六期",
 				"eventDates": "10-12 04:00 ~ 10-25 03:59",
 				"eventDatesRaw": "10-12 04:00 ~ 10-25 03:59",
-				"eventHover": "「位面分裂」第二十六期   10-12 04:00 ~ 10-25 03:59\n「镇伏『贪饕』，汇聚愿力」   09-28 04:00 ~ 11-10 15:00\n「星际幻宠」乐园   09-28 04:00 ~ 11-10 15:00\n「爱，幽灵与机器人」   09-28 04:00 ~ 11-11 03:59\n「巡星之礼」第二十七期   4.6版本更新后 ~ 11-11 03:59\n「乐子神智取米哈游」   09-28 04:00 ~ 11-11 06:00\n以及常驻活动 12 项",
+				"eventHover": "「位面分裂」第二十六期   10-12 04:00 ~ 10-25 03:59\n「镇伏『贪饕』，汇聚愿力」   09-28 04:00 ~ 11-10 15:00\n「星际幻宠」乐园   09-28 04:00 ~ 11-10 15:00\n「爱，幽灵与机器人」   09-28 04:00 ~ 11-11 03:59\n「星际和平盛典：一镜到底」   10-21 12:00 ~ 11-11 03:59\n「巡星之礼」第二十七期   4.6版本更新后 ~ 11-11 03:59\n「乐子神智取米哈游」   09-28 04:00 ~ 11-11 06:00\n以及常驻活动 12 项",
 				"gachaFail": null,
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792543918656
+				"okAt": 1792580436047
 			},
 			"zzz": {
 				"name": "绝区零",
@@ -447,7 +448,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792543918656
+				"okAt": 1792580436047
 			},
 			"bh3": {
 				"name": "崩坏3",
@@ -481,7 +482,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792543918656
+				"okAt": 1792580436047
 			},
 			"arknights": {
 				"name": "明日方舟",
@@ -498,7 +499,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792543918656
+				"okAt": 1792580436047
 			},
 			"endfield": {
 				"name": "明日方舟：终末地",
@@ -515,7 +516,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792543918656
+				"okAt": 1792580436047
 			},
 			"ba-cn": {
 				"name": "蔚蓝档案·国服",
@@ -532,7 +533,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792543918656
+				"okAt": 1792580436047
 			},
 			"ba-global": {
 				"name": "蔚蓝档案·国际服",
@@ -549,24 +550,26 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792543918656
+				"okAt": 1792580436047
 			},
 			"ba-jp": {
 				"name": "蔚蓝档案·日服",
-				"banner": "我们是神秘学研究会！ ～学院的不思议与古老的咒文～",
-				"roles": "",
-				"bannerDates": "10-07 00:00 ~ 10-21 00:00",
-				"bannerDatesRaw": "",
-				"bannerHover": "",
-				"event": "我们是超自然研究会！复刻",
-				"eventDates": "10-07 00:00 ~ 10-21 00:00",
+				"banner": "雪の下に咲く二十一日",
+				"roles": "トモエ(チーパオ)、マリナ(チーパオ)、カンナ、ノア",
+				"bannerDates": "10-21 11:00 ~ 10-28 10:59",
+				"bannerDatesRaw": "2026年10月21日(水) 11:00 ~ 2026年10月28日(水) 10:59",
+				"bannerHover": "雪の下に咲く二十一日：トモエ(チーパオ)\n雪の上に立つ三日天下：マリナ(チーパオ)\n正義は珈琲のように甘く：カンナ\n曇り硝子に描く刹那：ノア\n10-21 11:00 ~ 10-28 10:59",
+				"event": "",
+				"eventDates": "",
 				"eventDatesRaw": "",
 				"eventHover": "",
 				"gachaFail": null,
-				"eventFail": null,
+				"eventFail": {
+					"kind": "nomatch"
+				},
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792543918656
+				"okAt": 0
 			},
 			"bandori": {
 				"name": "BanG Dream！少女乐团派对·国服",
@@ -583,7 +586,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792543918656
+				"okAt": 1792580436047
 			},
 			"ournotes": {
 				"name": "BanG Dream！OurNotes·日服",
@@ -634,7 +637,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792543918656
+				"okAt": 1792580436047
 			},
 			"zspms": {
 				"name": "战双帕弥什",
@@ -651,7 +654,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792543918656
+				"okAt": 1792580436047
 			},
 			"czn": {
 				"name": "卡厄斯梦境",
@@ -713,15 +716,15 @@
 				"bannerDates": "10-20 12:00 ~ 10-31 11:59",
 				"bannerDatesRaw": "10/20 12:00 ～ 10/31 11:59",
 				"bannerHover": "",
-				"event": "赛事活动“英杰集结战”开始团队编成！",
-				"eventDates": "10-18 12:00 ~ 10-27 11:59",
-				"eventDatesRaw": "10/18 12:00 ～ 10/27 11:59",
-				"eventHover": "",
+				"event": "赛事活动“英杰集结战”",
+				"eventDates": "10-21 12:00 ~ 10-30 11:59",
+				"eventDatesRaw": "10/21 12:00 ～ 10/30 11:59",
+				"eventHover": "团队编成期间   10-18 12:00 ~ 10-27 11:59\n主要赛事活动期间   10-21 12:00 ~ 10-27 11:59\n活动期间   10-21 12:00 ~ 10-30 11:59",
 				"gachaFail": null,
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792543918656
+				"okAt": 1792580436047
 			},
 			"uma-jp": {
 				"name": "赛马娘·日服",
@@ -729,7 +732,7 @@
 				"roles": "",
 				"bannerDates": "10-13 12:00 ~ 10-26 11:59",
 				"bannerDatesRaw": "10/13 12:00 ～ 10/26 11:59",
-				"bannerHover": "",
+				"bannerHover": "育成ウマ娘が新登場！セレクトピックアップサポートカードガチャも開催！\n【予告】育成ウマ娘が新登場！セレクトピックアップサポートカードガチャも開催決定！\n10-13 12:00 ~ 10-26 11:59",
 				"event": "レースイベント「チャンピオンズミーティング CLASSIC」参加リーグ選択開始！",
 				"eventDates": "10-20 12:00 ~ 10-22 11:59",
 				"eventDatesRaw": "10/20 12:00 ～ 10/22 11:59",
@@ -738,7 +741,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792543918656
+				"okAt": 1792580436047
 			},
 			"uma-global": {
 				"name": "赛马娘·国际服",
@@ -755,7 +758,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792543918656
+				"okAt": 1792580436047
 			},
 			"p5x": {
 				"name": "女神异闻录：夜幕魅影",
@@ -772,7 +775,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792543918656
+				"okAt": 1792580436047
 			},
 			"nte": {
 				"name": "异环",
@@ -789,7 +792,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792543918656
+				"okAt": 1792580436047
 			},
 			"gf2": {
 				"name": "少女前线2：追放",
@@ -806,7 +809,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792543918656
+				"okAt": 1792580436047
 			},
 			"fgo": {
 				"name": "Fate/Grand Order",
@@ -823,26 +826,24 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792543918656
+				"okAt": 1792580436047
 			},
 			"pjsk": {
 				"name": "初音未来：缤纷舞台·国服",
-				"banner": "“歌剧院”服装特惠招募",
+				"banner": "映在眼中的绣球花招募",
 				"roles": "",
-				"bannerDates": "10-17 12:00 ~ 10-31 11:59",
-				"bannerDatesRaw": "10-17 12:00 ~ 10-31 11:59",
-				"bannerHover": "Follow my heart招募\n10-11 12:00 ~ 10-21 11:59\n[复刻]The Party Of Blast!!招募\n10-10 12:00 ~ 10-24 11:59\n“歌剧院”服装特惠招募\n10-17 12:00 ~ 10-31 11:59\n[1.5周年纪念]免费招募\n09-27 00:00 ~ 11-24 23:59\n[邀请朋友]★4成员必出招募\n09-24 12:00 ~ 11-30 23:59",
-				"event": "",
-				"eventDates": "",
-				"eventDatesRaw": "",
+				"bannerDates": "10-21 12:00 ~ 10-31 11:59",
+				"bannerDatesRaw": "10-21 12:00 ~ 10-31 11:59",
+				"bannerHover": "[复刻]The Party Of Blast!!招募\n10-10 12:00 ~ 10-24 11:59\n“歌剧院”服装特惠招募\n10-17 12:00 ~ 10-31 11:59\n映在眼中的绣球花招募\n10-21 12:00 ~ 10-31 11:59\n[1.5周年纪念]免费招募\n09-27 00:00 ~ 11-24 23:59\n[邀请朋友]★4成员必出招募\n09-24 12:00 ~ 11-30 23:59",
+				"event": "交织的色彩一如当初",
+				"eventDates": "10-21 15:00 ~ 10-29 20:59",
+				"eventDatesRaw": "10-21 15:00 ~ 10-29 20:59",
 				"eventHover": "",
 				"gachaFail": null,
-				"eventFail": {
-					"kind": "nomatch"
-				},
+				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 0
+				"okAt": 1792580436047
 			},
 			"stellasora": {
 				"name": "星塔旅人",
@@ -859,7 +860,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792543918656
+				"okAt": 1792580436047
 			},
 			"r1999": {
 				"name": "重返未来：1999",
@@ -876,7 +877,7 @@
 				"eventFail": null,
 				"gachaStale": false,
 				"eventStale": false,
-				"okAt": 1792543918656
+				"okAt": 1792580436047
 			}
 		}
 	}

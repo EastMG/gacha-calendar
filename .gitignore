@@ -29,3 +29,6 @@ docs/images/_*
 
 data/config.json
 
+
+data/cache.json
+

@@ -28,8 +28,8 @@
 | 设置页实验开关（默认关） | `NewPanelCheck` → `updateConfig({newPanel})` + 快照透传 | 代码；开关切换后 `rebuildSnapshot` |
 | 日期胶囊 + 24小时/7天总览 | `SchedulePanelVm.GlanceText` / `DatePill` | 代码 |
 | 近期紧迫列表（前 10 + 展开分页） | `Urgent` + `ToggleExpand`；>10 条每 4 秒循环、悬停暂停 | `flyout-newpanel-100.png` |
-| 悬停详情卡 | `Focus` + `FocusOthers`（大图标/剩余天数/日期/其他项） | 同上 |
-| 14 天时间轴日程表 | 158px 游戏列 + 卡池/活动两栏 + 14 格条形 | 同上 |
+| 悬停详情卡 | `Focus` + `FocusOthers`（显示池/活动名、大图标、剩余天数、日期、其他项） | 同上 |
+| 14 天时间轴日程表 | 158px 游戏列 + 卡池/活动两栏 + 14 格条形；活动条混浅色 | 同上 |
 | 刷新失败横条 + 重试 | `FailureText` / `FailureTip` + 重试按钮 | 代码 |
 | 底栏状态/上次更新/刷新 | `ScrapeText` / `UpdatedAgo` / 刷新按钮 | 同上 |
 | 同格多档期探头展开 | 未实现 | 下一轮 |
@@ -76,7 +76,7 @@ npm run check
 ```
 
 - CI：`build-windows` / `identity` / `engine` / `tools` 全绿。
-- 截图：`docs/images/flyout.png`（浅色）、`flyout-dark.png`（深色）、`settings.png`。
+- `docs/images/flyout.png`、`flyout-dark.png`、`settings.png`（100% 渲染）/`settings-150.png`。
 
 ## 7. 未纳入 / 后续
 

@@ -8,6 +8,7 @@ using GachaCalendar.Models;
 using GachaCalendar.Services;
 using Brush = System.Windows.Media.Brush;
 using Brushes = System.Windows.Media.Brushes;
+using Color = System.Windows.Media.Color;
 
 namespace GachaCalendar.ViewModels;
 
@@ -33,6 +34,7 @@ public sealed class SchedulePanelVm : INotifyPropertyChanged
 	private readonly DispatcherTimer _cycleTimer;
 	private int _page;
 	private bool _hovered;
+	private bool _visible = true;
 
 	public SchedulePanelVm()
 	{
@@ -54,7 +56,7 @@ public sealed class SchedulePanelVm : INotifyPropertyChanged
 	public bool HasFailure => FailureText.Length > 0;
 	public ScheduleItemVm? Focus { get => _focus; private set => Set(ref _focus, value); }
 	public string FocusGameName => Focus?.GameName ?? "";
-	public string FocusTitle => Focus?.Show ?? "";
+	public string FocusTitle => Focus?.Title is { Length: > 0 } title ? title : (Focus?.Show ?? "");
 	public string FocusWhen => Focus?.FocusWhen ?? "";
 	public string FocusDates => Focus?.DatesText ?? "";
 	public string FocusTip => Focus?.Tip ?? "";
@@ -104,6 +106,12 @@ public sealed class SchedulePanelVm : INotifyPropertyChanged
 	public void SetHovered(bool hovered)
 	{
 		_hovered = hovered;
+	}
+
+	public void SetVisible(bool visible)
+	{
+		_visible = visible;
+		UpdateTimer();
 	}
 
 	private void NextPage()
@@ -179,7 +187,7 @@ public sealed class SchedulePanelVm : INotifyPropertyChanged
 
 	private void UpdateTimer()
 	{
-		if (CanExpand && !_expanded)
+		if (_visible && CanExpand && !_expanded)
 		{
 			if (!_cycleTimer.IsEnabled) _cycleTimer.Start();
 		}
@@ -247,6 +255,7 @@ public sealed class SchedulePanelVm : INotifyPropertyChanged
 			else if (_now > end) state = "ended";
 			else state = "live";
 		}
+		var gameColor = ColorFor(game, _snapshot?.Config.GameColors);
 		var item = new ScheduleItemVm(game)
 		{
 			IsGacha = isGacha,
@@ -259,7 +268,8 @@ public sealed class SchedulePanelVm : INotifyPropertyChanged
 			State = state,
 			Fail = isGacha ? rec.GachaFail : rec.EventFail,
 			Stale = isGacha ? rec.GachaStale : rec.EventStale,
-			GameColor = ColorFor(game, _snapshot?.Config.GameColors),
+			GameColor = gameColor,
+			BarColor = isGacha ? gameColor : Lighten(gameColor),
 			Tip = BuildTip(game, rec, isGacha),
 		};
 		item.BuildBars(_now);
@@ -307,7 +317,7 @@ public sealed class SchedulePanelVm : INotifyPropertyChanged
 		FocusOthers.Clear();
 		if (Focus != null)
 		{
-			foreach (var item in _urgentCache.Where(x => !ReferenceEquals(x, Focus)).Take(3))
+			foreach (var item in _urgentCache.Where(x => !ReferenceEquals(x, Focus) && x.Game.Id != Focus.Game.Id).Take(3))
 				FocusOthers.Add(item);
 		}
 		Raise(nameof(FocusGameName));
@@ -328,6 +338,18 @@ public sealed class SchedulePanelVm : INotifyPropertyChanged
 		var hash = 0;
 		foreach (var ch in game.Name) hash = (hash * 31 + ch) & 0x7fffffff;
 		return Palette[hash % Palette.Length];
+	}
+
+	/// <summary>活动条用更浅的同色，区分卡池/活动（对齐 DSH 的 42% 混白）。</summary>
+	private static Brush Lighten(Brush brush)
+	{
+		if (brush is not SolidColorBrush solid) return brush;
+		var c = solid.Color;
+		var mix = 0.42;
+		return new SolidColorBrush(Color.FromRgb(
+			(byte)(c.R + (255 - c.R) * mix),
+			(byte)(c.G + (255 - c.G) * mix),
+			(byte)(c.B + (255 - c.B) * mix)));
 	}
 
 	private static bool IsHex(string value) =>
@@ -368,6 +390,7 @@ public sealed class ScheduleItemVm : INotifyPropertyChanged
 	public SideFail? Fail { get; init; }
 	public bool Stale { get; init; }
 	public Brush GameColor { get; init; } = Brushes.SlateGray;
+	public Brush BarColor { get; init; } = Brushes.SlateGray;
 	public string Tip { get; init; } = "";
 	public ObservableCollection<BarCellVm> Bars { get; } = new();
 
@@ -435,7 +458,7 @@ public sealed class ScheduleItemVm : INotifyPropertyChanged
 				Filled = filled,
 				Today = day == today,
 				State = State,
-				Color = GameColor,
+				Color = BarColor,
 				Day = day.Day,
 			});
 		}

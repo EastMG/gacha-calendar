@@ -87,7 +87,7 @@
 												<ColumnDefinition Width="*" />
 												<ColumnDefinition Width="Auto" />
 											</Grid.ColumnDefinitions>
-											<Grid Width="24" Height="24" HorizontalAlignment="Center" VerticalAlignment="Center">
+											<Grid Width="26" Height="26" HorizontalAlignment="Center" VerticalAlignment="Center">
 												<Border CornerRadius="5" Background="{Binding GameColor}">
 													<Border.Style>
 														<Style TargetType="Border">
@@ -160,8 +160,21 @@
 													   VerticalAlignment="Center" Margin="3,0" TextTrimming="CharacterEllipsis"
 													   ToolTip="{Binding Tip}" />
 											<TextBlock Grid.Column="4" Text="{Binding WhenText}" FontSize="12" FontWeight="SemiBold"
-													   VerticalAlignment="Center" Margin="6,0,0,0"
-													   Foreground="{DynamicResource FgDim}" />
+													   VerticalAlignment="Center" Margin="6,0,0,0">
+												<TextBlock.Style>
+													<Style TargetType="TextBlock">
+														<Setter Property="Foreground" Value="{DynamicResource FgDim}" />
+														<Style.Triggers>
+															<DataTrigger Binding="{Binding Urgency}" Value="1">
+																<Setter Property="Foreground" Value="{DynamicResource Danger}" />
+															</DataTrigger>
+															<DataTrigger Binding="{Binding Urgency}" Value="2">
+																<Setter Property="Foreground" Value="{DynamicResource Warn}" />
+															</DataTrigger>
+														</Style.Triggers>
+													</Style>
+												</TextBlock.Style>
+											</TextBlock>
 										</Grid>
 									</Border>
 								</DataTemplate>
@@ -186,8 +199,8 @@
 					<Border Grid.Column="1" Background="{DynamicResource ChipBg}" BorderBrush="{DynamicResource PanelBorder}"
 							BorderThickness="1" CornerRadius="12" Padding="10" VerticalAlignment="Stretch">
 						<StackPanel>
-							<Grid Width="72" Height="72" HorizontalAlignment="Center" Margin="0,2,0,0">
-								<Border CornerRadius="36" Background="{Binding Focus.GameColor}">
+							<Grid Width="64" Height="64" HorizontalAlignment="Center" Margin="0,2,0,0">
+								<Border CornerRadius="32" Background="{Binding Focus.GameColor}">
 									<Border.Style>
 										<Style TargetType="Border">
 											<Setter Property="Visibility" Value="Visible" />
@@ -198,7 +211,7 @@
 											</Style.Triggers>
 										</Style>
 									</Border.Style>
-									<TextBlock Text="{Binding Focus.IconGlyph}" FontSize="24" Foreground="White"
+									<TextBlock Text="{Binding Focus.IconGlyph}" FontSize="22" Foreground="White"
 											   HorizontalAlignment="Center" VerticalAlignment="Center" />
 								</Border>
 								<Image Source="{Binding Focus.Icon}" Stretch="UniformToFill">
@@ -213,14 +226,14 @@
 										</Style>
 									</Image.Style>
 									<Image.Clip>
-										<EllipseGeometry Center="36,36" RadiusX="36" RadiusY="36" />
+										<EllipseGeometry Center="32,32" RadiusX="32" RadiusY="32" />
 									</Image.Clip>
 								</Image>
 							</Grid>
 							<TextBlock Text="{Binding FocusGameName}" FontSize="13" FontWeight="SemiBold" HorizontalAlignment="Center"
 									   Margin="0,7,0,0" TextTrimming="CharacterEllipsis" />
 							<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,2,0,0">
-								<TextBlock Text="{Binding Focus.FocusNumber}" FontSize="32" FontWeight="SemiBold" />
+								<TextBlock Text="{Binding Focus.FocusNumber}" FontSize="28" FontWeight="SemiBold" />
 								<TextBlock Text="{Binding Focus.FocusUnit}" FontSize="11" Foreground="{DynamicResource FgDim}"
 										   VerticalAlignment="Bottom" Margin="4,0,0,5" />
 							</StackPanel>
@@ -243,7 +256,7 @@
 											</Grid>
 											<StackPanel Grid.Column="1" Margin="5,0,4,0">
 												<TextBlock Text="{Binding GameName}" FontSize="11" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
-												<TextBlock Text="{Binding Show}" FontSize="10" Foreground="{DynamicResource FgFaint}" TextTrimming="CharacterEllipsis" />
+												<TextBlock Text="{Binding Title}" FontSize="10" Foreground="{DynamicResource FgFaint}" TextTrimming="CharacterEllipsis" />
 											</StackPanel>
 											<TextBlock Grid.Column="2" Text="{Binding WhenText}" FontSize="10" Foreground="{DynamicResource FgDim}"
 													   VerticalAlignment="Center" />

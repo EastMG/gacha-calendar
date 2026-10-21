@@ -58,6 +58,7 @@ public partial class FlyoutWindow : Window
 		var newPanel = _vm?.IsNewPanel == true;
 		TableScroll.Visibility = newPanel ? Visibility.Collapsed : Visibility.Visible;
 		SchedulePanel.Visibility = newPanel ? Visibility.Visible : Visibility.Collapsed;
+		_vm?.Schedule.SetVisible(newPanel);
 	}
 
 	private void UpdateRefreshSpin()

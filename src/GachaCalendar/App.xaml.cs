@@ -110,6 +110,7 @@ public partial class App : System.Windows.Application
 				Directory.CreateDirectory(outDir);
 				if (_flyout != null) CaptureWindow(_flyout, outDir, "flyout");
 				if (_dock != null) CaptureWindow(_dock, outDir, "dock");
+				if (_settingsWindow is { IsVisible: true }) CaptureWindow(_settingsWindow, outDir, "settings");
 			}
 			catch (Exception ex)
 			{
@@ -326,6 +327,9 @@ public partial class App : System.Windows.Application
 			_settingsWindow = new SettingsWindow();
 			_settingsWindow.Closed += (_, _) => _settingsWindow = null;
 		}
+		var area = SystemParameters.WorkArea;
+		_settingsWindow.Width = Math.Min(780, Math.Max(720, area.Width - 60));
+		_settingsWindow.Height = Math.Min(780, Math.Max(600, area.Height - 60));
 		_settingsWindow.LoadFromSettings();
 		_settingsWindow.Show();
 		_settingsWindow.Activate();

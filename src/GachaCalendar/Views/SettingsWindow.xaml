@@ -54,6 +54,57 @@
 				</Setter.Value>
 			</Setter>
 		</Style>
+
+		<!-- 设置页控件统一到 DSH 的浅色卡片观感 -->
+		<Style TargetType="ComboBox">
+			<Setter Property="Height" Value="26" />
+			<Setter Property="Padding" Value="6,2" />
+			<Setter Property="FontSize" Value="12" />
+			<Setter Property="Background" Value="{DynamicResource PanelBg}" />
+			<Setter Property="Foreground" Value="{DynamicResource Fg}" />
+			<Setter Property="BorderBrush" Value="{DynamicResource PanelBorder}" />
+			<Setter Property="BorderThickness" Value="1" />
+			<Setter Property="VerticalContentAlignment" Value="Center" />
+		</Style>
+		<Style TargetType="TextBox">
+			<Setter Property="Height" Value="26" />
+			<Setter Property="Padding" Value="6,2" />
+			<Setter Property="FontSize" Value="12" />
+			<Setter Property="Background" Value="{DynamicResource PanelBg}" />
+			<Setter Property="Foreground" Value="{DynamicResource Fg}" />
+			<Setter Property="BorderBrush" Value="{DynamicResource PanelBorder}" />
+			<Setter Property="BorderThickness" Value="1" />
+			<Setter Property="VerticalContentAlignment" Value="Center" />
+		</Style>
+		<Style TargetType="CheckBox">
+			<Setter Property="Foreground" Value="{DynamicResource Fg}" />
+			<Setter Property="FontSize" Value="12" />
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="CheckBox">
+						<StackPanel Orientation="Horizontal" Background="Transparent">
+							<Border x:Name="Box" Width="15" Height="15" CornerRadius="4"
+									Background="{DynamicResource PanelBg}" BorderBrush="{DynamicResource PanelBorder}" BorderThickness="1">
+								<Path x:Name="Check" Data="M2,7 L5,10 L12,3" Stroke="White" StrokeThickness="1.7"
+									  StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
+									  Visibility="Collapsed" Margin="2" />
+							</Border>
+							<ContentPresenter Margin="7,0,0,0" VerticalAlignment="Center" RecognizesAccessKey="True" />
+						</StackPanel>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsMouseOver" Value="True">
+								<Setter TargetName="Box" Property="BorderBrush" Value="{DynamicResource Accent}" />
+							</Trigger>
+							<Trigger Property="IsChecked" Value="True">
+								<Setter TargetName="Box" Property="Background" Value="{DynamicResource Accent}" />
+								<Setter TargetName="Box" Property="BorderBrush" Value="{DynamicResource Accent}" />
+								<Setter TargetName="Check" Property="Visibility" Value="Visible" />
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
 	</Window.Resources>
 
 	<Grid Margin="20">

@@ -691,7 +691,8 @@ public partial class SettingsWindow : Window
 			FullOpen = true,
 			Color = System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B),
 		};
-		if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
+		var owner = new NativeWindow(new System.Windows.Interop.WindowInteropHelper(this).Handle);
+		if (dialog.ShowDialog(owner) != System.Windows.Forms.DialogResult.OK) return;
 		var c = dialog.Color;
 		var hex = $"#{c.R:X2}{c.G:X2}{c.B:X2}";
 		await RunWriteAsync(async () =>
@@ -755,5 +756,11 @@ public partial class SettingsWindow : Window
 			return ch.ToString();
 		}
 		return "?";
+	}
+
+	private sealed class NativeWindow : System.Windows.Forms.IWin32Window
+	{
+		public NativeWindow(IntPtr handle) => Handle = handle;
+		public IntPtr Handle { get; }
 	}
 }

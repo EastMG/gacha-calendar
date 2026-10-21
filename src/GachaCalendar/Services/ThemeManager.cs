@@ -17,28 +17,30 @@ public static class ThemeManager
 		var res = System.Windows.Application.Current.Resources;
 		if (IsLight)
 		{
-			Set(res, "PanelBg", "#FAFFFFFF");
-			Set(res, "PanelBorder", "#FFE2E5EA");
-			Set(res, "Fg", "#FF1A1D21");
+			// 对齐 DSH 面板的浅色 token：白底、#1F2329 主文字、#6B7280 次文字、#8A9099 弱文字、
+			// #E5E6EB 分隔线、#3B5BFD 业务蓝。
+			Set(res, "PanelBg", "#FFFFFFFF");
+			Set(res, "PanelBorder", "#FFE5E6EB");
+			Set(res, "Fg", "#FF1F2329");
 			Set(res, "FgDim", "#FF6B7280");
-			Set(res, "FgFaint", "#FF9CA3AF");
-			Set(res, "Accent", "#FF2563EB");
+			Set(res, "FgFaint", "#FF8A9099");
+			Set(res, "Accent", "#FF3B5BFD");
 			Set(res, "Danger", "#FFD9484D");
 			Set(res, "Warn", "#FFB45309");
-			Set(res, "ChipBg", "#FFF2F4F7");
+			Set(res, "ChipBg", "#FFF7F8FA");
 			Set(res, "ChipBorder", "#14000000");
 			Set(res, "DockBg", "#F2FFFFFF");
 			Set(res, "HoverBg", "#0D000000");
-			Set(res, "Divider", "#FFF0F1F3");
+			Set(res, "Divider", "#FFE5E6EB");
 		}
 		else
 		{
-			Set(res, "PanelBg", "#F21F2124");
+			Set(res, "PanelBg", "#FF1F2124");
 			Set(res, "PanelBorder", "#FF35383D");
 			Set(res, "Fg", "#FFE8EAED");
 			Set(res, "FgDim", "#FF9AA0A6");
 			Set(res, "FgFaint", "#FF6B7075");
-			Set(res, "Accent", "#FF7AB0FF");
+			Set(res, "Accent", "#FF7A9BFF");
 			Set(res, "Danger", "#FFFF7B7B");
 			Set(res, "Warn", "#FFE0A458");
 			Set(res, "ChipBg", "#14FFFFFF");
@@ -58,6 +60,9 @@ public static class ThemeManager
 
 	private static bool ReadIsLight()
 	{
+		var forced = Environment.GetEnvironmentVariable("GACHA_CALENDAR_THEME");
+		if (string.Equals(forced, "light", StringComparison.OrdinalIgnoreCase)) return true;
+		if (string.Equals(forced, "dark", StringComparison.OrdinalIgnoreCase)) return false;
 		try
 		{
 			using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");

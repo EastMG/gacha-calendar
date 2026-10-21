@@ -61,6 +61,12 @@ test("createFileService：配置持久化 + refresh 写出 snapshot", async () =
 		const onDisk = JSON.parse(fs.readFileSync(service.paths.snapshot, "utf8"));
 		assert.deepEqual(onDisk.config.hidden, ["a"]);
 		assert.deepEqual(service.getSnapshot().games.map((g) => g.id), snap.games.map((g) => g.id));
+
+		const diag = service.getDiagnostics();
+		assert.equal(diag.ok, true);
+		assert.equal(diag.files.snapshot.exists, true);
+		assert.equal(service.validateSnapshot().ok, true);
+		assert.deepEqual(service.validateConfig(), []);
 	} finally {
 		fs.rmSync(dir, { recursive: true, force: true });
 	}

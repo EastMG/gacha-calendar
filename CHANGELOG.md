@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v0.1.3 · 2026-10-21
+
+- 新增 `validate.mjs`：snapshot 契约校验（字段类型、失败三态、重复 id、时间戳、可见条目缺记录 warning）
+- 新增 `diagnostics.mjs` 与 `service.getDiagnostics()`：配置 / 快照 / 文件 / 调度状态只读诊断
+- Host 新增 `getDiagnostics` / `validateConfig` / `validateSnapshot`
+- 新增壳无关 CLI：`status` / `config get|set` / `refresh [--if-due]` / `validate` / `diagnostics` / `info`
+- 测试 18 → 21 项；`npm run check` 覆盖新增模块
+
 ## v0.1.2 · 2026-10-21
 
 - 新增刷新调度：`service.refreshIfDue()` 按配置与上次成功时间判断是否该刷，外壳不再自己算 due

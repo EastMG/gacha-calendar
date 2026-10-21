@@ -15,6 +15,9 @@ function makeService() {
 		refresh: async () => ({ refreshed: true }),
 		refreshIfDue: async () => ({ refreshed: false, reason: "not-due", status: { due: false } }),
 		getStatus: () => ({ due: false, failures: 0 }),
+		getDiagnostics: () => ({ ok: true, warnings: [] }),
+		validateConfig: () => [],
+		validateSnapshot: () => ({ ok: true, errors: [], warnings: [] }),
 		getSnapshot: () => ({ snapshot: true }),
 		selfCheck: async () => ({ summary: {} }),
 	};
@@ -33,6 +36,9 @@ test("dispatch：hello / getConfig / updateConfig / refresh / 未知方法", asy
 	assert.deepEqual(await dispatch(service, "refresh"), { refreshed: true });
 	assert.deepEqual(await dispatch(service, "refreshIfDue"), { refreshed: false, reason: "not-due", status: { due: false } });
 	assert.deepEqual(await dispatch(service, "getStatus"), { due: false, failures: 0 });
+	assert.deepEqual(await dispatch(service, "getDiagnostics"), { ok: true, warnings: [] });
+	assert.deepEqual(await dispatch(service, "validateConfig", { config: { hidden: [] } }), { errors: [] });
+	assert.deepEqual(await dispatch(service, "validateSnapshot"), { ok: true, errors: [], warnings: [] });
 	assert.deepEqual(await dispatch(service, "shutdown"), { bye: true });
 
 	await assert.rejects(() => dispatch(service, "nope"), (err) => err.code === "unknown-method");

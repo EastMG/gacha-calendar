@@ -17,10 +17,12 @@ import {
 	toEngineSettings,
 	normalizeConfig,
 	mergeConfig,
-	validateConfig,
+	validateConfig as validateConfigValue,
 	writeFileAtomic,
 } from "./config.mjs";
 import { buildSnapshot } from "./snapshot.mjs";
+import { buildDiagnostics } from "./diagnostics.mjs";
+import { validateSnapshot as validateSnapshotValue } from "./validate.mjs";
 import { createNodeTransport } from "./transport.mjs";
 
 const CONFIG_KEYS = new Set([
@@ -205,7 +207,7 @@ export function createFileService(options) {
 		/** @param {object|string} patch 对象补丁；字符串会先按 JSON 解析 */
 		updateConfig(patch) {
 			const value = typeof patch === "string" ? JSON.parse(patch) : patch;
-			const errors = validateConfig(value);
+			const errors = validateConfigValue(value);
 			if (errors.length) {
 				const err = new Error("配置校验失败：" + errors.join("；"));
 				err.code = "invalid-config";
@@ -257,6 +259,29 @@ export function createFileService(options) {
 		},
 		getStatus() {
 			return getStatus();
+		},
+		/** 只读校验当前配置；传值则校验该值。 */
+		validateConfig(value) {
+			return validateConfigValue(value === undefined ? config : value);
+		},
+		/** 只读校验当前 snapshot 文件。 */
+		validateSnapshot() {
+			const snapshot = readJson(paths.snapshot, null);
+			return snapshot
+				? validateSnapshotValue(snapshot)
+				: { ok: false, errors: ["snapshot.json 不存在"], warnings: [] };
+		},
+		/** 只读诊断（配置 + 快照 + 文件 + 调度状态）。 */
+		getDiagnostics() {
+			const snapshot = readJson(paths.snapshot, null);
+			return buildDiagnostics({
+				dataDir,
+				paths,
+				coreVersion,
+				config: normalizeConfig(config),
+				snapshot,
+				schedule: getStatus(),
+			});
 		},
 		/** 最近一次写入的 snapshot；没有则返回 null。 */
 		getSnapshot() {

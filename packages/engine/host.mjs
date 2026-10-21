@@ -12,7 +12,8 @@
 //   错误  { "id": 1, "ok": false, "error": { "code": "...", "message": "..." } }
 //
 // 方法：hello / getConfig / updateConfig / listGames / getCached /
-//       refresh / refreshIfDue / getStatus / getSnapshot / selfCheck / shutdown
+//       refresh / refreshIfDue / getStatus / getDiagnostics / validateConfig /
+//       validateSnapshot / getSnapshot / selfCheck / shutdown
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -48,6 +49,21 @@ export async function dispatch(service, method, params = {}) {
 			return service.refreshIfDue();
 		case "getStatus":
 			return service.getStatus();
+		case "getDiagnostics":
+			return service.getDiagnostics();
+		case "validateConfig": {
+			const value =
+				params && typeof params === "object"
+					? "config" in params
+						? params.config
+						: Object.keys(params).length > 0
+							? params
+							: undefined
+					: params;
+			return { errors: service.validateConfig(value) };
+		}
+		case "validateSnapshot":
+			return service.validateSnapshot();
 		case "getSnapshot":
 			return service.getSnapshot();
 		case "selfCheck":

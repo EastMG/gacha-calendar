@@ -13,7 +13,7 @@
 //
 // 方法：hello / fetchBinary / getConfig / updateConfig / importConfig / listGames / listEntries /
 //       setEntryVisibility / setOrder / removeEntry / restoreEntry /
-//       getCached / refresh / refreshIfDue / getStatus / getDiagnostics /
+//       getCached / refresh / rebuildSnapshot / refreshIfDue / getStatus / getDiagnostics /
 //       validateConfig / validateSnapshot / getSnapshot / selfCheck / shutdown
 
 import path from "node:path";
@@ -62,6 +62,8 @@ export async function dispatch(service, method, params = {}) {
 			return service.getCached();
 		case "refresh":
 			return service.refresh();
+		case "rebuildSnapshot":
+			return service.rebuildSnapshot();
 		case "refreshIfDue":
 			return service.refreshIfDue();
 		case "getStatus":

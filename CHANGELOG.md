@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v0.1.8 · 2026-10-21
+
+- 设置页按 DSH 插件设置页重做：自动刷新/频率、条目管理表（展示、卡池来源、活动来源、↑↓、删除）、
+  恢复排序/恢复条目、解析器自检、自定义条目表单
+- 设置写回 Host：`listEntries` / `setEntryVisibility` / `setOrder` / `removeEntry` /
+  `updateConfig` / `selfCheck`；改显隐/排序后 Host 无网重建快照，面板立即更新
+- Host 新增 `rebuildSnapshot`；Service 同步实现
+- README 增加设置页截图；版本 0.1.8
+
 ## v0.1.7 · 2026-10-21
 
 - 应用内刷新：WPF 启动 `packages/engine/host.mjs`（Node JSON-lines Host），复用 `gacha-calendar-core`，

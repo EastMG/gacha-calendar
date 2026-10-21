@@ -16,6 +16,7 @@ public partial class App : System.Windows.Application
 	public AppSettings Settings { get; private set; } = new();
 	public MainViewModel Vm { get; } = new();
 	public string? CurrentDataPath { get; private set; }
+	public EngineHostClient? Engine => _engine;
 
 	private readonly SettingsStore _settingsStore = new();
 	private SnapshotStore? _snapshots;
@@ -89,6 +90,18 @@ public partial class App : System.Windows.Application
 		// 手动启动时展开面板；--autostart / --silent 只留常驻条；--show-flyout 给截图/演示用
 		if (e.Args.Contains("--show-flyout")) ScheduleShow(900);
 		else if (!e.Args.Contains("--autostart") && !e.Args.Contains("--silent")) ScheduleShow(500);
+		if (e.Args.Contains("--show-settings")) ScheduleSettings(2500);
+	}
+
+	private void ScheduleSettings(int delayMs)
+	{
+		var timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(delayMs) };
+		timer.Tick += (_, _) =>
+		{
+			timer.Stop();
+			ShowSettings();
+		};
+		timer.Start();
 	}
 
 	private void ScheduleShow(int delayMs)
@@ -282,6 +295,9 @@ public partial class App : System.Windows.Application
 	}
 
 	public void ReloadData() => LoadSnapshot();
+
+	/// <summary>设置页改完显隐/排序后调用：Host 重建快照 + 面板立即重载。</summary>
+	public void ReloadSnapshot() => LoadSnapshot();
 
 	public void ExitApp()
 	{

@@ -232,6 +232,24 @@ public sealed class EngineHostClient : IAsyncDisposable
 
 	public Task<JsonNode?> GetStatusAsync() => CallAsync("getStatus");
 
+	public Task<JsonNode?> SetEntryVisibilityAsync(string id, bool visible) =>
+		CallAsync("setEntryVisibility", new JsonObject { ["id"] = id, ["visible"] = visible });
+
+	public Task<JsonNode?> SetOrderAsync(IEnumerable<string> order)
+	{
+		var arr = new JsonArray();
+		foreach (var id in order) arr.Add(id);
+		return CallAsync("setOrder", new JsonObject { ["order"] = arr });
+	}
+
+	public Task<JsonNode?> RemoveEntryAsync(string id) =>
+		CallAsync("removeEntry", new JsonObject { ["id"] = id });
+
+	public Task<JsonNode?> RestoreEntryAsync(string id) =>
+		CallAsync("restoreEntry", new JsonObject { ["id"] = id });
+
+	public Task<JsonNode?> RebuildSnapshotAsync() => CallAsync("rebuildSnapshot");
+
 	public async Task<byte[]?> FetchBinaryAsync(string url)
 	{
 		var result = await CallAsync("fetchBinary", new JsonObject { ["url"] = url }, TimeSpan.FromSeconds(25));

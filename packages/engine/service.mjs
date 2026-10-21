@@ -294,6 +294,15 @@ export function createFileService(options) {
 		async refresh() {
 			return runRefresh();
 		},
+		/** 不联网：用缓存 + 当前配置重建 snapshot（设置页改显隐/排序后立即生效）。 */
+		async rebuildSnapshot() {
+			const result = await engine.getCached();
+			const games = await engine.listGames();
+			const sources = engine.__test?.SOURCES || [];
+			const snapshot = buildSnapshot({ games, result, config, sources, coreVersion, now: now() });
+			writeSnapshot(snapshot);
+			return snapshot;
+		},
 		/**
 		 * 按配置判断是否该刷；不满足条件时返回 skipped 结果，不联网。
 		 * 外壳在启动时/定时器里调用即可，无需自己算 due/backoff。

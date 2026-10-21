@@ -25,6 +25,10 @@
   <img src="docs/images/dock.png" alt="任务栏常驻条" width="47%" />
 </p>
 
+<p align="center">
+  <img src="docs/images/settings.png" alt="设置页" width="80%" />
+</p>
+
 ## 当前状态
 
 **v0.1.7 预览版**：任务栏常驻条 + DSH 风格六列面板 + 托盘 + 设置 + 单实例 + 开机自启，
@@ -40,8 +44,9 @@
 | 数据抓取 | ✅ 应用内 Node Host 调用 core（v0.1.7）；开发期仍可用 `tools/refresh.mjs` |
 | 壳无关基础层（config / snapshot / Host 协议 / 视图模型） | ✅ `packages/engine/` + `packages/viewmodel/` |
 | 应用内自动刷新 / 手动刷新 | ✅ v0.1.7（启动/打开面板时按 due 刷新；每分钟检查） |
-| DSH 面板风格（六列表格/状态栏/图标/刷新） | ✅ v0.1.7 首版（设置页复刻 v0.1.8） |
-| Fluent / DSH 设置页与交互细节 | 📋 待办（[#1](https://github.com/EastMG/gacha-calendar/issues/1) / [BACKLOG.md](BACKLOG.md)） |
+| DSH 面板风格（六列表格/状态栏/图标/刷新） | ✅ v0.1.7 首版 |
+| DSH 设置页（自动刷新/条目/来源/自检/自定义） | ✅ v0.1.8 |
+| Fluent / DSH 交互细节与视觉回归 | 📋 待办（[#1](https://github.com/EastMG/gacha-calendar/issues/1) / [BACKLOG.md](BACKLOG.md)） |
 | 多显示器、轮播、安装包 | 🚧 v0.1.10+（见[路线图](docs/04-路线图.md)） |
 
 > 数据不会过期到"骗人"：某列抓取失败时，界面会显示「卡池失败：原因」或「沿用旧数据」，

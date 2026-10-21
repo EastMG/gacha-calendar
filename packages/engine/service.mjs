@@ -18,9 +18,11 @@ import {
 	normalizeConfig,
 	mergeConfig,
 	validateConfig as validateConfigValue,
+	visibilityPatch,
 	writeFileAtomic,
 } from "./config.mjs";
 import { buildSnapshot } from "./snapshot.mjs";
+import { buildEntries } from "./entries.mjs";
 import { buildDiagnostics } from "./diagnostics.mjs";
 import { validateSnapshot as validateSnapshotValue } from "./validate.mjs";
 import { createNodeTransport } from "./transport.mjs";
@@ -219,6 +221,61 @@ export function createFileService(options) {
 		},
 		async listGames() {
 			return engine.listGames();
+		},
+		/** 设置页用的条目视图：listGames + 来源表 + 显隐三态。 */
+		async listEntries() {
+			const games = await engine.listGames();
+			const sources = engine.__test?.SOURCES || [];
+			return buildEntries({ games, sources, config });
+		},		/** 显示/隐藏一个条目；自动处理 defaultHidden → shown，避免"勾了不生效"。 */
+		setEntryVisibility(id, visible) {
+			if (typeof id !== "string" || !id) {
+				const err = new Error("setEntryVisibility 需要 id");
+				err.code = "invalid-params";
+				throw err;
+			}
+			const sources = engine.__test?.SOURCES || [];
+			const defaultHidden = !!sources.find((s) => s.id === id)?.defaultHidden;
+			return service.updateConfig(visibilityPatch(config, id, !!visible, defaultHidden));
+		},
+		/** 设置展示顺序（null / [] = 恢复默认顺序）。 */
+		setOrder(order) {
+			if (order != null && !Array.isArray(order)) {
+				const err = new Error("order 必须是字符串数组");
+				err.code = "invalid-config";
+				throw err;
+			}
+			return service.updateConfig({ order: Array.isArray(order) ? order : [] });
+		},
+		/** 删除条目：自定义条目从 customEntries 移除，内置条目记进 removed。 */
+		async removeEntry(id) {
+			if (typeof id !== "string" || !id) {
+				const err = new Error("removeEntry 需要 id");
+				err.code = "invalid-params";
+				throw err;
+			}
+			const games = await engine.listGames();
+			const target = games.find((g) => g.id === id);
+			const patch = {
+				order: config.order.filter((x) => x !== id),
+				hidden: config.hidden.filter((x) => x !== id),
+				shown: config.shown.filter((x) => x !== id),
+			};
+			if (target?.custom) {
+				patch.customEntries = config.customEntries.filter((e) => e && e.id !== id);
+			} else {
+				patch.removed = [...new Set([...config.removed, id])];
+			}
+			return service.updateConfig(patch);
+		},
+		/** 恢复已删除的内置条目。 */
+		restoreEntry(id) {
+			if (typeof id !== "string" || !id) {
+				const err = new Error("restoreEntry 需要 id");
+				err.code = "invalid-params";
+				throw err;
+			}
+			return service.updateConfig({ removed: config.removed.filter((x) => x !== id) });
 		},
 		async getCached() {
 			return engine.getCached();

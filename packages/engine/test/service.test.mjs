@@ -67,6 +67,26 @@ test("createFileService：配置持久化 + refresh 写出 snapshot", async () =
 		assert.equal(diag.files.snapshot.exists, true);
 		assert.equal(service.validateSnapshot().ok, true);
 		assert.deepEqual(service.validateConfig(), []);
+
+		// 条目视图 + 显隐/排序/删除
+		const entries = await service.listEntries();
+		const byId = Object.fromEntries(entries.map((e) => [e.id, e]));
+		assert.equal(byId.a.visible, false); // hidden: ["a"]
+		assert.equal(byId.b.defaultHidden, true);
+		assert.equal(byId.b.visible, false); // defaultHidden 且 shown 为空
+
+		const afterShow = service.setEntryVisibility("b", true);
+		assert.deepEqual(afterShow.shown, ["b"]);
+		assert.equal((await service.listEntries()).find((e) => e.id === "b").visible, true);
+
+		const afterOrder = service.setOrder(["b", "a"]);
+		assert.deepEqual(afterOrder.order, ["b", "a"]);
+
+		const afterRemove = await service.removeEntry("a");
+		assert.deepEqual(afterRemove.removed, ["a"]);
+		assert.equal(afterRemove.hidden.includes("a"), false);
+		const afterRestore = service.restoreEntry("a");
+		assert.deepEqual(afterRestore.removed, []);
 	} finally {
 		fs.rmSync(dir, { recursive: true, force: true });
 	}

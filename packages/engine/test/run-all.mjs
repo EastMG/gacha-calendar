@@ -2,6 +2,7 @@
 // Node 自带的 node:test 在 import 时会注册用例，进程退出时汇总输出。
 import "./config.test.mjs";
 import "./snapshot.test.mjs";
+import "./entries.test.mjs";
 import "./validate.test.mjs";
 import "./service.test.mjs";
 import "./scheduler.test.mjs";

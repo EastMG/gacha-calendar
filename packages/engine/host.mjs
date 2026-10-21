@@ -11,9 +11,10 @@
 //   响应  { "id": 1, "ok": true, "result": { ... } }
 //   错误  { "id": 1, "ok": false, "error": { "code": "...", "message": "..." } }
 //
-// 方法：hello / getConfig / updateConfig / listGames / getCached /
-//       refresh / refreshIfDue / getStatus / getDiagnostics / validateConfig /
-//       validateSnapshot / getSnapshot / selfCheck / shutdown
+// 方法：hello / getConfig / updateConfig / listGames / listEntries /
+//       setEntryVisibility / setOrder / removeEntry / restoreEntry /
+//       getCached / refresh / refreshIfDue / getStatus / getDiagnostics /
+//       validateConfig / validateSnapshot / getSnapshot / selfCheck / shutdown
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -41,6 +42,16 @@ export async function dispatch(service, method, params = {}) {
 		}
 		case "listGames":
 			return service.listGames();
+		case "listEntries":
+			return service.listEntries();
+		case "setEntryVisibility":
+			return service.setEntryVisibility(params?.id, params?.visible);
+		case "setOrder":
+			return service.setOrder(params?.order ?? params);
+		case "removeEntry":
+			return service.removeEntry(params?.id);
+		case "restoreEntry":
+			return service.restoreEntry(params?.id);
 		case "getCached":
 			return service.getCached();
 		case "refresh":

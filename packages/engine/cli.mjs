@@ -77,6 +77,10 @@ async function main() {
 			[
 				"用法：node packages/engine/cli.mjs [--data-dir <dir>] <command>",
 				"  status",
+				"  entries",
+				"  show <id> / hide <id>",
+				"  order <id1,id2,...>",
+				"  remove <id> / restore <id>",
 				"  config get | config set --json '<json>' [--file <path>]",
 				"  refresh [--if-due]",
 				"  diagnostics",
@@ -92,6 +96,33 @@ async function main() {
 		case "status":
 			print(service.getStatus());
 			return;
+		case "entries":
+			print(await service.listEntries());
+			return;
+		case "show":
+		case "hide": {
+			const id = args.positional[1];
+			if (!id) throw new Error(`${command} 需要条目 id`);
+			print(service.setEntryVisibility(id, command === "show"));
+			return;
+		}
+		case "order": {
+			const order = (args.positional[1] || "").split(",").map((s) => s.trim()).filter(Boolean);
+			print(service.setOrder(order));
+			return;
+		}
+		case "remove": {
+			const id = args.positional[1];
+			if (!id) throw new Error("remove 需要条目 id");
+			print(await service.removeEntry(id));
+			return;
+		}
+		case "restore": {
+			const id = args.positional[1];
+			if (!id) throw new Error("restore 需要条目 id");
+			print(service.restoreEntry(id));
+			return;
+		}
 		case "config": {
 			if (sub === "get" || !sub) {
 				print(service.getConfig());

@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v0.1.4 · 2026-10-21
+
+- 新增 `entries.mjs`：设置页条目视图（合并 `listGames` / `defaultHidden` / `hidden` / `shown` → `visible`）
+- Service 新增 `listEntries` / `setEntryVisibility`（自动维护 `shown`）/ `setOrder` / `removeEntry` / `restoreEntry`
+- Host 与 CLI 同步暴露这些设置基础操作；CLI 新增 `entries` / `show` / `hide` / `order` / `remove` / `restore`
+- 测试 21 → 24 项
+
 ## v0.1.3 · 2026-10-21
 
 - 新增 `validate.mjs`：snapshot 契约校验（字段类型、失败三态、重复 id、时间戳、可见条目缺记录 warning）

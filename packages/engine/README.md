@@ -8,6 +8,7 @@
 | `snapshot.mjs` | core 结果 + config → `snapshot.json` |
 | `service.mjs` | core + 文件存储（config/cache/snapshot） |
 | `host.mjs` | 逐行 JSON 的 Host 协议（stdin/stdout），供任何外壳接入 |
+| `entries.mjs` | 设置页条目视图（`defaultHidden` / `hidden` / `shown` → `visible`） |
 | `validate.mjs` | snapshot 契约校验（字段/三态/重复 id/时间戳） |
 | `diagnostics.mjs` | 只读诊断（配置 + 快照 + 文件 + 调度） |
 | `cli.mjs` | 壳无关 CLI（status/config/refresh/validate/diagnostics） |

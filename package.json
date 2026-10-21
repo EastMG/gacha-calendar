@@ -6,7 +6,7 @@
 	"description": "gacha-calendar Windows 小组件：壳无关的引擎/配置/快照层（开发与测试用）",
 	"scripts": {
 		"test": "node packages/engine/test/run-all.mjs",
-		"check": "node --check packages/engine/config.mjs && node --check packages/engine/transport.mjs && node --check packages/engine/snapshot.mjs && node --check packages/engine/service.mjs && node --check packages/engine/host.mjs && node --check packages/engine/validate.mjs && node --check packages/engine/diagnostics.mjs && node --check packages/engine/cli.mjs && node --check tools/refresh.mjs",
+		"check": "node --check packages/engine/config.mjs && node --check packages/engine/transport.mjs && node --check packages/engine/snapshot.mjs && node --check packages/engine/entries.mjs && node --check packages/engine/service.mjs && node --check packages/engine/host.mjs && node --check packages/engine/validate.mjs && node --check packages/engine/diagnostics.mjs && node --check packages/engine/cli.mjs && node --check tools/refresh.mjs",
 		"host": "node packages/engine/host.mjs --data-dir data",
 		"cli": "node packages/engine/cli.mjs"
 	},

@@ -214,14 +214,15 @@ public partial class SettingsWindow : Window
 			grid.Children.Add(eventCombo);
 
 			var actions = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Center };
-			var up = SmallButton("↑", "上移");
+			var up = SmallIconButton("M2,8 L7,3 L12,8", "上移", (Brush)FindResource("Fg"));
 			up.IsEnabled = index > 0;
 			up.Click += async (_, _) => await MoveAsync(entry.Id, -1);
-			var down = SmallButton("↓", "下移");
+			var down = SmallIconButton("M2,4 L7,9 L12,4", "下移", (Brush)FindResource("Fg"));
 			down.IsEnabled = index < _entries.Count - 1;
 			down.Click += async (_, _) => await MoveAsync(entry.Id, 1);
-			var delete = SmallButton("删", "删除");
-			delete.Foreground = (Brush)FindResource("Danger");
+			var delete = SmallIconButton(
+				"M4,5 H16 M7,5 V3 H13 V5 M6,5 L7,18 H13 L14,5 M9,8 V15 M12,8 V15",
+				"删除", (Brush)FindResource("Danger"));
 			delete.Click += async (_, _) =>
 			{
 				await RunWriteAsync(async () =>
@@ -735,7 +736,7 @@ public partial class SettingsWindow : Window
 		return (Brush)new BrushConverter().ConvertFromString(palette[hash % palette.Length])!;
 	}
 
-	private Button SmallButton(string content, string tooltip)	{
+	private Button SmallButton(object content, string tooltip)	{
 		var button = new Button
 		{
 			Content = content,
@@ -745,7 +746,25 @@ public partial class SettingsWindow : Window
 			MinWidth = 24,
 			Padding = new Thickness(4, 0, 4, 0),
 		};
+		System.Windows.Automation.AutomationProperties.SetName(button, tooltip);
 		return button;
+	}
+
+	private Button SmallIconButton(string data, string tooltip, Brush stroke)
+	{
+		var icon = new System.Windows.Shapes.Path
+		{
+			Data = System.Windows.Media.Geometry.Parse(data),
+			Stroke = stroke,
+			StrokeThickness = 1.5,
+			StrokeStartLineCap = PenLineCap.Round,
+			StrokeEndLineCap = PenLineCap.Round,
+			StrokeLineJoin = PenLineJoin.Round,
+			Width = 14,
+			Height = 14,
+			Stretch = Stretch.Uniform,
+		};
+		return SmallButton(icon, tooltip);
 	}
 
 	private static bool IsCustomMode(string? value) =>

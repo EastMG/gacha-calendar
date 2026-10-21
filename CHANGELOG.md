@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v0.1.25 · 2026-10-21
+
+- 字体：`TextFormattingMode` 改为 Ideal，配合 Segoe UI Variable/雅黑回退，低 DPI 更柔和
+- 开关：设置页「自动刷新 / 实验性新版 UI」改为胶囊 Switch
+- 图标：删除改为垃圾桶、上/下移改为 chevron、newPanel 刷新改为图标+文字
+- 迷你条当天提示：刻度当天数字加主题色胶囊，条形当天列加主题色描边
+- 修复严重 bug：面板入场动画设置 Window.RenderTransform 导致
+  `InvalidOperationException: 转换对于 Window 无效`，面板打不开/截图为空白；改为只做透明度淡入
+- 更新浅/深 newPanel、设置、视觉回归截图；版本 0.1.25
+
 ## v0.1.24 · 2026-10-21
 
 - newPanel 探头：不再鼠标一移出单元格就关闭；改为「移到另一格才切换 / 点击外部关闭」，

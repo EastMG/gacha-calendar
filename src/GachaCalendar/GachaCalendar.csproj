@@ -13,7 +13,7 @@
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 		<ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
 		<ApplicationIcon>Assets\icon.ico</ApplicationIcon>
-		<Version>0.1.24</Version>
+		<Version>0.1.25</Version>
 		<Authors>EastMG</Authors>
 		<Company>EastMG</Company>
 		<Product>二游日历 · 任务栏小组件</Product>

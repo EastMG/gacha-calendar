@@ -12,6 +12,11 @@
 		ShowActivated="False"
 		Topmost="True"
 		WindowStartupLocation="Manual"
+		UseLayoutRounding="True"
+		SnapsToDevicePixels="True"
+		TextOptions.TextFormattingMode="Display"
+		TextOptions.TextRenderingMode="ClearType"
+		FontFamily="Segoe UI Variable Text, Microsoft YaHei UI, Segoe UI"
 		Focusable="False">
 	<Border x:Name="Shell"
 			CornerRadius="13"

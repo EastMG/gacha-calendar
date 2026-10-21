@@ -20,6 +20,7 @@ public partial class App : System.Windows.Application
 	public MainViewModel Vm { get; } = new();
 	public string? CurrentDataPath { get; private set; }
 	public EngineHostClient? Engine => _engine;
+	public bool IsCaptureMode { get; private set; }
 
 	private readonly SettingsStore _settingsStore = new();
 	private SnapshotStore? _snapshots;
@@ -96,7 +97,10 @@ public partial class App : System.Windows.Application
 		if (e.Args.Contains("--show-settings")) ScheduleSettings(2500);
 		var captureIndex = Array.IndexOf(e.Args, "--capture-ui");
 		if (captureIndex >= 0 && captureIndex + 1 < e.Args.Length)
+		{
+			IsCaptureMode = true;
 			ScheduleUiCapture(e.Args[captureIndex + 1]);
+		}
 	}
 
 	private void ScheduleUiCapture(string outDir)
@@ -123,6 +127,11 @@ public partial class App : System.Windows.Application
 
 	private static void CaptureWindow(Window window, string outDir, string prefix)
 	{
+		if (!window.IsVisible)
+		{
+			window.Show();
+			window.Activate();
+		}
 		window.UpdateLayout();
 		var width = window.ActualWidth;
 		var height = window.ActualHeight;

@@ -25,7 +25,7 @@ public partial class FlyoutWindow : Window
 		};
 		Deactivated += (_, _) =>
 		{
-			if (App.Instance is { IsShuttingDown: false } && IsVisible) Hide();
+			if (App.Instance is { IsShuttingDown: false, IsCaptureMode: false } && IsVisible) Hide();
 		};
 		PreviewKeyDown += (_, e) =>
 		{

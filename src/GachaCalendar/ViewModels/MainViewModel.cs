@@ -129,12 +129,61 @@ public sealed class RowVm : INotifyPropertyChanged
 	}
 }
 
-public sealed class ChipVm
+public sealed class ChipVm : INotifyPropertyChanged
 {
+	private ImageSource? _iconSource;
+	private bool _hasIcon;
+
+	public ChipVm(string? iconUrl, string gameName)
+	{
+		GameName = gameName;
+		IconGlyph = FirstGlyph(gameName);
+		_ = LoadIconAsync(iconUrl);
+	}
+
 	public string GameName { get; init; } = "";
+	public string ItemName { get; init; } = "";
+	public string Kind { get; init; } = "";
 	public string Remaining { get; init; } = "";
+	public string Status { get; init; } = "";
 	public string Tip { get; init; } = "";
 	public Brush Accent { get; init; } = Brushes.DodgerBlue;
+	public string IconGlyph { get; private set; } = "?";
+	public ImageSource? IconSource { get => _iconSource; private set => SetField(ref _iconSource, value); }
+	public bool HasIcon { get => _hasIcon; private set => SetField(ref _hasIcon, value); }
+
+	private async Task LoadIconAsync(string? url)
+	{
+		if (string.IsNullOrWhiteSpace(url)) return;
+		try
+		{
+			var icon = await IconLoader.GetAsync(url);
+			if (icon == null) return;
+			IconSource = icon;
+			HasIcon = true;
+		}
+		catch { /* 图标失败只保留首字方块 */ }
+	}
+
+	private static string FirstGlyph(string name)
+	{
+		foreach (var ch in name)
+		{
+			if (char.IsWhiteSpace(ch)) continue;
+			if ("·：:！!?？、，,（）()【】".Contains(ch)) continue;
+			return ch.ToString();
+		}
+		return "?";
+	}
+
+	public event PropertyChangedEventHandler? PropertyChanged;
+
+	private void SetField<T>(ref T field, T value, [CallerMemberName] string? name = null)
+	{
+		if (EqualityComparer<T>.Default.Equals(field, value)) return;
+		field = value;
+		PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+	}
 }
 
 public sealed class MainViewModel : INotifyPropertyChanged
@@ -294,10 +343,13 @@ public sealed class MainViewModel : INotifyPropertyChanged
 			var title = kind == "卡池" ? (string.IsNullOrWhiteSpace(rec.Banner) ? "—" : rec.Banner) : (string.IsNullOrWhiteSpace(rec.Event) ? "—" : rec.Event);
 			var dates = kind == "卡池" ? rec.BannerDates : rec.EventDates;
 			var full = RowBuilder.FormatRemaining(end, now);
-			Chips.Add(new ChipVm
+			var shortRemaining = RowBuilder.FormatShortRemaining(end - now);
+			Chips.Add(new ChipVm(game.Icon, game.Name)
 			{
-				GameName = ShortName(game.Name),
-				Remaining = RowBuilder.FormatShortRemaining(end - now),
+				ItemName = string.IsNullOrWhiteSpace(title) ? "—" : title,
+				Kind = kind,
+				Remaining = shortRemaining,
+				Status = "还剩 " + shortRemaining,
 				Accent = palette[i % palette.Length],
 				Tip = $"{game.Name}\n{kind}：{title}\n{dates}\n还剩 {full}",
 			});

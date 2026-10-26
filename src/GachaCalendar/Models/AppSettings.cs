@@ -6,7 +6,7 @@ public sealed class AppSettings
 	/// <summary>是否在任务栏左侧常驻显示小组件条。</summary>
 	public bool DockEnabled { get; set; } = true;
 
-	/// <summary>常驻条上最多同时显示几个条目（1–6）。</summary>
+	/// <summary>任务栏轮播的条目数（1–6）。</summary>
 	public int DockItems { get; set; } = 3;
 
 	/// <summary>独立的数据文件路径；为空时按默认顺序查找。</summary>

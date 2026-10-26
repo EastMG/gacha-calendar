@@ -34,6 +34,17 @@
 | 底栏状态/上次更新/刷新 | `ScrapeText` / `UpdatedAgo` / 刷新按钮 | 同上 |
 | 同格多档期探头展开 | 解析 hover 原文，悬停单元格弹出「同格档期」卡片；移到另一格切换、点击外部关闭 | v0.1.24 |
 
+## 2.1 任务栏轮播（v0.1.26）
+
+| 行为 | WPF 实现 | 证据 |
+|---|---|---|
+| 单行胶囊、固定宽度、贴合任务栏高度 | `DockStripWindow` 272px 宽，`DockPositioner` 按任务栏高度定位 | `dock.png` / `dock-150.png` |
+| 游戏图标 + 类型 + 事项名 + 剩余时间 | `ChipVm`（ItemName/Kind/Status/Icon）→ `DockLineVm` | 浅/深截图 |
+| 每 5 秒竖向翻页、320ms 缓动 | `DispatcherTimer` + 双 `ContentControl` 上下滑入/滑出 | 代码；悬停实测暂停 |
+| 条目名省略、类型/剩余时间不截断 | Grid Auto/Auto/\*/Auto + `TextTrimming` | `dock.png` |
+| 无条目时显示「二游日历」 | `DockLineVm.Idle` | 代码 |
+| 点击展开 / 右键菜单不变 | `ToggleFlyout` + ContextMenu | 代码 |
+
 ## 3. 设置页
 
 | DSH 行为 | WPF 实现 | 证据 |

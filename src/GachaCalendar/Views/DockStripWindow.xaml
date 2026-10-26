@@ -4,7 +4,7 @@
 		Title="二游日历"
 		Width="272" Height="40"
 		WindowStyle="None"
-		AllowsTransparency="False"
+		AllowsTransparency="True"
 		Background="Transparent"
 		ResizeMode="NoResize"
 		ShowInTaskbar="False"

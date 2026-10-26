@@ -53,36 +53,9 @@ public static class ThemeManager
 
 	public static Brush GetBrush(string key) => (Brush)System.Windows.Application.Current.Resources[key];
 
-	/// <summary>DWM 材质可用时把表面改成半透明层叠；失败时保持不透明。</summary>
-	public static void UseBackdropMaterials()
-	{
-		var res = System.Windows.Application.Current.Resources;
-		if (IsLight)
-		{
-			SetGradient(res, "PanelBg", "#D9FCFCFC", "#CCF2F2F2");
-			SetGradient(res, "ChipBg", "#F2FFFFFF", "#E8FBFBFB");
-			SetGradient(res, "DockBg", "#F2FFFFFF", "#E6F7F7F7");
-		}
-		else
-		{
-			SetGradient(res, "PanelBg", "#D9262626", "#CC1E1E1E");
-			SetGradient(res, "ChipBg", "#F22E2E2E", "#E8272727");
-			SetGradient(res, "DockBg", "#F22C2C2C", "#E6212121");
-		}
-	}
-
 	private static void Set(ResourceDictionary res, string key, string hex)
 	{
 		res[key] = new SolidColorBrush((Color)System.Windows.Media.ColorConverter.ConvertFromString(hex)!);
-	}
-
-	private static void SetGradient(ResourceDictionary res, string key, string from, string to)
-	{
-		var a = (Color)System.Windows.Media.ColorConverter.ConvertFromString(from)!;
-		var b = (Color)System.Windows.Media.ColorConverter.ConvertFromString(to)!;
-		var brush = new LinearGradientBrush(a, b, 90);
-		brush.Freeze();
-		res[key] = brush;
 	}
 
 	private static bool ReadIsLight()

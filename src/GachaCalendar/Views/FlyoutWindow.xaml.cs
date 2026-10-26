@@ -22,8 +22,6 @@ public partial class FlyoutWindow : Window
 		{
 			var hwnd = new WindowInteropHelper(this).Handle;
 			Taskbar.MakeToolWindow(hwnd, noActivate: false);
-			if (WindowBackdrop.TryEnable(this, !ThemeManager.IsLight))
-				ThemeManager.UseBackdropMaterials();
 		};
 		Deactivated += (_, _) =>
 		{

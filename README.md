@@ -16,17 +16,17 @@
 > 解析器只维护一处，桌面端不重复实现抓取。
 
 <p align="center">
-  <img src="docs/images/preview.png" alt="任务栏常驻条与展开面板" width="100%" />
+  <img src="docs/images/preview.png?v=0.1.28" alt="任务栏轮播条与 Fluent 面板" width="100%" />
 </p>
 
 <p align="center">
-  <img src="docs/images/flyout.png" alt="完整面板" width="47%" />
+  <img src="docs/images/flyout.png?v=0.1.28" alt="Fluent 总览面板" width="47%" />
   &nbsp;
-  <img src="docs/images/dock.png" alt="任务栏常驻条" width="47%" />
+  <img src="docs/images/dock.png?v=0.1.28" alt="任务栏轮播胶囊" width="47%" />
 </p>
 
 <p align="center">
-  <img src="docs/images/settings.png" alt="设置页" width="80%" />
+  <img src="docs/images/settings.png?v=0.1.28" alt="Fluent 设置页" width="80%" />
 </p>
 
 ## 当前状态

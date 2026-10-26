@@ -379,6 +379,22 @@
 					</StackPanel>
 				</Border>
 
+				<Border Style="{StaticResource Card}">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="Auto" />
+						</Grid.ColumnDefinitions>
+						<StackPanel>
+							<TextBlock Text="应用" Style="{StaticResource SectionTitle}" />
+							<TextBlock Style="{StaticResource Hint}" Margin="0,4,0,0"
+									   Text="托盘图标被 Windows 收进隐藏区时，也可以从这里退出。" />
+						</StackPanel>
+						<Button Grid.Column="1" Content="退出应用" Style="{StaticResource SmallButton}"
+								VerticalAlignment="Center" Click="OnExitApp" />
+					</Grid>
+				</Border>
+
 				<TextBlock Style="{StaticResource Hint}" Margin="0,0,0,6"
 						   Text="数据来自各游戏官方公告、官方 Wiki 与第三方站；无数据时对应列留空。" />
 			</StackPanel>

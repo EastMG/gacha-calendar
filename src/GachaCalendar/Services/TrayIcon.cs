@@ -1,5 +1,6 @@
 using System.Drawing;
 using System.Windows.Forms;
+using System.Windows.Threading;
 
 namespace GachaCalendar.Services;
 
@@ -31,6 +32,27 @@ public sealed class TrayIcon : IDisposable
 			ContextMenuStrip = menu,
 		};
 		_notify.DoubleClick += (_, _) => openPanel();
+
+		// 某些启动顺序下 Explorer 通知区尚未就绪，Visible=true 会被吞掉；
+		// 做几次轻量重注册，不阻塞 UI 线程。
+		var retry = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
+		var attempts = 0;
+		retry.Tick += (_, _) =>
+		{
+			attempts++;
+			if (attempts > 3)
+			{
+				retry.Stop();
+				return;
+			}
+			try
+			{
+				_notify.Visible = false;
+				_notify.Visible = true;
+			}
+			catch { /* 托盘不可用时静默 */ }
+		};
+		retry.Start();
 	}
 
 	public void SetDockVisible(bool visible) =>

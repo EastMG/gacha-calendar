@@ -180,6 +180,8 @@ public partial class SettingsWindow : Window
 		app.UpdateDockPreferences(DockEnabledCheck.IsChecked == true, DockTickerCheck.IsChecked == true, hours);
 	}
 
+	private void OnExitApp(object sender, RoutedEventArgs e) => App.Instance?.ExitApp();
+
 	private void BuildEntries()
 	{
 		EntriesPanel.Children.Clear();

@@ -81,7 +81,7 @@ public partial class FlyoutWindow : Window
 
 	public void ShowNearDock(Window dock)
 	{
-		Height = Math.Min(700, Math.Max(360, SystemParameters.WorkArea.Height * 0.74));
+		Height = Math.Min(720, Math.Max(360, SystemParameters.WorkArea.Height * 0.76));
 		Opacity = 0;
 		Show();
 		Activate();

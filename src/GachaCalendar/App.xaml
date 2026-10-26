@@ -24,7 +24,7 @@
 			<Style TargetType="TextBlock">
 				<Setter Property="FontFamily" Value="{StaticResource UiFont}" />
 				<Setter Property="Foreground" Value="{DynamicResource Fg}" />
-				<Setter Property="FontSize" Value="13" />
+				<Setter Property="FontSize" Value="14" />
 				<Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
 			</Style>
 

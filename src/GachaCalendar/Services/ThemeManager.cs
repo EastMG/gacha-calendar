@@ -17,37 +17,37 @@ public static class ThemeManager
 		var res = System.Windows.Application.Current.Resources;
 		if (IsLight)
 		{
-			// 对齐 DSH 面板的浅色 token：白底、#1F2329 主文字、#6B7280 次文字、#8A9099 弱文字、
-			// #E5E6EB 分隔线、#3B5BFD 业务蓝。
-			Set(res, "PanelBg", "#FFFFFFFF");
-			Set(res, "PanelBorder", "#FFE5E6EB");
-			Set(res, "Fg", "#FF1F2329");
-			Set(res, "FgDim", "#FF6B7280");
-			Set(res, "FgFaint", "#FF8A9099");
-			Set(res, "Accent", "#FF3B5BFD");
-			Set(res, "Danger", "#FFD9484D");
-			Set(res, "Warn", "#FFB45309");
-			Set(res, "ChipBg", "#FFF7F8FA");
-			Set(res, "ChipBorder", "#14000000");
-			Set(res, "DockBg", "#F2FFFFFF");
-			Set(res, "HoverBg", "#0D000000");
-			Set(res, "Divider", "#FFE5E6EB");
+			// Fluent 2 / Windows 11 浅色：层叠表面、中性描边、系统蓝强调色。
+			Set(res, "PanelBg", "#FFF9F9F9");
+			Set(res, "PanelBorder", "#FFE5E5E5");
+			Set(res, "Fg", "#FF1A1A1A");
+			Set(res, "FgDim", "#FF5D5D5D");
+			Set(res, "FgFaint", "#FF8A8A8A");
+			Set(res, "Accent", "#FF0067C0");
+			Set(res, "Danger", "#FFC42B1C");
+			Set(res, "Warn", "#FF9D5D00");
+			Set(res, "ChipBg", "#FFFFFFFF");
+			Set(res, "ChipBorder", "#FFE5E5E5");
+			Set(res, "DockBg", "#FFF9F9F9");
+			Set(res, "HoverBg", "#0A000000");
+			Set(res, "Divider", "#FFE5E5E5");
 		}
 		else
 		{
-			Set(res, "PanelBg", "#FF1F2124");
-			Set(res, "PanelBorder", "#FF35383D");
-			Set(res, "Fg", "#FFE8EAED");
-			Set(res, "FgDim", "#FF9AA0A6");
-			Set(res, "FgFaint", "#FF6B7075");
-			Set(res, "Accent", "#FF7A9BFF");
-			Set(res, "Danger", "#FFFF7B7B");
-			Set(res, "Warn", "#FFE0A458");
-			Set(res, "ChipBg", "#14FFFFFF");
-			Set(res, "ChipBorder", "#22FFFFFF");
-			Set(res, "DockBg", "#E61F2124");
-			Set(res, "HoverBg", "#1AFFFFFF");
-			Set(res, "Divider", "#FF2B2E32");
+			// Fluent 2 / Windows 11 深色。
+			Set(res, "PanelBg", "#FF202020");
+			Set(res, "PanelBorder", "#FF3A3A3A");
+			Set(res, "Fg", "#FFFFFFFF");
+			Set(res, "FgDim", "#FFC7C7C7");
+			Set(res, "FgFaint", "#FF9D9D9D");
+			Set(res, "Accent", "#FF60CDFF");
+			Set(res, "Danger", "#FFFF99A4");
+			Set(res, "Warn", "#FFFCE100");
+			Set(res, "ChipBg", "#FF2B2B2B");
+			Set(res, "ChipBorder", "#FF3A3A3A");
+			Set(res, "DockBg", "#FF202020");
+			Set(res, "HoverBg", "#0FFFFFFF");
+			Set(res, "Divider", "#FF3A3A3A");
 		}
 	}
 

@@ -84,7 +84,7 @@
 		</DataTemplate>
 	</Window.Resources>
 
-	<Border x:Name="Shell" CornerRadius="12"
+	<Border x:Name="Shell" CornerRadius="8"
 			Background="{DynamicResource DockBg}"
 			BorderBrush="{DynamicResource PanelBorder}"
 			BorderThickness="1"
@@ -94,7 +94,7 @@
 			MouseEnter="OnMouseEnter"
 			MouseLeave="OnMouseLeave">
 		<Border.Effect>
-			<DropShadowEffect BlurRadius="10" ShadowDepth="1" Opacity="0.16" Color="Black" />
+			<DropShadowEffect BlurRadius="14" ShadowDepth="2" Opacity="0.14" Color="Black" />
 		</Border.Effect>
 		<Grid Height="26" ClipToBounds="True" VerticalAlignment="Center" Background="Transparent">
 			<ContentControl x:Name="PrevLine" ContentTemplate="{StaticResource DockLineTemplate}"

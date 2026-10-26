@@ -13,10 +13,13 @@ namespace GachaCalendar.Views;
 public partial class FlyoutWindow : Window
 {
 	private MainViewModel? _vm;
+	private bool _syncingMode;
 
 	public FlyoutWindow()
 	{
+		_syncingMode = true;
 		InitializeComponent();
+		_syncingMode = false;
 		DataContextChanged += (_, _) => HookViewModel();
 		SourceInitialized += (_, _) =>
 		{
@@ -56,9 +59,19 @@ public partial class FlyoutWindow : Window
 	{
 		if (TableScroll == null || SchedulePanel == null) return;
 		var newPanel = _vm?.IsNewPanel == true;
+		_syncingMode = true;
+		if (OverviewTab != null) OverviewTab.IsChecked = !newPanel;
+		if (ScheduleTab != null) ScheduleTab.IsChecked = newPanel;
+		_syncingMode = false;
 		TableScroll.Visibility = newPanel ? Visibility.Collapsed : Visibility.Visible;
 		SchedulePanel.Visibility = newPanel ? Visibility.Visible : Visibility.Collapsed;
 		_vm?.Schedule.SetVisible(newPanel);
+	}
+
+	private void OnViewModeChanged(object sender, RoutedEventArgs e)
+	{
+		if (_syncingMode || sender is not System.Windows.Controls.RadioButton { IsChecked: true } radio) return;
+		App.Instance?.SetNewPanelMode(ReferenceEquals(radio, ScheduleTab));
 	}
 
 	private void UpdateRefreshSpin()

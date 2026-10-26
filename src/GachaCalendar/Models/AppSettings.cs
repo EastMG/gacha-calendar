@@ -9,6 +9,12 @@ public sealed class AppSettings
 	/// <summary>任务栏轮播的条目数（1–6）。</summary>
 	public int DockItems { get; set; } = 3;
 
+	/// <summary>任务栏胶囊是否自动轮播；关闭时固定显示第一条。</summary>
+	public bool DockTickerEnabled { get; set; } = true;
+
+	/// <summary>任务栏轮播范围（小时）：只收开始/结束在 N 小时内的条目。</summary>
+	public int DockTickerHours { get; set; } = 72;
+
 	/// <summary>独立的数据文件路径；为空时按默认顺序查找。</summary>
 	public string? DataFile { get; set; }
 
@@ -24,6 +30,7 @@ public sealed class AppSettings
 	public void Normalize()
 	{
 		DockItems = Math.Clamp(DockItems, 1, 6);
+		if (DockTickerHours is not (12 or 24 or 48 or 72)) DockTickerHours = 72;
 		if (string.IsNullOrWhiteSpace(DataFile)) DataFile = null;
 	}
 }

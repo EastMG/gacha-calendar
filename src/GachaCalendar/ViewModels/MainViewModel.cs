@@ -303,6 +303,13 @@ public sealed class MainViewModel : INotifyPropertyChanged
 		Tick(DateTime.Now, force: true);
 	}
 
+	public void SetViewMode(bool enabled)
+	{
+		if (_isNewPanel == enabled) return;
+		IsNewPanel = enabled;
+		Schedule.SetVisible(enabled);
+	}
+
 	public void Tick(DateTime now, bool force = false)
 	{
 		if (_snapshot == null) return;
@@ -318,40 +325,51 @@ public sealed class MainViewModel : INotifyPropertyChanged
 		Chips.Clear();
 		if (_snapshot == null) return;
 
-		var candidates = new List<(DateTime End, GameMeta Game, GameRecord Rec, string Kind)>();
+		var candidates = new List<(DateTime Due, GameMeta Game, GameRecord Rec, string Kind, bool IsStart)>();
+		var horizon = now.AddHours(Math.Clamp(_settings.DockTickerHours, 1, 720));
 		foreach (var game in _snapshot.Games.Where(g => !g.Hidden))
 		{
 			if (!_snapshot.Result.Games.TryGetValue(game.Id, out var rec)) continue;
 			var bw = RowBuilder.ParseRange(rec.BannerDates, now);
-			if (bw is { } b && now >= b.Start && now <= b.End) candidates.Add((b.End, game, rec, "卡池"));
+			if (bw is { } b)
+			{
+				if (now >= b.Start && now <= b.End && b.End <= horizon) candidates.Add((b.End, game, rec, "卡池", false));
+				else if (now < b.Start && b.Start <= horizon) candidates.Add((b.Start, game, rec, "卡池", true));
+			}
 			var ew = RowBuilder.ParseRange(rec.EventDates, now);
-			if (ew is { } e && now >= e.Start && now <= e.End) candidates.Add((e.End, game, rec, "活动"));
+			if (ew is { } e)
+			{
+				if (now >= e.Start && now <= e.End && e.End <= horizon) candidates.Add((e.End, game, rec, "活动", false));
+				else if (now < e.Start && e.Start <= horizon) candidates.Add((e.Start, game, rec, "活动", true));
+			}
 		}
 
-		// 每款游戏最多一个 chip（取它最快结束的那一项），再按结束时间取前 N 个
+		// 每款游戏取最紧迫的一项，再按时间取前 N 项；开始/结束在轮播范围内的才进入胶囊。
 		var picked = candidates
 			.GroupBy(c => c.Game.Id)
-			.Select(g => g.OrderBy(c => c.End).First())
-			.OrderBy(c => c.End)
+			.Select(g => g.OrderBy(c => c.Due).First())
+			.OrderBy(c => c.Due)
 			.Take(Math.Clamp(_settings.DockItems, 1, 6))
 			.ToList();
 
 		var palette = (ThemeManager.IsLight ? LightPalette : DarkPalette);
 		for (var i = 0; i < picked.Count; i++)
 		{
-			var (end, game, rec, kind) = picked[i];
+			var (due, game, rec, kind, isStart) = picked[i];
 			var title = kind == "卡池" ? (string.IsNullOrWhiteSpace(rec.Banner) ? "—" : rec.Banner) : (string.IsNullOrWhiteSpace(rec.Event) ? "—" : rec.Event);
 			var dates = kind == "卡池" ? rec.BannerDates : rec.EventDates;
-			var full = RowBuilder.FormatRemaining(end, now);
-			var shortRemaining = RowBuilder.FormatShortRemaining(end - now);
+			var shortSpan = RowBuilder.FormatShortRemaining(due - now);
+			var status = isStart
+				? $"{shortSpan}后{(kind == "卡池" ? "开池" : "开始")}"
+				: "还剩 " + shortSpan;
 			Chips.Add(new ChipVm(game.Icon, game.Name)
 			{
 				ItemName = string.IsNullOrWhiteSpace(title) ? "—" : title,
 				Kind = kind,
-				Remaining = shortRemaining,
-				Status = "还剩 " + shortRemaining,
+				Remaining = shortSpan,
+				Status = status,
 				Accent = palette[i % palette.Length],
-				Tip = $"{game.Name}\n{kind}：{title}\n{dates}\n还剩 {full}",
+				Tip = $"{game.Name}\n{kind}：{title}\n{dates}\n{(isStart ? "将于 " : "还剩 ") + shortSpan + (isStart ? "后开始" : "")}",
 			});
 		}
 

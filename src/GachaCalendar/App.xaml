@@ -19,12 +19,13 @@
 			<SolidColorBrush x:Key="HoverBg" Color="#1AFFFFFF" />
 			<SolidColorBrush x:Key="Divider" Color="#FF2B2E32" />
 
-			<FontFamily x:Key="UiFont">Microsoft YaHei UI, Segoe UI, sans-serif</FontFamily>
+			<FontFamily x:Key="UiFont">Segoe UI Variable Text, Microsoft YaHei UI, Segoe UI</FontFamily>
 
 			<Style TargetType="TextBlock">
 				<Setter Property="FontFamily" Value="{StaticResource UiFont}" />
 				<Setter Property="Foreground" Value="{DynamicResource Fg}" />
-				<Setter Property="TextOptions.TextFormattingMode" Value="Display" />
+				<Setter Property="FontSize" Value="13" />
+				<Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
 			</Style>
 
 			<Style x:Key="FlatButton" TargetType="Button">
@@ -37,7 +38,7 @@
 				<Setter Property="Template">
 					<Setter.Value>
 						<ControlTemplate TargetType="Button">
-							<Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="7" Padding="{TemplateBinding Padding}">
+							<Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="4" Padding="{TemplateBinding Padding}">
 								<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
 							</Border>
 							<ControlTemplate.Triggers>

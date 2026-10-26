@@ -1,5 +1,6 @@
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text.Json.Nodes;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -395,8 +396,31 @@ public partial class App : System.Windows.Application
 		Vm.UpdateSettings(settings);
 		Autostart.Set(settings.StartWithWindows);
 		_tray?.SetDockVisible(settings.DockEnabled);
+		_dock?.SetTickerEnabled(settings.DockTickerEnabled);
 		RepositionDock();
 		if (_settingsWindow != null) _settingsWindow.LoadFromSettings();
+	}
+
+	/// <summary>设置页任务栏胶囊区改动：立即保存并刷新轮播，不重载整个设置页。</summary>
+	public void UpdateDockPreferences(bool enabled, bool tickerEnabled, int tickerHours)
+	{
+		Settings.DockEnabled = enabled;
+		Settings.DockTickerEnabled = tickerEnabled;
+		Settings.DockTickerHours = tickerHours;
+		Settings.Normalize();
+		_settingsStore.Save(Settings);
+		Vm.UpdateSettings(Settings);
+		_tray?.SetDockVisible(Settings.DockEnabled);
+		_dock?.SetTickerEnabled(Settings.DockTickerEnabled);
+		RepositionDock();
+	}
+
+	/// <summary>面板顶部的「总览 / 日程」切换，写回 newPanel 配置。</summary>
+	public void SetNewPanelMode(bool enabled)
+	{
+		Vm.SetViewMode(enabled);
+		if (Engine is { IsAvailable: true } engine)
+			_ = engine.UpdateConfigAsync(new JsonObject { ["newPanel"] = enabled });
 	}
 
 	public void ReloadData() => LoadSnapshot();

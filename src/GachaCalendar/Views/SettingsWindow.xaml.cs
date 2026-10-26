@@ -20,6 +20,16 @@ namespace GachaCalendar.Views;
 
 public partial class SettingsWindow : Window
 {
+	private static readonly (int Hours, string Label)[] DockRanges =
+	{
+		(12, "12 小时"),
+		(24, "24 小时"),
+		(48, "48 小时"),
+		(72, "72 小时"),
+	};
+
+	private sealed record DockRangeOption(int Hours, string Label);
+
 	private static readonly RefreshOption[] StandardRefreshOptions =
 	{
 		new() { Label = "1 天", Minutes = 1 * 24 * 60 },
@@ -86,6 +96,7 @@ public partial class SettingsWindow : Window
 
 			AutoRefreshCheck.IsChecked = _config["autoRefresh"]?.GetValue<bool>() ?? true;
 			NewPanelCheck.IsChecked = _config["newPanel"]?.GetValue<bool>() ?? false;
+			LoadDockPreferences();
 			BuildRefreshOptions();
 			BuildEntries();
 			ShowError(null);
@@ -127,6 +138,35 @@ public partial class SettingsWindow : Window
 		RefreshIntervalCombo.DisplayMemberPath = nameof(RefreshOption.Label);
 		RefreshIntervalCombo.SelectedValuePath = nameof(RefreshOption.Minutes);
 		RefreshIntervalCombo.SelectedValue = current;
+	}
+
+	private void LoadDockPreferences()
+	{
+		var settings = App.Instance?.Settings ?? new AppSettings();
+		DockEnabledCheck.IsChecked = settings.DockEnabled;
+		DockTickerCheck.IsChecked = settings.DockTickerEnabled;
+		DockRangeCombo.ItemsSource = DockRanges.Select(r => new DockRangeOption(r.Hours, r.Label)).ToArray();
+		DockRangeCombo.DisplayMemberPath = nameof(DockRangeOption.Label);
+		DockRangeCombo.SelectedValuePath = nameof(DockRangeOption.Hours);
+		DockRangeCombo.SelectedValue = settings.DockTickerHours;
+	}
+
+	private void OnDockPreferencesChanged(object sender, RoutedEventArgs e)
+	{
+		if (_building) return;
+		var app = App.Instance;
+		if (app == null) return;
+		var hours = DockRangeCombo.SelectedValue is int h ? h : app.Settings.DockTickerHours;
+		app.UpdateDockPreferences(DockEnabledCheck.IsChecked == true, DockTickerCheck.IsChecked == true, hours);
+	}
+
+	private void OnDockRangeChanged(object sender, SelectionChangedEventArgs e)
+	{
+		if (_building) return;
+		var app = App.Instance;
+		if (app == null) return;
+		var hours = DockRangeCombo.SelectedValue is int h ? h : app.Settings.DockTickerHours;
+		app.UpdateDockPreferences(DockEnabledCheck.IsChecked == true, DockTickerCheck.IsChecked == true, hours);
 	}
 
 	private void BuildEntries()

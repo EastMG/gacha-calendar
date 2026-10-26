@@ -26,6 +26,7 @@ public partial class DockStripWindow : Window
 	private bool _animating;
 	private bool _hover;
 	private bool _slideDown = true;
+	private bool _tickerEnabled = true;
 
 	public DockStripWindow()
 	{
@@ -43,7 +44,7 @@ public partial class DockStripWindow : Window
 			App.Instance?.RepositionDock();
 			RebuildSequence();
 			// 截图时冻结在第一格，避免正好截到 320ms 翻页中间帧。
-			if (App.Instance?.IsCaptureMode != true) _timer.Start();
+			SetTickerEnabled(App.Instance?.Settings.DockTickerEnabled ?? true);
 		};
 		Closing += (_, e) =>
 		{
@@ -123,9 +124,16 @@ public partial class DockStripWindow : Window
 
 	private void OnTick(object? sender, EventArgs e)
 	{
-		if (_hover || _animating || _sequence.Count < 2) return;
+		if (!_tickerEnabled || _hover || _animating || _sequence.Count < 2) return;
 		_index = (_index + 1) % _sequence.Count;
 		AnimateTo(_sequence[_index]);
+	}
+
+	public void SetTickerEnabled(bool enabled)
+	{
+		_tickerEnabled = enabled;
+		if (enabled && App.Instance?.IsCaptureMode != true) _timer.Start();
+		else _timer.Stop();
 	}
 
 	private void AnimateTo(DockLineVm next)

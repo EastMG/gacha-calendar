@@ -45,6 +45,16 @@
 | 无条目时显示「二游日历」 | `DockLineVm.Idle` | 代码 |
 | 点击展开 / 右键菜单不变 | `ToggleFlyout` + ContextMenu | 代码 |
 
+## 2.2 Fluent 视觉改版（v0.1.27）
+
+| 行为 | WPF 实现 | 证据 |
+|---|---|---|
+| Windows 11 Fluent 2 色板 | 系统蓝 `#0067C0`（浅）/`#60CDFF`（深）、中性层叠表面、8px 圆角 | `docs/images/flyout*.png`、`settings*.png` |
+| 字体栈 | Segoe UI Variable Text + 微软雅黑回退；Ideal 渲染 | 截图 |
+| 总览 / 日程分段切换 | 面板左上分段控件；`App.SetNewPanelMode` 写回 `newPanel` | `flyout*.png`；代码 |
+| 任务栏胶囊设置 | 设置页「任务栏胶囊」区：显示、自动轮播、12/24/48/72h | `settings*.png` |
+| 胶囊范围语义 | 开始/结束在 N 小时内才进入轮播；状态显示「还剩 X」/「X后开池」 | `dock*.png`；`MainViewModel.RebuildChips` |
+
 ## 3. 设置页
 
 | DSH 行为 | WPF 实现 | 证据 |

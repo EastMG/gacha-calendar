@@ -226,10 +226,11 @@
 														<Setter Property="Foreground" Value="{DynamicResource FgDim}" />
 														<Style.Triggers>
 															<DataTrigger Binding="{Binding Urgency}" Value="1">
-																<Setter Property="Foreground" Value="{DynamicResource Danger}" />
+																<Setter Property="Foreground" Value="{DynamicResource Fg}" />
+																<Setter Property="FontWeight" Value="SemiBold" />
 															</DataTrigger>
 															<DataTrigger Binding="{Binding Urgency}" Value="2">
-																<Setter Property="Foreground" Value="{DynamicResource Warn}" />
+																<Setter Property="Foreground" Value="{DynamicResource FgDim}" />
 															</DataTrigger>
 														</Style.Triggers>
 													</Style>
@@ -256,7 +257,7 @@
 					</StackPanel>
 
 					<!-- 下一个截止卡（悬停近期行时切换） -->
-					<Border Grid.Column="1" Background="{DynamicResource PanelBg}" BorderBrush="{DynamicResource PanelBorder}"
+					<Border Grid.Column="1" Background="{DynamicResource ChipBg}" BorderBrush="{DynamicResource PanelBorder}"
 							BorderThickness="1" CornerRadius="8" Padding="12" VerticalAlignment="Stretch">
 						<StackPanel>
 							<Grid Width="68" Height="68" HorizontalAlignment="Center" Margin="0,2,0,0">
@@ -482,7 +483,7 @@
 											<ItemsControl.ItemsPanel><ItemsPanelTemplate><UniformGrid Columns="14" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
 											<ItemsControl.ItemTemplate>
 												<DataTemplate>
-													<Border Height="10" Margin="0.5,0">
+													<Border Height="10" Margin="0.5,0" Opacity="0.72">
 														<Border.Style>
 															<Style TargetType="Border">
 																<Setter Property="Background" Value="Transparent" />
@@ -536,7 +537,7 @@
 											<ItemsControl.ItemsPanel><ItemsPanelTemplate><UniformGrid Columns="14" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
 											<ItemsControl.ItemTemplate>
 												<DataTemplate>
-													<Border Height="10" Margin="0.5,0">
+													<Border Height="10" Margin="0.5,0" Opacity="0.72">
 														<Border.Style>
 															<Style TargetType="Border">
 																<Setter Property="Background" Value="Transparent" />

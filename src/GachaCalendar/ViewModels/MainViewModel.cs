@@ -303,13 +303,6 @@ public sealed class MainViewModel : INotifyPropertyChanged
 		Tick(DateTime.Now, force: true);
 	}
 
-	public void SetViewMode(bool enabled)
-	{
-		if (_isNewPanel == enabled) return;
-		IsNewPanel = enabled;
-		Schedule.SetVisible(enabled);
-	}
-
 	public void Tick(DateTime now, bool force = false)
 	{
 		if (_snapshot == null) return;

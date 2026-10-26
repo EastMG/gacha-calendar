@@ -262,7 +262,7 @@ public partial class SettingsWindow : Window
 			down.Click += async (_, _) => await MoveAsync(entry.Id, 1);
 			var delete = SmallIconButton(
 				"M4,5 H16 M7,5 V3 H13 V5 M6,5 L7,18 H13 L14,5 M9,8 V15 M12,8 V15",
-				"删除", (Brush)FindResource("Danger"));
+				"删除", (Brush)FindResource("FgDim"));
 			delete.Click += async (_, _) =>
 			{
 				await RunWriteAsync(async () =>

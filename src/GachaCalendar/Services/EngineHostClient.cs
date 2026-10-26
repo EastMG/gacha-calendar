@@ -55,6 +55,21 @@ public sealed class EngineHostClient : IAsyncDisposable
 		if (!string.IsNullOrWhiteSpace(explicitNode)) return explicitNode;
 		var bundled = Path.Combine(AppContext.BaseDirectory, "engine", "node.exe");
 		if (File.Exists(bundled)) return bundled;
+
+		// 从资源管理器双击时 PATH 不一定包含 Node（尤其在用户级 nvm/安装器下），
+		// 显式找常见位置，避免“Host 启动失败”被误判成设置页坏了。
+		foreach (var candidate in new[]
+		{
+			Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+				"Programs", "nodejs", "node.exe"),
+			Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
+				"nodejs", "node.exe"),
+			Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86),
+				"nodejs", "node.exe"),
+		})
+		{
+			if (File.Exists(candidate)) return candidate;
+		}
 		return "node";
 	}
 

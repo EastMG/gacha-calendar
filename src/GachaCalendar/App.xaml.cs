@@ -39,6 +39,8 @@ public partial class App : System.Windows.Application
 		base.OnStartup(e);
 		Instance = this;
 		Log.Info("启动 GachaCalendar");
+		Log.Info("exe=" + Environment.ProcessPath);
+		Log.Info("dataDir=" + AppPaths.LocalDataDir);
 
 		try
 		{

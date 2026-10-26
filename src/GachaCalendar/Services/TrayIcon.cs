@@ -32,6 +32,8 @@ public sealed class TrayIcon : IDisposable
 			ContextMenuStrip = menu,
 		};
 		_notify.DoubleClick += (_, _) => openPanel();
+		try { Log.Info("托盘图标已创建 visible=" + _notify.Visible); }
+		catch { /* 日志失败不影响托盘 */ }
 
 		// 某些启动顺序下 Explorer 通知区尚未就绪，Visible=true 会被吞掉；
 		// 做几次轻量重注册，不阻塞 UI 线程。

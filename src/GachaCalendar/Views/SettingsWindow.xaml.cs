@@ -844,7 +844,7 @@ public partial class SettingsWindow : Window
 				_engineRetry?.Stop();
 				_engineRetry = null;
 				LoadingText.Visibility = Visibility.Collapsed;
-				ShowError("应用内引擎不可用（需要 Node Host），暂时无法编辑设置。");
+				ShowError("应用内引擎不可用：" + (Engine?.LastError ?? "未知原因") + "（Node Host）");
 			}
 		};
 		_engineRetry.Start();

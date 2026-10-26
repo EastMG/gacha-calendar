@@ -3,6 +3,7 @@ using System.Text.Json.Nodes;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Threading;
 using GachaCalendar.Models;
 using GachaCalendar.Services;
 using Button = System.Windows.Controls.Button;
@@ -47,6 +48,8 @@ public partial class SettingsWindow : Window
 	private JsonObject _customEventUrls = new();
 	private bool _building;
 	private bool _addingCustom;
+	private DispatcherTimer? _engineRetry;
+	private int _engineRetryCount;
 	private string _customName = "";
 	private string _customIcon = "";
 	private string _customBannerUrl = "";
@@ -58,6 +61,7 @@ public partial class SettingsWindow : Window
 	{
 		InitializeComponent();
 		SourceInitialized += (_, _) => DarkTitleBar.Apply(this);
+		Closed += (_, _) => _engineRetry?.Stop();
 	}
 
 	public void LoadFromSettings() => _ = ReloadAsync();
@@ -67,11 +71,18 @@ public partial class SettingsWindow : Window
 		var engine = Engine;
 		if (engine is not { IsAvailable: true })
 		{
-			ShowError("应用内引擎不可用（需要 Node Host），暂时无法编辑设置。");
+			// Host 是异步启动的；设置页可能在 Host 就绪前被打开。先等待，不要直接显示“引擎不可用”。
+			ShowError(null);
+			LoadingText.Text = "正在启动数据引擎…";
+			LoadingText.Visibility = Visibility.Visible;
+			ScheduleEngineRetry();
 			return;
 		}
 
+		_engineRetry?.Stop();
+		_engineRetry = null;
 		_building = true;
+		LoadingText.Text = "正在读取设置…";
 		LoadingText.Visibility = Visibility.Visible;
 		try
 		{
@@ -809,6 +820,33 @@ public partial class SettingsWindow : Window
 
 	private static bool IsCustomMode(string? value) =>
 		value != null && value.StartsWith("custom:", StringComparison.Ordinal);
+
+	private void ScheduleEngineRetry()
+	{
+		if (_engineRetry != null) return;
+		_engineRetryCount = 0;
+		_engineRetry = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+		_engineRetry.Tick += (_, _) =>
+		{
+			_engineRetryCount++;
+			if (Engine is { IsAvailable: true })
+			{
+				_engineRetry?.Stop();
+				_engineRetry = null;
+				LoadingText.Text = "正在读取设置…";
+				_ = ReloadAsync();
+				return;
+			}
+			if (_engineRetryCount >= 12)
+			{
+				_engineRetry?.Stop();
+				_engineRetry = null;
+				LoadingText.Visibility = Visibility.Collapsed;
+				ShowError("应用内引擎不可用（需要 Node Host），暂时无法编辑设置。");
+			}
+		};
+		_engineRetry.Start();
+	}
 
 	private static string StripCustom(string? value) =>
 		value != null && value.StartsWith("custom:", StringComparison.Ordinal) ? value["custom:".Length..] : "";

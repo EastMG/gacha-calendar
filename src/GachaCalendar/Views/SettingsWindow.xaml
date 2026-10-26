@@ -9,7 +9,7 @@
 		SnapsToDevicePixels="True"
 		TextOptions.TextFormattingMode="Ideal"
 		TextOptions.TextRenderingMode="ClearType"
-		Background="{DynamicResource PanelBg}"
+		Background="Transparent"
 		Foreground="{DynamicResource Fg}"
 		FontFamily="Segoe UI Variable Text, Microsoft YaHei UI, Segoe UI">
 	<Window.Resources>

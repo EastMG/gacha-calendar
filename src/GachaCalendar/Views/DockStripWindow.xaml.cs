@@ -38,6 +38,8 @@ public partial class DockStripWindow : Window
 		{
 			var hwnd = new WindowInteropHelper(this).Handle;
 			Taskbar.MakeToolWindow(hwnd, noActivate: true);
+			if (WindowBackdrop.TryEnable(this, !ThemeManager.IsLight))
+				ThemeManager.UseBackdropMaterials();
 		};
 		Loaded += (_, _) =>
 		{

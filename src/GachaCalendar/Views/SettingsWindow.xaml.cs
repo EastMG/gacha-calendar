@@ -57,7 +57,14 @@ public partial class SettingsWindow : Window
 	public SettingsWindow()
 	{
 		InitializeComponent();
-		SourceInitialized += (_, _) => DarkTitleBar.Apply(this);
+		SourceInitialized += (_, _) =>
+		{
+			DarkTitleBar.Apply(this);
+			if (WindowBackdrop.TryEnable(this, !ThemeManager.IsLight))
+				ThemeManager.UseBackdropMaterials();
+			else
+				Background = (Brush)FindResource("PanelBg");
+		};
 	}
 
 	public void LoadFromSettings() => _ = ReloadAsync();
